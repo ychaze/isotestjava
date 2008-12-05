@@ -13,6 +13,9 @@ public class DataSource implements Externalizable {
 		this.url = url;
 		this.type = type;
 	}
+	public DataSource(){
+		super();
+	}
 
 	private String login;
 	private String mdp;
