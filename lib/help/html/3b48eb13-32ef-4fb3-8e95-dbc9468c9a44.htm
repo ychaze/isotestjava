@@ -1,0 +1,95 @@
+﻿<html DIR="LTR" xmlns:tool="http://www.microsoft.com/tooltip" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=utf-8" />
+    <META NAME="save" CONTENT="history" />
+    <title>Using Savepoints</title>
+    
+    <link rel="stylesheet" type="text/css" href="../local/Classic.css">
+      
+    </link>
+    
+    <script src="../local/script.js">
+      
+    </script><script src="../local/script_main.js">&amp;nbsp;</script>
+  </head>
+  <body>
+    <!--Topic built:06/26/2008 22:42:43-->
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div id="header">
+      <table width="100%" id="topTable"><tr>
+          <td align="left">
+            <span id="headerBold">Using Savepoints</span>
+          </td>
+          <td align="right">
+            
+          </td>
+        </tr></table>
+      
+      
+      
+    </div>
+    <div id="mainSection">
+      
+        
+        
+		<font color="DarkGray">[This topic is pre-release documentation and is subject to change in future releases. Blank topics are included as placeholders.] </font> <p /> <p />
+	
+        <div id="introductionSection" class="section">
+    <p>Savepoints offer a mechanism to roll back portions of transactions. Within SQL Server, you can create a savepoint by using the SAVE TRANSACTION savepoint_name statement. Later, you run a ROLLBACK TRANSACTION savepoint_name statement to roll back to the savepoint instead of rolling back to the start of the transaction. </p>
+    <p>Savepoints are useful in situations where errors are unlikely to occur. The use of a savepoint to roll back part of a transaction in the case of an infrequent error can be more efficient than having each transaction test to see if an update is valid before making the update. Updates and rollbacks are expensive operations, so savepoints are effective only if the probability of encountering the error is low and the cost of checking the validity of an update beforehand is relatively high.</p>
+    <p>The Microsoft SQL Server 2005 JDBC Driver supports the use of savepoints through the <a href="c39c6b4f-b9e2-423b-94ae-9f82d9e6d08d.htm">setSavepoint</a> method of the <a href="937292a6-1525-423e-a2b2-a18fd34c2893.htm">SQLServerConnection</a> class. By using the <b>setSavepoint</b> method, you can create a named or unnamed savepoint within the current transaction, and the method will return a <a href="1ae7db7b-959f-4142-8d9f-aa427869c6ac.htm">SQLServerSavepoint</a> object. Multiple savepoints can be created within a transaction. To roll back a transaction to a given savepoint, you can pass the <b>SQLServerSavepoint</b> object to the <a href="d5dbd9ef-194f-4130-bfcc-7901a4fa8ded.htm">rollback (java.sql.Savepoint)</a> method.</p>
+    <p>In the following example, a savepoint is used while performing a local transaction consisting of two separate statements in the <code>try</code> block. The statements are run against the Production.ScrapReason table in the SQL Server 2005 AdventureWorks sample database, and a savepoint is used to roll back the second statement. This results in only the first statement being committed to the database.</p>
+    <div class="sampleCode"><span codeLanguage="other"><pre>public static void executeTransaction(Connection con) {
+   try {
+      con.setAutoCommit(false);
+      Statement stmt = con.createStatement();
+      stmt.executeUpdate("INSERT INTO Production.ScrapReason(Name) VALUES('Correct width')");
+      Savepoint save = con.setSavepoint();
+      stmt.executeUpdate("INSERT INTO Production.ScrapReason(Name) VALUES('Wrong width')");
+      con.rollback(save);
+      con.commit();
+      stmt.close();
+      System.out.println("Transaction succeeded.");
+   }
+   catch (SQLException ex) {
+      ex.printStackTrace();
+      try {
+         con.rollback();
+         System.out.println("Transaction failed.");
+      }
+      catch (SQLException se) {
+         se.printStackTrace();
+      }
+   }
+}</pre></span></div>
+  </div><span id="seeAlsoSpan"><h1 class="heading">See Also</h1></span><div id="seeAlsoSection" class="section" name="collapseableSection"><a href="afbb776f-05dc-4e79-bb25-2c340483e401.htm">Performing Transactions with the JDBC Driver</a><br /><br /></div><!--[if gte IE 5]>
+			<tool:tip element="seeAlsoToolTip" avoidmouse="false"/><tool:tip element="languageFilterToolTip" avoidmouse="false"/><tool:tip element="roleInfoSpan" avoidmouse="false"/>
+		<![endif]-->
+      <div id="footer" class="section">
+        
+		<hr />
+		
+		<span id="fb" class="feedbackcss">
+			
+			
+		</span>
+		
+		<a href="9bad553b-9e70-4696-8499-2e35f772a1e0.htm">
+			
+			© 2008 Microsoft Corporation. All rights reserved.
+		</a>
+ 	
+	
+      </div>
+    </div>
+  </body>
+</html>

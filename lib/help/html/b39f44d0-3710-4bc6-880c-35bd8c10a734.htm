@@ -1,0 +1,94 @@
+﻿<html DIR="LTR" xmlns:tool="http://www.microsoft.com/tooltip" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=utf-8" />
+    <META NAME="save" CONTENT="history" />
+    <title>Working with Data Types (JDBC)</title>
+    
+    <link rel="stylesheet" type="text/css" href="../local/Classic.css">
+      
+    </link>
+    
+    <script src="../local/script.js">
+      
+    </script><script src="../local/script_main.js">&amp;nbsp;</script>
+  </head>
+  <body>
+    <!--Topic built:06/26/2008 22:42:43-->
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div id="header">
+      <table width="100%" id="topTable"><tr>
+          <td align="left">
+            <span id="headerBold">Working with Data Types (JDBC)</span>
+          </td>
+          <td align="right">
+            
+          </td>
+        </tr></table>
+      
+      
+      
+    </div>
+    <div id="mainSection">
+      
+        
+        
+		<font color="DarkGray">[This topic is pre-release documentation and is subject to change in future releases. Blank topics are included as placeholders.] </font> <p /> <p />
+	
+        <div id="introductionSection" class="section">
+    <p>The primary function of the Microsoft SQL Server 2005 JDBC Driver is to allow Java developers to access data contained in SQL Server databases. To accomplish this, the JDBC driver mediates the conversion between SQL Server data types and Java language types and objects.</p>
+    <div style="margin: .5em 1.5em .5em 1.5em"><b>Note: </b>
+      For a detailed discussion of the SQL Server and JDBC driver data types, including their differences and how they are converted to Java language data types, see <a href="7802328d-4d23-4775-9573-4169b127d258.htm">Understanding the JDBC Driver Data Types</a>.<p />
+    </div>
+    <p>In order to work with SQL Server data types, the JDBC driver provides <b>get&lt;Type&gt;</b> and <b>set&lt;Type&gt;</b> methods for the <a href="a8481c06-fbba-432b-8c69-4f4619c20ad4.htm">SQLServerPreparedStatement</a> and <a href="30710a63-c05d-47d9-9cf9-c087a1c76373.htm">SQLServerCallableStatement</a> classes, and it provides <b>get&lt;Type&gt;</b> and <b>update&lt;Type&gt;</b> methods for the <a href="eaffcff1-286c-459f-83da-3150778480c9.htm">SQLServerResultSet</a> class. Which method you use depends on the type of data that you are working with, and whether you are using result sets or queries.</p>
+    <p>The topics in this section describe how to use the JDBC driver data types to access SQL Server data in your Java applications.  </p>
+  </div><h1 class="heading">In This Section</h1><div id="inThisSectionSection" class="section">
+    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <table width="100%" cellspacing="0" cellpadding="0" border="1" style="background-color: #CCCCCC;" xmlns=""><tr>
+            <th>
+              Topic
+            </th>
+            <th>
+              Description
+            </th>
+          </tr><tr>
+          <td>
+            <p>
+              <a href="59ac80cf-fc66-4493-933d-38e479c5f54d.htm">Basic Data Types Sample</a>
+            </p>
+          </td>
+          <td>
+            <p>Describes how to use result set getter methods to retrieve basic SQL Server data type values, and how to use result set update methods to update those values.</p>
+          </td>
+        </tr></table>
+    </content>
+  </div><span id="seeAlsoSpan"><h1 class="heading">See Also</h1></span><div id="seeAlsoSection" class="section" name="collapseableSection"><a href="e136b87c-a138-45d6-8c3e-bcef94b7e483.htm">Sample JDBC Driver Applications</a><br /><br /></div><!--[if gte IE 5]>
+			<tool:tip element="seeAlsoToolTip" avoidmouse="false"/><tool:tip element="languageFilterToolTip" avoidmouse="false"/><tool:tip element="roleInfoSpan" avoidmouse="false"/>
+		<![endif]-->
+      <div id="footer" class="section">
+        
+		<hr />
+		
+		<span id="fb" class="feedbackcss">
+			
+			
+		</span>
+		
+		<a href="9bad553b-9e70-4696-8499-2e35f772a1e0.htm">
+			
+			© 2008 Microsoft Corporation. All rights reserved.
+		</a>
+ 	
+	
+      </div>
+    </div>
+  </body>
+</html>

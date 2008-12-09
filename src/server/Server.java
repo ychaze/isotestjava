@@ -6,14 +6,33 @@ import handler.SQLRequestHandler;
 import java.util.logging.Logger;
 import merapi.Bridge;
 public class Server {
-
-	public static void main(String[] args) {
+	private DataSourceHandler dsh = new DataSourceHandler();
+	private SQLRequestHandler sqlrh = new SQLRequestHandler();
+	
+	public Server(){
 		Logger.getAnonymousLogger().info("Starting Java Server for PeperBoy...");
 		Logger.getAnonymousLogger().info("Registrering a new data source handler");
-		DataSourceHandler dsh = new DataSourceHandler();
-		SQLRequestHandler sqlrh = new SQLRequestHandler();
 		Bridge.getInstance().registerMessageHandler("dataSource",dsh);
 		Bridge.getInstance().registerMessageHandler("sqlRequest", sqlrh);
-		sqlrh.setDs(dsh.getDs());
+		dsh.setSrv(this);
+		waitForDS();
+
+	}
+	private void waitForDS(){
+		try {
+			synchronized(this){
+				wait();
+			}
+			Logger.getAnonymousLogger().info(dsh.getDs().toString());
+			sqlrh.setDs(dsh.getDs());
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	public static void main(String[] args) {
+		new Server();
 	}
 }

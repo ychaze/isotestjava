@@ -1,0 +1,104 @@
+﻿<html DIR="LTR" xmlns:tool="http://www.microsoft.com/tooltip" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=utf-8" />
+    <META NAME="save" CONTENT="history" />
+    <title>Using a Stored Procedure with an Update Count</title>
+    
+    <link rel="stylesheet" type="text/css" href="../local/Classic.css">
+      
+    </link>
+    
+    <script src="../local/script.js">
+      
+    </script><script src="../local/script_main.js">&amp;nbsp;</script>
+  </head>
+  <body>
+    <!--Topic built:06/26/2008 22:42:43-->
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div id="header">
+      <table width="100%" id="topTable"><tr>
+          <td align="left">
+            <span id="headerBold">Using a Stored Procedure with an Update Count</span>
+          </td>
+          <td align="right">
+            
+          </td>
+        </tr></table>
+      
+      
+      
+    </div>
+    <div id="mainSection">
+      
+        
+        
+		<font color="DarkGray">[This topic is pre-release documentation and is subject to change in future releases. Blank topics are included as placeholders.] </font> <p /> <p />
+	
+        <div id="introductionSection" class="section">
+    <p>To modify data in a SQL Server database by using a stored procedure, the Microsoft SQL Server 2005 JDBC Driver provides the <a href="30710a63-c05d-47d9-9cf9-c087a1c76373.htm">SQLServerCallableStatement</a> class. By using the <b>SQLServerCallableStatement</b> class, you can call stored procedures that modify data that is contained in the database and return a count of the number of rows affected, also referred to as the update count. </p>
+    <p>After you have set up the call to the stored procedure by using the <b>SQLServerCallableStatement</b> class, you can then call the stored procedure by using either the <a href="e1367f39-23d7-4e26-b160-6d988d7e6988.htm">execute</a> or the <a href="10ae662a-ce3c-4b24-875c-5c2df319d93b.htm">executeUpdate</a> method. The <b>executeUpdate</b> method will return an <b>int</b> value that contains the number of rows affected by the stored procedure, but the <b>execute</b> method does not. If you use the <b>execute</b> method and want to get the count of the number of rows affected, you can call the <a href="e9570228-4500-44b6-b2f1-84ac050b5112.htm">getUpdateCount</a> method after you run the stored procedure.</p>
+    <div style="margin: .5em 1.5em .5em 1.5em"><b>Note: </b>
+      If you want the JDBC driver to return all update counts, including update counts returned by any triggers that may have fired, set the lastUpdateCount connection string property to "false". For more information about the lastUpdateCount property, see <a href="f1b62700-f046-488d-bd6b-a5cd8fc345b7.htm">Setting the Connection Properties</a>.<p />
+    </div>
+    <p>As an example, create the following table and stored procedure in the SQL Server 2005 AdventureWorks sample database:</p>
+    <div class="sampleCode"><span codeLanguage="other"><pre>CREATE TABLE TestTable 
+   (Col1 int IDENTITY, 
+    Col2 varchar(50), 
+    Col3 int);
+
+CREATE PROCEDURE UpdateTestTable
+   @Col2 varchar(50),
+   @Col3 int
+AS
+BEGIN
+   UPDATE TestTable
+   SET Col2 = @Col2, Col3 = @Col3
+END;</pre></span></div>
+    <p>In the following example, an open connection to the AdventureWorks sample database is passed in to the function, the <b>execute</b> method is used to call the UpdateTestTable stored procedure, and then the <b>getUpdateCount</b> method is used to return a count of the rows that are affected by the stored procedure.</p>
+    <div class="sampleCode"><span codeLanguage="other"><pre>public static void executeUpdateStoredProcedure(Connection con) {
+   try {
+      CallableStatement cstmt = con.prepareCall("{call dbo.UpdateTestTable(?, ?)}");
+      cstmt.setString(1, "A");
+      cstmt.setInt(2, 100);
+      cstmt.execute();
+      int count = cstmt.getUpdateCount();
+      cstmt.close();
+
+      System.out.println("ROWS AFFECTED: " + count);
+   }
+   catch (Exception e) {
+      e.printStackTrace();
+   }
+}
+</pre></span></div>
+  </div><span id="seeAlsoSpan"><h1 class="heading">See Also</h1></span><div id="seeAlsoSection" class="section" name="collapseableSection"><a href="0041f9e1-09b6-4487-b052-afd636c8e89a.htm">Using Statements with Stored Procedures</a><br /><br /></div><!--[if gte IE 5]>
+			<tool:tip element="seeAlsoToolTip" avoidmouse="false"/><tool:tip element="languageFilterToolTip" avoidmouse="false"/><tool:tip element="roleInfoSpan" avoidmouse="false"/>
+		<![endif]-->
+      <div id="footer" class="section">
+        
+		<hr />
+		
+		<span id="fb" class="feedbackcss">
+			
+			
+		</span>
+		
+		<a href="9bad553b-9e70-4696-8499-2e35f772a1e0.htm">
+			
+			© 2008 Microsoft Corporation. All rights reserved.
+		</a>
+ 	
+	
+      </div>
+    </div>
+  </body>
+</html>

@@ -5,6 +5,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 public class DataSourceFactory {
 	private static DriverManagerDataSource ds = new DriverManagerDataSource();
 	
+	// WARNING
 	public static DriverManagerDataSource createDS(String url, String user, String pass, int type){
 		switch(type){
 		// Oracle
@@ -13,7 +14,7 @@ public class DataSourceFactory {
 			break;
 		// SQL SERVER
 		case 2:
-			ds.setDriverClassName("com.microsoft.jdbc.sqlserver.SQLServerDriver");
+			ds.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 			break;
 		// MYSQL
 		case 3:

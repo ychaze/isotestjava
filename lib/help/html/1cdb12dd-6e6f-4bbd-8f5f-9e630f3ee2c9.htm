@@ -1,0 +1,80 @@
+﻿<html DIR="LTR" xmlns:tool="http://www.microsoft.com/tooltip" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=utf-8" />
+    <META NAME="save" CONTENT="history" />
+    <title>getEncrypt Method (SQLServerDataSource)</title>
+    
+    <link rel="stylesheet" type="text/css" href="../local/Classic.css">
+      
+    </link>
+    
+    <script src="../local/script.js">
+      
+    </script><script src="../local/script_main.js">&amp;nbsp;</script>
+  </head>
+  <body>
+    <!--Topic built:06/26/2008 22:42:43-->
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div id="header">
+      <table width="100%" id="topTable"><tr>
+          <td align="left">
+            <span id="headerBold">getEncrypt Method (SQLServerDataSource)</span>
+          </td>
+          <td align="right">
+            
+          </td>
+        </tr></table>
+      
+      
+      
+    </div>
+    <div id="mainSection">
+      
+        
+        
+		<font color="DarkGray">[This topic is pre-release documentation and is subject to change in future releases. Blank topics are included as placeholders.] </font> <p /> <p />
+	
+        <div id="introductionSection" class="section">
+    <p>Returns a<b> boolean </b>value that indicates if the encrypt property is enabled.</p>
+  </div><h1 class="heading">Syntax</h1><div id="syntaxSection" class="section"><div class="sampleCode"><span codeLanguage="other"><pre>
+public boolean <b>getEncypt</b>()</pre></span></div></div><h1 class="heading">Return Value</h1><div id="returnValueSection" class="section" name="collapseableSection">
+    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">
+        <b>true</b> if encrypt is enabled. Otherwise, <b>false</b>.</p>
+    </content>
+  </div><h1 class="heading">Remarks</h1><div id="remarksSection" class="section" name="collapseableSection">
+    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">If the encrypt property is set to <b>true</b>, the Microsoft SQL Server 2005 JDBC Driver ensures that SQL Server uses SSL encryption for all data sent between the client and the server if the server has a certificate installed. </p>
+      <p xmlns="">If the encrypt property is unspecified or set to <b>false</b>, the driver will not enforce the SQL Server to support SSL encryption. If the SQL Server instance is not configured to force the SSL encryption, a connection is established without any encryption. If the SQL Server instance is configured to force the SSL encryption, the Microsoft SQL Server 2005 JDBC Driver will automatically enable SSL encryption when running on properly configured Java Virtual Machine (JVM), or else the connection is terminated and the driver will raise an error. If the encryption property is not set, the <a href="1cdb12dd-6e6f-4bbd-8f5f-9e630f3ee2c9.htm">getEncrypt</a> method returns the default value of <b>false</b>.</p>
+    </content>
+  </div><span id="seeAlsoSpan"><h1 class="heading">See Also</h1></span><div id="seeAlsoSection" class="section" name="collapseableSection"><a href="097434fd-2b74-411c-a5ed-eba04481dde5.htm">SQLServerDataSource Class</a><br /><a href="fac054f1-60dc-4261-bc1b-ed70d1ceb85f.htm">SQLServerDataSource Methods</a><br /><a href="7e749bc5-d765-4864-be2b-7822d4c20c09.htm">SQLServerDataSource Members</a><br /><br /></div><!--[if gte IE 5]>
+			<tool:tip element="seeAlsoToolTip" avoidmouse="false"/><tool:tip element="languageFilterToolTip" avoidmouse="false"/><tool:tip element="roleInfoSpan" avoidmouse="false"/>
+		<![endif]-->
+      <div id="footer" class="section">
+        
+		<hr />
+		
+		<span id="fb" class="feedbackcss">
+			
+			
+		</span>
+		
+		<a href="9bad553b-9e70-4696-8499-2e35f772a1e0.htm">
+			
+			© 2008 Microsoft Corporation. All rights reserved.
+		</a>
+ 	
+	
+      </div>
+    </div>
+  </body>
+</html>

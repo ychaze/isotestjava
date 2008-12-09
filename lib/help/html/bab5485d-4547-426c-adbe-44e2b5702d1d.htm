@@ -1,0 +1,91 @@
+﻿<html DIR="LTR" xmlns:tool="http://www.microsoft.com/tooltip" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=utf-8" />
+    <META NAME="save" CONTENT="history" />
+    <title>setTrustStore Method (SQLServerDataSource)</title>
+    
+    <link rel="stylesheet" type="text/css" href="../local/Classic.css">
+      
+    </link>
+    
+    <script src="../local/script.js">
+      
+    </script><script src="../local/script_main.js">&amp;nbsp;</script>
+  </head>
+  <body>
+    <!--Topic built:06/26/2008 22:42:43-->
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div id="header">
+      <table width="100%" id="topTable"><tr>
+          <td align="left">
+            <span id="headerBold">setTrustStore Method (SQLServerDataSource)</span>
+          </td>
+          <td align="right">
+            
+          </td>
+        </tr></table>
+      
+      
+      
+    </div>
+    <div id="mainSection">
+      
+        
+        
+		<font color="DarkGray">[This topic is pre-release documentation and is subject to change in future releases. Blank topics are included as placeholders.] </font> <p /> <p />
+	
+        <div id="introductionSection" class="section">
+    <p>Sets the path (including file name) to the certificate trustStore file. </p>
+  </div><h1 class="heading">Syntax</h1><div id="syntaxSection" class="section"><div class="sampleCode"><span codeLanguage="other"><pre>
+public void <b>setTrustStore</b>(java.lang.String trustStore)</pre></span></div><h1 class="heading">Parameters</h1><div id="parametersSection" class="section" name="collapseableSection">
+    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">
+        <i>trustStore</i>
+      </p>
+      <p xmlns="">A<b> String </b>that contains the path (including file name) to the certificate trustStore file.</p>
+    </content>
+  </div></div><h1 class="heading">Remarks</h1><div id="remarksSection" class="section" name="collapseableSection">
+    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">If the trustStore property is unspecified or set to null, the Microsoft SQL Server 2005 JDBC Driver will rely on the trust manager factory's look up rules to determine which certificate store to use. The default SunX509 TrustManagerFactory tries to find the trust material in the following locations in this order:</p>
+      <ul xmlns=""><li>
+          1. A file specified by the "javax.net.ssl.trustStore" Java Virtual Machine (JVM) system property. <br />
+        </li><li>
+          2. "&lt;java-home&gt;/lib/security/jssecacerts" file. <br />
+        </li><li>
+          3. "&lt;java-home&gt;/lib/security/cacerts" file.<br />
+        </li></ul>
+      <p xmlns="">For more information, see the SunX509 TrustManager Interface documentation on the Sun Microsystems Web site.</p>
+      <p xmlns="">If the trustStore property is set to a string or an empty string "", the driver will use that value to find the trustStore file to validate the server SSL certificate.</p>
+      <p xmlns="">The trustStorePassword property can be specified along with the trustStore property and its value is used to open the trustStore file. For more information, see <a href="fa87cbde-71cc-4f21-bc07-f8ba2b6a0a3f.htm">setTrustStorePassword</a>.</p>
+    </content>
+  </div><span id="seeAlsoSpan"><h1 class="heading">See Also</h1></span><div id="seeAlsoSection" class="section" name="collapseableSection"><a href="097434fd-2b74-411c-a5ed-eba04481dde5.htm">SQLServerDataSource Class</a><br /><a href="fac054f1-60dc-4261-bc1b-ed70d1ceb85f.htm">SQLServerDataSource Methods</a><br /><a href="7e749bc5-d765-4864-be2b-7822d4c20c09.htm">SQLServerDataSource Members</a><br /><br /></div><!--[if gte IE 5]>
+			<tool:tip element="seeAlsoToolTip" avoidmouse="false"/><tool:tip element="languageFilterToolTip" avoidmouse="false"/><tool:tip element="roleInfoSpan" avoidmouse="false"/>
+		<![endif]-->
+      <div id="footer" class="section">
+        
+		<hr />
+		
+		<span id="fb" class="feedbackcss">
+			
+			
+		</span>
+		
+		<a href="9bad553b-9e70-4696-8499-2e35f772a1e0.htm">
+			
+			© 2008 Microsoft Corporation. All rights reserved.
+		</a>
+ 	
+	
+      </div>
+    </div>
+  </body>
+</html>

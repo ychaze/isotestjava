@@ -1,0 +1,127 @@
+﻿<html DIR="LTR" xmlns:tool="http://www.microsoft.com/tooltip" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=utf-8" />
+    <META NAME="save" CONTENT="history" />
+    <title>Managing Result Sets with the JDBC Driver</title>
+    
+    <link rel="stylesheet" type="text/css" href="../local/Classic.css">
+      
+    </link>
+    
+    <script src="../local/script.js">
+      
+    </script><script src="../local/script_main.js">&amp;nbsp;</script>
+  </head>
+  <body>
+    <!--Topic built:06/26/2008 22:42:43-->
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div id="header">
+      <table width="100%" id="topTable"><tr>
+          <td align="left">
+            <span id="headerBold">Managing Result Sets with the JDBC Driver</span>
+          </td>
+          <td align="right">
+            
+          </td>
+        </tr></table>
+      
+      
+      
+    </div>
+    <div id="mainSection">
+      
+        
+        
+		<font color="DarkGray">[This topic is pre-release documentation and is subject to change in future releases. Blank topics are included as placeholders.] </font> <p /> <p />
+	
+        <div id="introductionSection" class="section">
+    <p>The result set is an object that represents a set of data returned from a data source, usually as the result of a query. The result set contains rows and columns to hold the requested data elements, and it is navigated with a cursor. A result set can be updatable, meaning that it can be modified and have those modifications pushed to the original data source. A result set can also have various levels of sensitivity to changes in the underlying data source. </p>
+    <p>The type of result set is determined when a statement is created, which is when a call to the <a href="6d043ba9-b8ec-41d3-bb22-ad2c4aebda6f.htm">createStatement</a> method of the <a href="937292a6-1525-423e-a2b2-a18fd34c2893.htm">SQLServerConnection</a> class is made. The fundamental role of a result set is to provide Java applications with a usable representation of the database data. This is typically done with the typed getter and setter methods on the result set data elements.</p>
+    <p>In the following example, which is based on the SQL Server 2005 AdventureWorks sample database, a result set is created by calling the <a href="599cf463-e19f-4baa-bacb-513cad7c6cd8.htm">executeQuery</a> method of the <a href="ec24963c-8b51-4838-91e9-1fbfa2347451.htm">SQLServerStatement</a> class. Data from the result set is then displayed by using the <a href="f81dde01-d328-4b32-8871-1efac645b68e.htm">getString</a> method of the <a href="eaffcff1-286c-459f-83da-3150778480c9.htm">SQLServerResultSet</a> class.</p>
+    <div class="sampleCode"><span codeLanguage="other"><pre>public static void executeStatement(Connection con) {
+   try {
+      String SQL = "SELECT TOP 10 * FROM Person.Contact";
+      Statement stmt = con.createStatement();
+      ResultSet rs = stmt.executeQuery(SQL);
+
+      while (rs.next()) {
+         System.out.println(rs.getString(4) + " " + rs.getString(6));
+      }
+      rs.close();
+      stmt.close();
+   }
+   catch (Exception e) {
+      e.printStackTrace();
+   }
+}
+</pre></span></div>
+    <p>The topics in this section describe various aspects of result set usage, including cursor types, concurrency, and row locking.</p>
+  </div><h1 class="heading">In This Section</h1><div id="inThisSectionSection" class="section">
+    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <table width="100%" cellspacing="0" cellpadding="0" border="1" style="background-color: #CCCCCC;" xmlns=""><tr>
+            <th>
+              Topic
+            </th>
+            <th>
+              Description
+            </th>
+          </tr><tr>
+          <td>
+            <p>
+              <a href="4f4d3db7-4f76-450d-ab63-141237a4f034.htm">Understanding Cursor Types</a>
+            </p>
+          </td>
+          <td>
+            <p>Describes the different cursor types that the Microsoft SQL Server 2005 JDBC Driver supports.</p>
+          </td>
+        </tr><tr>
+          <td>
+            <p>
+              <a href="98b7dabe-9b12-4e1d-adeb-e5b5cb0c96f3.htm">Understanding Concurrency Control</a>
+            </p>
+          </td>
+          <td>
+            <p>Describes how the JDBC driver supports concurrency control.</p>
+          </td>
+        </tr><tr>
+          <td>
+            <p>
+              <a href="63c76a2f-f2b9-461f-8904-acbda0169ac3.htm">Understanding Row Locking</a>
+            </p>
+          </td>
+          <td>
+            <p>Describes how the JDBC driver supports row locking.</p>
+          </td>
+        </tr></table>
+    </content>
+  </div><span id="seeAlsoSpan"><h1 class="heading">See Also</h1></span><div id="seeAlsoSection" class="section" name="collapseableSection"><a href="939a8773-2583-49a4-bf00-6b892fbe39dc.htm">Overview of the JDBC Driver</a><br /><br /></div><!--[if gte IE 5]>
+			<tool:tip element="seeAlsoToolTip" avoidmouse="false"/><tool:tip element="languageFilterToolTip" avoidmouse="false"/><tool:tip element="roleInfoSpan" avoidmouse="false"/>
+		<![endif]-->
+      <div id="footer" class="section">
+        
+		<hr />
+		
+		<span id="fb" class="feedbackcss">
+			
+			
+		</span>
+		
+		<a href="9bad553b-9e70-4696-8499-2e35f772a1e0.htm">
+			
+			© 2008 Microsoft Corporation. All rights reserved.
+		</a>
+ 	
+	
+      </div>
+    </div>
+  </body>
+</html>

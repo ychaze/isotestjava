@@ -1,0 +1,255 @@
+Release Information
+Microsoft SQL Server JDBC Driver 2.0
+July 2008
+
+
+INTRODUCTION
+------------
+This file contains late-breaking or other important information
+that supplements the Microsoft SQL Server JDBC Driver
+documentation. You should read this file completely before 
+installing the JDBC driver.
+
+Your feedback is very important to us and we will strive
+to respond to your feedback in a timely manner. For information
+about providing feedback by using the JDBC driver newsgroup and online
+forums, see the Microsoft SQL Server JDBC Driver page at
+http://msdn.microsoft.com/data/jdbc.
+
+
+INSTALLATION
+------------
+Instructions for installing the JDBC driver are located in install.txt.
+Refer to that file for information about installing the JDBC
+driver on Windows and Unix operating systems.
+
+SUPPORTED OPERATING SYSTEMS
+---------------------------
+The Microsoft SQL Server JDBC Driver 2.0 supports the following operating
+systems: Linux, Solaris, Unix, Windows Server 2003 Service Pack 2, 
+Windows Vista SP1, and Windows XP Service Pack 2.
+
+Note that the driver no longer supports Windows 2000.
+
+RELEASE CONTENTS
+----------------
+The Microsoft SQL Server JDBC Driver executable zip or tar file
+unpacks the following files in the specified locations, relative
+to the selected installation directory:
+
+<installation directory>\sqljdbc_<version>\<language>\install.txt
+<installation directory>\sqljdbc_<version>\<language>\release.txt
+<installation directory>\sqljdbc_<version>\<language>\license.txt
+<installation directory>\sqljdbc_<version>\<language>\sqljdbc.jar
+<installation directory>\sqljdbc_<version>\<language>\sqljdbc4.jar
+<installation directory>\sqljdbc_<version>\<language>\auth\x86\sqljdbc_auth.dll
+<installation directory>\sqljdbc_<version>\<language>\auth\x64\sqljdbc_auth.dll
+<installation directory>\sqljdbc_<version>\<language>\auth\ia64\sqljdbc_auth.dll
+<installation directory>\sqljdbc_<version>\<language>\help\default.htm
+<installation directory>\sqljdbc_<version>\<language>\help\index.htm
+<installation directory>\sqljdbc_<version>\<language>\help\toc.htm
+<installation directory>\sqljdbc_<version>\<language>\help\html\<doc pages...>
+<installation directory>\sqljdbc_<version>\<language>\help\local\<doc files...>
+<installation directory>\sqljdbc_<version>\<language>\help\samples\<sample files...>
+<installation directory>\sqljdbc_<version>\<language>\xa\xa_install.sql
+<installation directory>\sqljdbc_<version>\<language>\xa\x86\sqljdbc_xa.dll
+<installation directory>\sqljdbc_<version>\<language>\xa\x64\sqljdbc_xa.dll
+<installation directory>\sqljdbc_<version>\<language>\xa\ia64\sqljdbc_xa.dll
+
+
+CHANGE LIST
+-----------
+The following is a list of changes that have been made in the 
+Microsoft SQL Server JDBC Driver since the version 1.2 release in October 2007.
+
+157330 The driver no longer deletes the incorrect number of records from a table 
+       when the previous statement execution limited the number of rows.
+
+182375 The driver now ensures that the com.microsoft.sqlserver.jdbc.SQLServerException 
+       class is serializable completely.
+
+194672 The driver now correctly reconnects to Microsoft Distributed Transaction
+       Coordinator (MS DTC) after the MSDTC service is restarted.
+
+201162 The driver no longer throws an “Invalid TDS” exception when the application 
+       sets the connection string property “selectMethod=cursor” and 
+       executes a stored procedure that returns multiple consecutive empty result sets.
+
+208164 Running the JDBC driver on IBM AIX platform no longer has a negative effect on
+       performance.
+
+129889 The SQLServerResultSetMetadata.getTableName method now correctly returns the
+       table name.
+
+
+KNOWN ISSUES
+------------
+The following are known issues with the Microsoft SQL Server JDBC Driver:
+
+
+1) DRIVER LOAD CONFLICT WITH THE SQL SERVER 2000 JDBC DRIVER
+
+If you load both the Microsoft SQL Server 2000 JDBC Driver and the
+Microsoft SQL Server 2005 JDBC Driver (versions 1.0, 1.1, 1.2, and 2.0) in 
+the same process, in some cases the 2000 version of the JDBC driver 
+will incorrectly accept a DriverManager.getConnection method call that is targeted 
+for the Microsoft SQL Server 2005 JDBC Driver (versions 1.0, 1.1, 1.2, and 2.0).
+
+The problem is caused by the 2000 version of the JDBC driver
+incorrectly accepting the "jdbc:sqlserver://" URL prefix if it is
+loaded first.  
+
+To work around this issue, load the Microsoft SQL Server 2005 JDBC Driver 
+(versions 1.0, 1.1, 1.2, and 2.0) class first, as follows:
+
+Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver"); // 2005 version
+Class.forName("com.microsoft.jdbc.sqlserver.SQLServerDriver"); // 2000 version
+
+This will ensure that the "jdbc:sqlserver://" URL prefix is handled
+by the Microsoft SQL Server 2005 JDBC Driver (versions 1.0, 1.1, 1.2, and 2.0)
+and the "jdbc:microsoft:sqlserver://" URL prefix is handled by the 2000 version 
+of the JDBC driver.
+
+
+2) LIMITATIONS GETTING PARAMETER METADATA FOR PREPARED STATEMENTS
+
+There are some limitations when using the SQLServerParameterMetaData 
+class with prepared statements. SQL INSERT statements require the optional
+INTO clause and SQL DELETE statements require the optional FROM clause to
+get the parameter metadata correctly.
+
+
+3) SQL SERVER 2000 DATA CONVERSION LIMITATIONS
+
+When using SQL Server 2000 with the JDBC driver, the following data
+conversion limitations apply:
+
+	- String data cannot be converted to an underlying money or
+	  smallmoney column.
+	- String data longer than 4000 characters can be converted
+	  to char or varchar underlying columns if the
+	  sendStringParametersAsUnicode connection string property is set
+	  to false.
+
+
+4) LIMITATIONS WITH NAMED PARAMETERS
+
+Named parameters are not supported with stored procedures that contain
+a left bracket "[" in their name. For example, a name like "stor[edProc".
+Note that this does not affect the usual escaping of the stored procedure
+names by using "[]".
+
+
+5) XA TRANSACTION FAILURE ON WINDOWS XP
+
+XA transactions will not work if SQL Server is running on Windows XP unless 
+the following hotfix is applied:
+
+http://support.microsoft.com/kb/922668
+
+Note this issue only applies when the SQL Server that is participating
+in the XA transaction is running on Windows XP. Client applications 
+running on Windows XP connecting to a remote SQL Server that is not 
+running on Windows XP can participate in XA transactions. This issue
+does not apply to Windows 2000 and Windows Server 2003.
+
+
+6) SUN SOLARIS NEEDS GZIP TO INSTALL THE JDBC DRIVER
+
+If installing the JDBC driver on a Sun Solaris computer, you may need to
+first install GZIP in order to unzip the driver files. GZIP can be downloaded 
+from www.gzip.org.
+
+
+7) CONNECTION TIMEOUTS USING DATABASE MIRRORING
+
+When you use the JDBC driver in a database mirroring configuration, the 
+default connection timeout value is 0, which may result in indefinite 
+connection attempts. Therefore, when you try to connect to a principal 
+and mirror database that are both initially down, the JDBC driver will 
+oscillate between each of the servers indefinitely until one gets back 
+online. To escape from these infinite connection attempts, specify a 
+finite value for the loginTimeout connection string property or incorporate
+timeout logic into your application.
+
+
+8) CONVERSION OF BIGDECIMAL VALUES
+
+When you convert BigDecimal values to a string representation, the conversion
+of those values depends on which version of the JVM that you are using. 
+
+For example, the following code demonstrates these differences:
+
+String str = new BigDecimal("1E10").toString();
+System.out.println("String is " + str);
+//with JVM 1.4 : prints out "String is 10000000000"
+//with JVM 1.5 : prints out "String is 1E+10"
+
+To achieve consistent behavior when it uses BigDecimal values, your application 
+should use the BigDecimal.toPlainString method when running against JVM 1.5.
+
+
+9) JDBC IPV6 CONNECTION BEHAVES INCONSISTENTLY WHEN USING INTEGRATED SECURITY
+
+When using a numeric IPV6 address with integrated security, the connection 
+may take longer to open or even fail. Integrated security connections to an 
+IPV6 server will work as long as you use the machine name.
+
+
+10) LARGE LIMIT VALUE FOR Reader.mark(readAheadLimit) IN ADAPTIVE MODE
+
+In adaptive mode, if the application uses the java.io.Reader.mark(readAheadLimit) 
+method to mark the position in a stream returned by the getter methods, 
+an OutOfMemoryError might be thrown. This error may occur when the readAheadLimit 
+is very large, such as Integer.MAX_VALUE. 
+
+To work around this issue, set the readAheadLimit to a smaller value.
+
+
+11) DATA TYPE CONVERSION FAILURE IN ADAPTIVE MODE
+
+In adaptive mode, using getCharacterStream or getAsciiStream methods to retrieve 
+character-valued ResultSet columns or CallableStatement OUT parameters might throw 
+an OutOfMemoryError. This error occurs when a data type conversion is necessary for 
+the value. For example, retrieving an ntext column data type by using the 
+getAsciiStream method or a varchar(max) column data type by using the 
+getCharacterStream method requires a data type conversion.
+
+To work around this issue, use the appropriate stream-getter method for that data type.
+
+
+12) AVOID CREATING TEMPORARY TABLES via PreparedStatement or CallableStatement CLASSES
+
+If the application creates temporary tables via PreparedStatement or CallableStatement 
+when executing a query, these temporary tables may be dropped after the query executes.
+
+To work around this issue, either execute such queries by using the Statement class or; 
+if you must use the PreparedStatement class or the CallableStatement class, 
+create a table in the database and delete that table when it is no longer needed.
+
+
+13) RESET STREAM PARAMETERS BEFORE RE-EXECUTING A PREPARED STATEMENT
+ 
+Executing a SQLServerPreparedStatement might consume java.io.InputStream and 
+java.io.Reader parameter values that were set by using the following methods: 
+setAsciiStream, setBinaryStream, setCharacterStream, setNCharacterStream, 
+setBlob, setClob, setNClob, or setObject. 
+
+If you want to re-execute the same prepared statement and use the same 
+InputStream or Reader streams again, first you must reset the streams 
+by using the java.io.InputStream.reset method or the java.io.Reader.reset method. 
+Then, you must set the affected parameter values by using the appropriate 
+SQLServerPreparedStatement.set<Type> method. 
+
+Otherwise, an SQLServerException will be thrown while re-executing 
+the same prepared statement. This is expected behavior defined by the JDBC specification.
+ 
+
+14) AVOID USING THE SAME STREAM FOR MULTIPLE PARAMETERS WHEN EXECUTING A PREPARED STATEMENT
+ 
+If the same stream is used by multiple parameters in the same PreparedStatement object,
+an SQLServerException will be thrown.  You must use a different stream for each parameter.
+This is expected behavior defined by the JDBC specification.
+
+
+

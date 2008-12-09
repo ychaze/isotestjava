@@ -1,0 +1,116 @@
+﻿<html DIR="LTR" xmlns:tool="http://www.microsoft.com/tooltip" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=utf-8" />
+    <META NAME="save" CONTENT="history" />
+    <title>What's New in the JDBC Driver</title>
+    
+    <link rel="stylesheet" type="text/css" href="../local/Classic.css">
+      
+    </link>
+    
+    <script src="../local/script.js">
+      
+    </script><script src="../local/script_main.js">&amp;nbsp;</script>
+  </head>
+  <body>
+    <!--Topic built:06/26/2008 22:42:43-->
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div id="header">
+      <table width="100%" id="topTable"><tr>
+          <td align="left">
+            <span id="headerBold">What's New in the JDBC Driver</span>
+          </td>
+          <td align="right">
+            
+          </td>
+        </tr></table>
+      
+      
+      
+    </div>
+    <div id="mainSection">
+      
+        
+        
+		<font color="DarkGray">[This topic is pre-release documentation and is subject to change in future releases. Blank topics are included as placeholders.] </font> <p /> <p />
+	
+        <div id="introductionSection" class="section">
+    <p>The following sections discuss new features in the Microsoft SQL Server 2005 JDBC Driver version 2.0.</p>
+  </div><h1 class="heading">What's New in the JDBC Driver Version 2.0</h1><div id="sectionSection0" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">This version 2.0 release of the Microsoft SQL Server 2005 JDBC Driver includes several new features and enhancements. </p>
+    </content><sections xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <h1 class="heading" xmlns="">JDBC 4.0 Support</h1><div id="sectionSection" class="section" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <p xmlns="">The JDBC driver version 2.0 now provides support for JDBC Spec 4.0, which includes the following new features, among several others.</p>
+          <ul xmlns=""><li>
+              National Character Set API Support<br />
+              The JDBC driver version 2.0 now includes new national character set conversion API methods. This support includes new setter, getter, and updater methods for <b>NCHAR</b>, <b>NVARCHAR</b>, <b>LONGNVARCHAR</b>, and <b>NCLOB</b> JDBC types. For more information, see <a href="4fceacfd-df4f-40cd-b7a2-5e5e58a5979f.htm">National Character Set Support</a>.<br />
+              
+              <br />
+            </li><li>
+              SQLServerConnection createBlob, createClob, and createNClob Methods<br />
+              The JDBC driver version 2.0 now enhances the <a href="937292a6-1525-423e-a2b2-a18fd34c2893.htm">SQLServerConnection</a> class by providing support for the creation of <b>BLOB</b>, <b>CLOB</b>, and <b>NCLOB</b> objects. For more information, see the <a href="630a93b0-6e3c-4255-a007-1097ce0ee243.htm">createBlob</a>, <a href="58b0865a-1cde-4046-9761-51e471294023.htm">createClob</a> and <a href="fa160884-394e-4fb2-a6e8-0437b81c149d.htm">createNClob</a> methods.<br />
+              
+              <br />
+            </li><li>
+              java.sql.Wrapper Interface<br />
+              The JDBC driver version 2.0 supports the <b>java.sql.Wrapper</b> interface, which is introduced in the JDBC 4.0 Spec. This interface provides a mechanism to access extensions to the JDBC API that are specific to the Microsoft SQL Server JDBC Driver through a proxy interface. <br />
+              The <b>java.sql.Wrapper</b> interface defines two methods: <b>isWrapperFor</b> and <b>unwrap</b>. The <b>isWrapperFor</b> method checks whether the specified input object implements this interface. The <b>unwrap</b> method returns an object that implements this interface to allow access to the Microsoft SQL Server JDBC Driver specific methods. In the JDBC Driver version 2.0, the <b>isWrapperFor</b> method returns true only for the SQLServerStatement and SQLServerDataSource classes. <br />
+              
+              <br />
+            </li><li>
+              Other New JDBC 4.0 API Methods<br />
+              The JDBC Driver version 2.0 now provides support for the following JDBC 4.0 methods:<br />
+              <ul><li>
+                  SQLServerCallableStatement: Overloaded setAsciiStream, setBinaryStream, setCharacterStream, setBlob, setClob methods, and getCharacterStream method.<br />
+                </li><li>
+                  SQLServerPreparedStatement: Overloaded setAsciiStream,setBinaryStream, setCharacterStream, setBlob, and setClob methods. <br />
+                </li><li>
+                  SQLServerResultSet: Overloaded updateAsciiStream, updateBinaryStream, updateBlob, updateCharacterStream, and updateClob methods.<br />
+                </li></ul>
+            </li></ul>
+        </content></div>
+      <h1 class="heading" xmlns="">JDBC 3.0 Jar and JDBC 4.0 Jar</h1><div id="sectionSection" class="section" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <p xmlns="">The JDBC Driver version 2.0 provides two class library files, <b>sqljdbc.jar</b> and <b>sqljdbc4.jar</b>, to be used depending on your preferred Java Runtime Environment (JRE) settings.</p>
+          <p xmlns="">
+            <b>sqljdbc.jar</b> class library provides support for JDBC 3.0 and requires a Java Runtime Environment (JRE) of version 5.0. <b>sqljdbc4.jar</b> class library provides support for JDBC 4.0 and requires a Java Runtime Environment (JRE) of version 6.0 or later. <b>sqljdbc4.jar</b> includes all of the features of the <b>sqljdbc.jar</b> as well as the new JDBC 4.0 methods. For more information about which JAR file to choose, see <a href="447792bb-f39b-49b4-9fd0-1ef4154c74ab.htm">System Requirements for the JDBC Driver</a>.</p>
+          <div style="margin: .5em 1.5em .5em 1.5em" xmlns=""><b>Important: </b>
+            The JDBC Driver version 2.0 does not support JRE 1.4.<p />
+          </div>
+        </content></div>
+      <h1 class="heading" xmlns="">sendStringParametersAsUnicode Connection Property</h1><div id="sectionSection" class="section" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <p xmlns="">For optimal performance with the CHAR, VARCHAR, and LONGVARCHAR JDBC data types, an application using the version 2.0 of the JDBC driver should set the <b>sendStringParametersAsUnicode</b> connection property to "false" and use non-national character methods. For more information about the sendStringParametersAsUnicode connection property, see <a href="f1b62700-f046-488d-bd6b-a5cd8fc345b7.htm">Setting the Connection Properties</a>.</p>
+        </content></div>
+      <h1 class="heading" xmlns="">Enhanced Tracing Driver Operation</h1><div id="sectionSection" class="section" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <p xmlns="">This version of the JDBC Driver enhances tracing the driver operation by logging public methods’ entry and exit points and providing better distinction between the trace levels.</p>
+        </content></div>
+    </sections></div><span id="seeAlsoSpan"><h1 class="heading">See Also</h1></span><div id="seeAlsoSection" class="section" name="collapseableSection"><a href="939a8773-2583-49a4-bf00-6b892fbe39dc.htm">Overview of the JDBC Driver</a><br /><br /></div><!--[if gte IE 5]>
+			<tool:tip element="seeAlsoToolTip" avoidmouse="false"/><tool:tip element="languageFilterToolTip" avoidmouse="false"/><tool:tip element="roleInfoSpan" avoidmouse="false"/>
+		<![endif]-->
+      <div id="footer" class="section">
+        
+		<hr />
+		
+		<span id="fb" class="feedbackcss">
+			
+			
+		</span>
+		
+		<a href="9bad553b-9e70-4696-8499-2e35f772a1e0.htm">
+			
+			© 2008 Microsoft Corporation. All rights reserved.
+		</a>
+ 	
+	
+      </div>
+    </div>
+  </body>
+</html>

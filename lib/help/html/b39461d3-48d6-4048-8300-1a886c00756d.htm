@@ -1,0 +1,229 @@
+﻿<html DIR="LTR" xmlns:tool="http://www.microsoft.com/tooltip" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=utf-8" />
+    <META NAME="save" CONTENT="history" />
+    <title>Using Advanced Data Types</title>
+    
+    <link rel="stylesheet" type="text/css" href="../local/Classic.css">
+      
+    </link>
+    
+    <script src="../local/script.js">
+      
+    </script><script src="../local/script_main.js">&amp;nbsp;</script>
+  </head>
+  <body>
+    <!--Topic built:06/26/2008 22:42:43-->
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div id="header">
+      <table width="100%" id="topTable"><tr>
+          <td align="left">
+            <span id="headerBold">Using Advanced Data Types</span>
+          </td>
+          <td align="right">
+            
+          </td>
+        </tr></table>
+      
+      
+      
+    </div>
+    <div id="mainSection">
+      
+        
+        
+		<font color="DarkGray">[This topic is pre-release documentation and is subject to change in future releases. Blank topics are included as placeholders.] </font> <p /> <p />
+	
+        <div id="introductionSection" class="section">
+    <p>The Microsoft SQL Server 2005 JDBC Driver uses the JDBC advanced data types to convert the SQL Server data types to a format that can be understood by the Java programming language. </p>
+    <p>The following table lists the default mappings between the advanced SQL Server, JDBC, and Java programming language data types.</p>
+    <table width="100%" cellspacing="0" cellpadding="0" border="1" style="background-color: #CCCCCC;"><tr>
+          <th>
+            SQL Server Types
+          </th>
+          <th>
+            JDBC Types (java.sql.Types)
+          </th>
+          <th>
+            Java Language Types
+          </th>
+        </tr><tr>
+        <td>
+          <p>varbinary(max)</p>
+          <p>image</p>
+        </td>
+        <td>
+          <p>LONGVARBINARY</p>
+        </td>
+        <td>
+          <p>byte[] (default), Blob, InputStream, String</p>
+        </td>
+      </tr><tr>
+        <td>
+          <p>text</p>
+          <p>varchar(max)</p>
+        </td>
+        <td>
+          <p>LONGVARCHAR</p>
+        </td>
+        <td>
+          <p>String (default), Clob, InputStream</p>
+        </td>
+      </tr><tr>
+        <td>
+          <p>ntext</p>
+          <p>nvarchar(max)</p>
+        </td>
+        <td>
+          <p>LONGVARCHAR</p>
+          <p>LONGNVARCHAR (Java SE 6.0)</p>
+        </td>
+        <td>
+          <p>String (default), Clob, NClob (Java SE 6.0)</p>
+        </td>
+      </tr><tr>
+        <td>
+          <p>xml</p>
+        </td>
+        <td>
+          <p>LONGVARCHAR</p>
+          <p>LONGNVARCHAR (Java SE 6.0)</p>
+        </td>
+        <td>
+          <p>String (default), InputStream, Clob, byte[],Blob, NClob (Java SE 6.0)</p>
+        </td>
+      </tr><tr>
+        <td>
+          <p>udt</p>
+        </td>
+        <td>
+          <p>LONGVARBINARY</p>
+        </td>
+        <td>
+          <p>String (default), byte[], InputStream</p>
+        </td>
+      </tr></table>
+    <p>The following sections provide examples of how you can use the JDBC driver and the advanced data types.</p>
+  </div><h1 class="heading">BLOB and CLOB and NCLOB Data Types</h1><div id="sectionSection0" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">The JDBC driver implements all the methods of the java.sql.Blob,  java.sql.Clob, and java.sql.NClob interfaces. </p>
+      <div style="margin: .5em 1.5em .5em 1.5em" xmlns=""><b>Note: </b>
+        CLOB values can be used with SQL Server 2005 large-value data types. Specifically, CLOB types can be used with the <b>varchar(max)</b> and <b>nvarchar(max)</b> data types, BLOB types can be used with <b>varbinary(max)</b> and <b>xml</b> data types, and NCLOB types can be used with ntext, nvarchar(max) and xml.<p />
+      </div>
+    </content></div><h1 class="heading">Large Value Data Types</h1><div id="sectionSection1" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">In earlier versions of SQL Server, working with large-value data types required special handling. Large-value data types are those that exceed the maximum row size of 8 KB. SQL Server 2005 introduces a max specifier for <b>varchar</b>, <b>nvarchar</b>, and <b>varbinary</b> data types to allow storage of values as large as 2^31 bytes. Table columns and Transact-SQL variables can specify <b>varchar(max)</b>, <b>nvarchar(max)</b>, or <b>varbinary(max)</b> data types.</p>
+      <p xmlns="">The primary scenarios for working with large-value types involve retrieving them from a database, or adding them to a database. The following sections describe different approaches to accomplish these tasks.</p>
+    </content><sections xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <h1 class="heading" xmlns="">Retrieving Large-Value Types from a Database</h1><div id="sectionSection" class="section" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <p xmlns="">When you retrieve a non-binary large-value data type—such as the <b>varchar(max)</b> data type—from a database, one approach is to read that data as a character stream. In the following example, the <a href="599cf463-e19f-4baa-bacb-513cad7c6cd8.htm">executeQuery</a> method of the <a href="ec24963c-8b51-4838-91e9-1fbfa2347451.htm">SQLServerStatement</a> class is used to retrieve data from the database and return it as a result set. Then the <a href="c70e210f-0288-47cc-9268-a29c45979729.htm">getCharacterStream</a> method of the <a href="eaffcff1-286c-459f-83da-3150778480c9.htm">SQLServerResultSet</a> class is used to read the large-value data from the result set.</p>
+          <div class="sampleCode" xmlns=""><span codeLanguage="other"><pre>ResultSet rs = stmt.executeQuery("SELECT TOP 1 * FROM Test1");
+rs.next();
+Reader reader = rs.getCharacterStream(2);</pre></span></div>
+          <div style="margin: .5em 1.5em .5em 1.5em" xmlns=""><b>Note: </b>
+            This same approach can also be used for the <b>text</b>, <b>ntext</b>, and <b>nvarchar(max)</b> data types.<p />
+          </div>
+          <p xmlns="">When you retrieve a binary large-value data type—such as the <b>varbinary(max)</b> data type—from a database, there are several approaches that you can take. The most efficient approach is to read the data as a binary stream, as in the following:</p>
+          <div class="sampleCode" xmlns=""><span codeLanguage="other"><pre>ResultSet rs = stmt.executeQuery("SELECT photo FROM mypics");
+Rs.next();
+InputStream is = rs.getBinaryStream(2);</pre></span></div>
+          <p xmlns="">You can also use the <a href="d16a0aea-6144-4fcb-bcbc-5d7daa36d327.htm">getBytes</a> method to read the data as a byte array, as in the following:</p>
+          <div class="sampleCode" xmlns=""><span codeLanguage="other"><pre>ResultSet rs = stmt.executeQuery("SELECT photo FROM mypics");
+Rs.next();
+byte [] b = rs.getBytes(2);</pre></span></div>
+          <div style="margin: .5em 1.5em .5em 1.5em" xmlns=""><b>Note: </b>
+            You can also read the data as a BLOB. However, this is less efficient than the two methods shown previously.<p />
+          </div>
+        </content></div>
+      <h1 class="heading" xmlns="">Adding Large-Value Types to a Database</h1><div id="sectionSection" class="section" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <p xmlns="">Uploading large data with the JDBC driver works well for the memory-sized cases, and in the larger-than-memory cases, streaming is the primary option. However, the most efficient way to upload large data is through the stream interfaces.</p>
+          <p xmlns="">Using a String or bytes is also an option, as in the following:</p>
+          <div class="sampleCode" xmlns=""><span codeLanguage="other"><pre>PreparedStatement pstmt = con.prepareStatement("INSERT INTO test1 (c1_id, c2_vcmax) VALUES (?, ?)");
+pstmt.setInt(1, 1);
+pstmt.setString(2, htmlStr);
+pstmt.executeUpdate();</pre></span></div>
+          <div style="margin: .5em 1.5em .5em 1.5em" xmlns=""><b>Note: </b>
+            This approach can also be used for values that are stored in <b>text</b>, <b>ntext</b>, and <b>nvarchar(max)</b> columns.<p />
+          </div>
+          <p xmlns="">If you have an image library on the server and must upload entire binary image files to a <b>varbinary(max)</b> column, the most efficient method with the JDBC driver is to use streams directly, as in the following:</p>
+          <div class="sampleCode" xmlns=""><span codeLanguage="other"><pre>Statement stmt = con.createStatement();
+PreparedStatement pstmt = con.prepareStatement("INSERT INTO test1 
+VALUES( ?, ? )");
+FileReader in = new FileReader(new File("CLOBFile20mb.txt");
+long len = fileIn.length();
+int id = 1;
+pstmt.setInt(1,id);
+pstmt.setCharacterStream(2, in, (int)len);
+pstmt.executeUpdate();
+in.close();</pre></span></div>
+          <div style="margin: .5em 1.5em .5em 1.5em" xmlns=""><b>Note: </b>
+            Using either the CLOB or BLOB method is not an efficient way to upload large data.<p />
+          </div>
+        </content></div>
+      <h1 class="heading" xmlns="">Modifying Large-Value Types in a Database</h1><div id="sectionSection" class="section" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <p xmlns="">In most cases, the recommended method for updating or modifying large values on the database is to pass parameters through the <a href="a8481c06-fbba-432b-8c69-4f4619c20ad4.htm">SQLServerPreparedStatement</a> and <a href="30710a63-c05d-47d9-9cf9-c087a1c76373.htm">SQLServerCallableStatement</a> classes by using Transact-SQL commands like UPDATE, WRITE, and SUBSTRING.</p>
+          <p xmlns="">If you have to replace the instance of a word in a large text file, such as an archived HTML file, you can use a <b>Clob</b> object, as in the following:</p>
+          <div class="sampleCode" xmlns=""><span codeLanguage="other"><pre>Statement stmt = con.createStatement();
+ResultSet rs = stmt.executeQuery("SELECT * FROM test1");
+rs.next();
+Clob clob = rs.getClob(2);
+long pos = clob.position("dog", 1);
+clob.setString(1, "cat", len, 3);
+rs.updateClob(2, clob);
+rs.updateRow();</pre></span></div>
+          <p xmlns="">Additionally, you could do all the work on the server and just pass parameters to a prepared UPDATE statement.</p>
+          <p xmlns="">For more information about large-value types, see "Using Large-Value Types" in SQL Server Books Online.</p>
+        </content></div>
+    </sections></div><h1 class="heading">XML Data Type</h1><div id="sectionSection2" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">
+        SQL Server 2005 provides an <b>xml</b> data type that lets you store XML documents and fragments in a SQL Server database. The <b>xml</b> data type is a built-in data type in SQL Server, and is in some ways similar to other built-in types, such as <b>int</b> and <b>varchar</b>. As with other built-in types, you can use the <b>xml</b> data type as a column type when you create a table; as a variable type, a parameter type, or a function-return type; or in Transact-SQL CAST and CONVERT functions.</p>
+      <p xmlns="">In the JDBC driver, the <b>xml</b> data type can be mapped as a String, byte array, stream, CLOB, NCLOB, or BLOB object. String is the default representation. The implementation of the <b>xml</b> data type in the JDBC driver provides support for the following:</p>
+      <ul xmlns=""><li>
+          Access to the XML as a standard Java UTF-16 string for most common programming scenarios<br />
+        </li><li>
+          Input of UTF-8 and other 8-bit encoded XML<br />
+        </li><li>
+          Access to the XML as a byte array with a leading BOM when encoded in UTF-16 for interchange with other XML processors and disk files<br />
+        </li></ul>
+      <p xmlns="">
+        SQL Server requires a leading BOM for UTF-16-encoded XML. The application must provide this when XML parameter values are supplied as byte arrays. SQL Server always outputs XML values as UTF-16 strings with no BOM or embedded encoding declaration. When XML values are retrieved as byte[], BinaryStream or Blob, a UTF-16 BOM is pre-pended to the value.</p>
+      <div style="margin: .5em 1.5em .5em 1.5em" xmlns=""><b>Note: </b>
+        The JDBC driver does not support reading stored procedure output parameters of the <b>xml</b> data type. However, it does support using the <b>xml</b> data type as an input parameter. If you have to use the <b>xml</b> data type as an output parameter, you must first convert the <b>xml</b> data type to a VARCHAR or LONGVARCHAR or LONGNVARCHAR in the stored procedure before it can be read.<p />
+      </div>
+      <p xmlns="">For more information about the <b>xml</b> data type, see "xml Data Type" in SQL Server Books Online.</p>
+    </content></div><h1 class="heading">User-Defined Data Type</h1><div id="sectionSection3" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">The introduction of user-defined types (UDTs) in SQL Server 2005 extends the SQL type system by letting you store objects and custom data structures in a SQL Server database. UDTs can contain multiple data types and can have behaviors, differentiating them from the traditional alias data types that consist of a single SQL Server system data type. UDTs are defined by using any of the languages supported by the Microsoft .NET common language runtime (CLR) that produce verifiable code. This includes Microsoft Visual C# and Visual Basic .NET. The data is exposed as fields and properties of a .NET Framework-based class or structure, and behaviors are defined by methods of the class or structure. </p>
+      <p xmlns="">In SQL Server 2005, a UDT can be used as the column definition of a table, as a variable in a Transact-SQL batch, or as an argument of a Transact-SQL function or stored procedure.</p>
+      <div style="margin: .5em 1.5em .5em 1.5em" xmlns=""><b>Note: </b>
+        The JDBC driver does not support getter or setter methods for the <b>AsciiStream</b> and <b>CharacterStream</b> methods on UDT columns. Additionally, like the xml data type, the JDBC driver does not support reading stored procedure output parameters of the udt data type. However, it does support using the udt data type as an input parameter. If you have to use the udt data type as an output parameter, you must first convert the udt data type to a <b>varbinary(max)</b> data type in the stored procedure before it can be read.<p />
+      </div>
+      <p xmlns="">For more information about user-defined data types, see "Using and Modifying Instances of User-defined Types" in SQL Server Books Online.</p>
+    </content></div><span id="seeAlsoSpan"><h1 class="heading">See Also</h1></span><div id="seeAlsoSection" class="section" name="collapseableSection"><a href="7802328d-4d23-4775-9573-4169b127d258.htm">Understanding the JDBC Driver Data Types</a><br /><br /></div><!--[if gte IE 5]>
+			<tool:tip element="seeAlsoToolTip" avoidmouse="false"/><tool:tip element="languageFilterToolTip" avoidmouse="false"/><tool:tip element="roleInfoSpan" avoidmouse="false"/>
+		<![endif]-->
+      <div id="footer" class="section">
+        
+		<hr />
+		
+		<span id="fb" class="feedbackcss">
+			
+			
+		</span>
+		
+		<a href="9bad553b-9e70-4696-8499-2e35f772a1e0.htm">
+			
+			© 2008 Microsoft Corporation. All rights reserved.
+		</a>
+ 	
+	
+      </div>
+    </div>
+  </body>
+</html>

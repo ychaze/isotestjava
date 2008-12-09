@@ -1,0 +1,130 @@
+﻿<html DIR="LTR" xmlns:tool="http://www.microsoft.com/tooltip" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=utf-8" />
+    <META NAME="save" CONTENT="history" />
+    <title>Working with a Connection</title>
+    
+    <link rel="stylesheet" type="text/css" href="../local/Classic.css">
+      
+    </link>
+    
+    <script src="../local/script.js">
+      
+    </script><script src="../local/script_main.js">&amp;nbsp;</script>
+  </head>
+  <body>
+    <!--Topic built:06/26/2008 22:42:43-->
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div id="header">
+      <table width="100%" id="topTable"><tr>
+          <td align="left">
+            <span id="headerBold">Working with a Connection</span>
+          </td>
+          <td align="right">
+            
+          </td>
+        </tr></table>
+      
+      
+      
+    </div>
+    <div id="mainSection">
+      
+        
+        
+		<font color="DarkGray">[This topic is pre-release documentation and is subject to change in future releases. Blank topics are included as placeholders.] </font> <p /> <p />
+	
+        <div id="introductionSection" class="section">
+    <p>The following sections provide examples of the different ways to connect to a SQL Server database by using the <a href="937292a6-1525-423e-a2b2-a18fd34c2893.htm">SQLServerConnection</a> class of the Microsoft SQL Server 2005 JDBC driver. </p>
+    <div style="margin: .5em 1.5em .5em 1.5em"><b>Note: </b>
+      If you have problems connecting to SQL Server using the JDBC driver, see <a href="bfba0b49-2e1f-411d-a625-d25fad9ea12d.htm">Troubleshooting Connectivity</a> for suggestions on how to correct it.<p />
+    </div>
+  </div><h1 class="heading">Creating a Connection by Using the DriverManager Class</h1><div id="sectionSection0" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">The simplest approach to creating a connection to a SQL Server database is to load the JDBC driver and call the <b>getConnection</b> method of the <b>DriverManager</b> class, as in the following:</p>
+      <div class="sampleCode" xmlns=""><span codeLanguage="other"><pre>Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+String connectionUrl = "jdbc:sqlserver://localhost;database=AdventureWorks;integratedSecurity=true;"
+Connection con = DriverManager.getConnection(connectionUrl);</pre></span></div>
+      <p xmlns="">This technique will create a database connection using the first available driver in the list of drivers that can successfully connect with the given URL.</p>
+    </content></div><h1 class="heading">Creating a Connection by Using the SQLServerDriver Class</h1><div id="sectionSection1" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">If you have to specify a particular driver in the list of drivers for <b>DriverManager</b>, you can create a database connection by using the <a href="43813a4c-1cc7-4659-ba27-f1786f1371eb.htm">connect</a> method of the <a href="fbdceae5-7e7b-4edb-8c33-c701ca6b2d53.htm">SQLServerDriver</a> class, as in the following:</p>
+      <div class="sampleCode" xmlns=""><span codeLanguage="other"><pre>Driver d = (Driver) Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+String connectionUrl = "jdbc:sqlserver://localhost;database=AdventureWorks;integratedSecurity=true;"
+Connection con = d.connect(connectionUrl, new Properties());</pre></span></div>
+    </content></div><h1 class="heading">Creating a Connection by Using the SQLServerDataSource Class</h1><div id="sectionSection2" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">If you have to create a connection by using the <a href="097434fd-2b74-411c-a5ed-eba04481dde5.htm">SQLServerDataSource</a> class, you can use various setter methods of the class before you call the <a href="7f520e96-5313-468f-b987-535ddaea027e.htm">getConnection</a> method, as in the following:</p>
+      <div class="sampleCode" xmlns=""><span codeLanguage="other"><pre>SQLServerDataSource ds = new SQLServerDataSource();
+ds.setUser("MyUserName");
+ds.setPassword("*****");
+ds.setServerName("localhost");
+ds.setPortNumber(1433); 
+ds.setDatabaseName("AdventureWorks");
+Connection con = ds.getConnection();</pre></span></div>
+    </content></div><h1 class="heading">Creating a Connection that Targets a Very Specific Data Source</h1><div id="sectionSection3" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">If you have to make a database connection that targets a very specific data source, there are a number of approaches that you can take. Each approach depends on the properties that you set by using the connection URL.</p>
+      <p xmlns="">To connect to the default instance on a remote server, use the following:</p>
+      <p xmlns="">
+        <code>String url = "jdbc:sqlserver://MyServer;integratedSecurity=true;"</code>
+      </p>
+      <p xmlns="">To connect to a specific port on a server, use the following:</p>
+      <p xmlns="">
+        <code>String url = "jdbc:sqlserver://MyServer:1533;integratedSecurity=true;"</code>
+      </p>
+      <p xmlns="">To connect to a named instance on a server, use the following:</p>
+      <p xmlns="">
+        <code>String url = "jdbc:sqlserver://209.196.43.19;instanceName=INSTANCE1;integratedSecurity=true;"</code>
+      </p>
+      <p xmlns="">To connect to a specific database on a server, use the following:</p>
+      <p xmlns="">
+        <code>String url = "jdbc:sqlserver://172.31.255.255;database=AdventureWorks;integratedSecurity=true;"</code>
+      </p>
+      <p xmlns="">For more connection URL examples, see <a href="44996746-d373-4f59-9863-a8a20bb8024a.htm">Building the Connection URL</a>.</p>
+    </content></div><h1 class="heading">Creating a Connection with a Custom Login Time-out</h1><div id="sectionSection4" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">If you have to adjust for server load or network traffic, you can create a connection that has a specific login time-out value described in seconds, as in the following:</p>
+      <p xmlns="">
+        <code>String url = "jdbc:sqlserver://MyServer;loginTimeout=90;integratedSecurity=true;"</code>
+      </p>
+    </content></div><h1 class="heading">Create a Connection with Application-level Identity</h1><div id="sectionSection5" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">If you have to use logging and profiling, you will have to identify your connection as originating from a specific application, as in the following:</p>
+      <p xmlns="">
+        <code>String url = "jdbc:sqlserver://MyServer;applicationName=MYAPP.EXE;integratedSecurity=true;"</code>
+      </p>
+    </content></div><h1 class="heading">Closing a Connection</h1><div id="sectionSection6" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">You can explicitly close a database connection by calling the <a href="f0f26585-bdf7-4737-b434-8c7e115c8e94.htm">close</a> method of the <b>SQLServerConnection</b> class, as in the following:</p>
+      <p xmlns="">
+        <code>con.close();</code>
+      </p>
+      <p xmlns="">This will release the database resources that the <b>SQLServerConnection</b> object is using, or return the connection to the connection pool in pooled scenarios.</p>
+      <div style="margin: .5em 1.5em .5em 1.5em" xmlns=""><b>Note: </b>
+        Calling the <b>close</b> method will also roll back any pending transactions.<p />
+      </div>
+    </content></div><span id="seeAlsoSpan"><h1 class="heading">See Also</h1></span><div id="seeAlsoSection" class="section" name="collapseableSection"><a href="94bcfbe3-f00e-4774-bda8-bb7577518fec.htm">Connecting to SQL Server with the JDBC Driver</a><br /><br /></div><!--[if gte IE 5]>
+			<tool:tip element="seeAlsoToolTip" avoidmouse="false"/><tool:tip element="languageFilterToolTip" avoidmouse="false"/><tool:tip element="roleInfoSpan" avoidmouse="false"/>
+		<![endif]-->
+      <div id="footer" class="section">
+        
+		<hr />
+		
+		<span id="fb" class="feedbackcss">
+			
+			
+		</span>
+		
+		<a href="9bad553b-9e70-4696-8499-2e35f772a1e0.htm">
+			
+			© 2008 Microsoft Corporation. All rights reserved.
+		</a>
+ 	
+	
+      </div>
+    </div>
+  </body>
+</html>

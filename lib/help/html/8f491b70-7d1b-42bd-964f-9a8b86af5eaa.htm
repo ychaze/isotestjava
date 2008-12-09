@@ -1,0 +1,100 @@
+﻿<html DIR="LTR" xmlns:tool="http://www.microsoft.com/tooltip" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=utf-8" />
+    <META NAME="save" CONTENT="history" />
+    <title>Using a Stored Procedure with Input Parameters</title>
+    
+    <link rel="stylesheet" type="text/css" href="../local/Classic.css">
+      
+    </link>
+    
+    <script src="../local/script.js">
+      
+    </script><script src="../local/script_main.js">&amp;nbsp;</script>
+  </head>
+  <body>
+    <!--Topic built:06/26/2008 22:42:43-->
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div id="header">
+      <table width="100%" id="topTable"><tr>
+          <td align="left">
+            <span id="headerBold">Using a Stored Procedure with Input Parameters</span>
+          </td>
+          <td align="right">
+            
+          </td>
+        </tr></table>
+      
+      
+      
+    </div>
+    <div id="mainSection">
+      
+        
+        
+		<font color="DarkGray">[This topic is pre-release documentation and is subject to change in future releases. Blank topics are included as placeholders.] </font> <p /> <p />
+	
+        <div id="introductionSection" class="section">
+    <p>A SQL Server stored procedure that you can call is one that contains one or more IN parameters, which are parameters that can be used to pass data into the stored procedure. The Microsoft SQL Server 2005 JDBC Driver provides the <a href="a8481c06-fbba-432b-8c69-4f4619c20ad4.htm">SQLServerPreparedStatement</a> class, which you can use to call this kind of stored procedure and to process the data that it returns. </p>
+    <p>When you use the JDBC driver to call a stored procedure with IN parameters, you must use the<code> call </code>SQL escape sequence together with the <a href="265b024c-898a-4bd0-98b5-f06076717b9e.htm">prepareCall</a> method of the <a href="937292a6-1525-423e-a2b2-a18fd34c2893.htm">SQLServerConnection</a> class. The syntax for the<code> call </code>escape sequence with IN parameters is as follows:</p>
+    <p>
+      <code>{call procedure-name[([parameter][,[parameter]]...)]}</code>
+    </p>
+    <div style="margin: .5em 1.5em .5em 1.5em"><b>Note: </b>
+      For more information about the SQL escape sequences, see <a href="00f9e25a-088e-4ac6-aa75-43eacace8f03.htm">Using SQL Escape Sequences</a>.<p />
+    </div>
+    <p>When you construct the<code> call </code>escape sequence, specify the IN parameters by using the ? (question mark) character. This character acts as a placeholder for the parameter values that will be passed into the stored procedure. To specify a value for a parameter, you can use one of the setter methods of the <b>SQLServerPreparedStatement</b> class. The setter method that you can use is determined by the data type of the IN parameter. </p>
+    <p>When you pass a value to the setter method, you must specify not only the actual value that will be used in the parameter, but also the ordinal placement of the parameter in the stored procedure. For example, if your stored procedure contains a single IN parameter, its ordinal value will be 1. If the stored procedure contains two parameters, the first ordinal value will be 1, and the second ordinal value will be 2.</p>
+    <p>As an example of how to call a stored procedure that contains an IN parameter, use the uspGetEmployeeManagers stored procedure in the SQL Server 2005 AdventureWorks sample database. This stored procedure accepts a single input parameter named EmployeeID, which is an integer value, and it returns a recursive list of employees and their managers based on the specified EmployeeID. The Java code for calling this stored procedure is as follows:</p>
+    <div class="sampleCode"><span codeLanguage="other"><pre>public static void executeSprocInParams(Connection con) {
+   try {
+      PreparedStatement pstmt = con.prepareStatement("{call dbo.uspGetEmployeeManagers(?)}");
+      pstmt.setInt(1, 50);
+      ResultSet rs = pstmt.executeQuery();
+
+      while (rs.next()) {
+         System.out.println("EMPLOYEE:");
+         System.out.println(rs.getString("LastName") + ", " + rs.getString("FirstName"));
+         System.out.println("MANAGER:");
+         System.out.println(rs.getString("ManagerLastName") + ", " + rs.getString("ManagerFirstName"));
+         System.out.println();
+      }
+      rs.close();
+      pstmt.close();
+   }
+
+   catch (Exception e) {
+      e.printStackTrace();
+    }
+}</pre></span></div>
+  </div><span id="seeAlsoSpan"><h1 class="heading">See Also</h1></span><div id="seeAlsoSection" class="section" name="collapseableSection"><a href="0041f9e1-09b6-4487-b052-afd636c8e89a.htm">Using Statements with Stored Procedures</a><br /><br /></div><!--[if gte IE 5]>
+			<tool:tip element="seeAlsoToolTip" avoidmouse="false"/><tool:tip element="languageFilterToolTip" avoidmouse="false"/><tool:tip element="roleInfoSpan" avoidmouse="false"/>
+		<![endif]-->
+      <div id="footer" class="section">
+        
+		<hr />
+		
+		<span id="fb" class="feedbackcss">
+			
+			
+		</span>
+		
+		<a href="9bad553b-9e70-4696-8499-2e35f772a1e0.htm">
+			
+			© 2008 Microsoft Corporation. All rights reserved.
+		</a>
+ 	
+	
+      </div>
+    </div>
+  </body>
+</html>

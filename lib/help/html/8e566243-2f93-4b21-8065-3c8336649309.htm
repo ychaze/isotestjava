@@ -1,0 +1,111 @@
+﻿<html DIR="LTR" xmlns:tool="http://www.microsoft.com/tooltip" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=utf-8" />
+    <META NAME="save" CONTENT="history" />
+    <title>Using SSL Encryption</title>
+    
+    <link rel="stylesheet" type="text/css" href="../local/Classic.css">
+      
+    </link>
+    
+    <script src="../local/script.js">
+      
+    </script><script src="../local/script_main.js">&amp;nbsp;</script>
+  </head>
+  <body>
+    <!--Topic built:06/26/2008 22:42:43-->
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div id="header">
+      <table width="100%" id="topTable"><tr>
+          <td align="left">
+            <span id="headerBold">Using SSL Encryption</span>
+          </td>
+          <td align="right">
+            
+          </td>
+        </tr></table>
+      
+      
+      
+    </div>
+    <div id="mainSection">
+      
+        
+        
+		<font color="DarkGray">[This topic is pre-release documentation and is subject to change in future releases. Blank topics are included as placeholders.] </font> <p /> <p />
+	
+        <div id="introductionSection" class="section">
+    <p>Secure Sockets Layer (SSL) encryption is is introduced in the Microsoft SQL Server 2005 JDBC Driver version 1.2, and enables transmitting encrypted data across the network between an instance of SQL Server and a client application.</p>
+    <p>Secure Sockets Layer (SSL) is a protocol for establishing a secure communication channel to prevent the interception of critical or sensitive information across the network and other Internet communications. SSL allows the client and the server to authenticate the identity of each other. After the participants are authenticated, SSL provides encrypted connections between them for secure message transmission. </p>
+    <p>The Microsoft SQL Server 2005 JDBC Driver provides an infrastructure to enable and disable the encryption on a particular connection based on the user specified connection properties and the server and client settings. The user can specify the certificate store location and password, a host name to be used to validate the certificate, and when to encrypt the communication channel. </p>
+    <div style="margin: .5em 1.5em .5em 1.5em"><b>Note: </b>
+      Enabling SSL encryption increases the security of data transmitted across networks between instances of SQL Server and applications. However, enabling encryption does slow performance. <p />
+    </div>
+    <p>The topics in this section describe how the Microsoft SQL Server 2005 JDBC Driver version supports SSL encryption, including new connection properties, and how you can configure the trust store at the client-side.</p>
+  </div><h1 class="heading">In This Section</h1><div id="sectionSection0" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <table width="100%" cellspacing="0" cellpadding="0" border="1" style="background-color: #CCCCCC;" xmlns=""><tr>
+            <th>
+              Topic
+            </th>
+            <th>
+              Description
+            </th>
+          </tr><tr>
+          <td>
+            <p>
+              <a href="073f3b9e-8edd-4815-88ea-de0655d0325e.htm">Understanding SSL Support</a>
+            </p>
+          </td>
+          <td>
+            <p>Describes how the Microsoft SQL Server 2005 JDBC Driver  supports SSL encryption.</p>
+          </td>
+        </tr><tr>
+          <td>
+            <p>
+              <a href="ec91fa8a-ab7e-4c1e-a05a-d7951ddf33b1.htm">Connecting with SSL Encryption</a>
+            </p>
+          </td>
+          <td>
+            <p>Describes how to connect to a SQL Server database by using the new SSL specific connection properties.</p>
+          </td>
+        </tr><tr>
+          <td>
+            <p>
+              <a href="ae34cd1f-3569-4759-80c7-7c9b33b3e9eb.htm">Configuring the Client for SSL Encryption</a>
+            </p>
+          </td>
+          <td>
+            <p>Describes how to configure the default trust store at the client-side and how to import a private certificate to the client computer's trust store.</p>
+          </td>
+        </tr></table>
+    </content></div><span id="seeAlsoSpan"><h1 class="heading">See Also</h1></span><div id="seeAlsoSection" class="section" name="collapseableSection"><a href="90724ec6-a9cb-43ef-903e-793f89410bc0.htm">Securing JDBC Driver Applications</a><br /><br /></div><!--[if gte IE 5]>
+			<tool:tip element="seeAlsoToolTip" avoidmouse="false"/><tool:tip element="languageFilterToolTip" avoidmouse="false"/><tool:tip element="roleInfoSpan" avoidmouse="false"/>
+		<![endif]-->
+      <div id="footer" class="section">
+        
+		<hr />
+		
+		<span id="fb" class="feedbackcss">
+			
+			
+		</span>
+		
+		<a href="9bad553b-9e70-4696-8499-2e35f772a1e0.htm">
+			
+			© 2008 Microsoft Corporation. All rights reserved.
+		</a>
+ 	
+	
+      </div>
+    </div>
+  </body>
+</html>
