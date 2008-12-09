@@ -14,14 +14,13 @@ public class Server {
 		Logger.getAnonymousLogger().info("Registrering a new data source handler");
 		Bridge.getInstance().registerMessageHandler("dataSource",dsh);
 		Bridge.getInstance().registerMessageHandler("sqlRequest", sqlrh);
-		dsh.setSrv(this);
 		waitForDS();
 
 	}
 	private void waitForDS(){
 		try {
-			synchronized(this){
-				wait();
+			synchronized(dsh){
+				dsh.wait();
 			}
 			Logger.getAnonymousLogger().info(dsh.getDs().toString());
 			sqlrh.setDs(dsh.getDs());
