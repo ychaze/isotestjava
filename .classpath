@@ -7,7 +7,7 @@
 	<classpathentry kind="lib" path="lib/merapi-0.0.30.jar"/>
 	<classpathentry kind="lib" path="lib/spring.jar"/>
 	<classpathentry kind="lib" path="lib/tools.jar"/>
-	<classpathentry kind="lib" path="D:/Devel/Tomcat 6.0/lib/ojdbc14(2).jar"/>
+	<classpathentry kind="lib" path="C:/appl/tomcat/lib/ojdbc14.jar"/>
 	<classpathentry kind="lib" path="/Polytemp/WebContent/WEB-INF/lib/antlr-2.7.6.jar"/>
 	<classpathentry kind="lib" path="/Polytemp/WebContent/WEB-INF/lib/backport-util-concurrent.jar"/>
 	<classpathentry kind="lib" path="/Polytemp/WebContent/WEB-INF/lib/blazeds-annotations-source.jar"/>

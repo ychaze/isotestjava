@@ -19,6 +19,7 @@ public class DataSourceHandler implements IMessageHandler {
 			st = (String)message.getData();
 			String[] values = st.split("##");
 			System.out.println(st);
+			System.out.println(Integer.decode(values[2]));
 			ds = DataSourceFactory.createDS(values[3], values[0], values[1], Integer.decode(values[2]));
 			testBase();
 		}catch(Exception e){
