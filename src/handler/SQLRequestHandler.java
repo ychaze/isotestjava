@@ -42,7 +42,8 @@ public class SQLRequestHandler implements IMessageHandler {
 				e1.printStackTrace();
 			}
 		}
-		Logger.getAnonymousLogger().info(String.valueOf(l.size()));
+		if(l!=null){
+		Logger.getAnonymousLogger().info(String.valueOf(l.size()));}
 		try {
 			Bridge.getInstance().sendMessage(new Message ("sqlResult",null, l));
 		} catch (Exception e) {
