@@ -1,0 +1,112 @@
+﻿<html DIR="LTR" xmlns:tool="http://www.microsoft.com/tooltip" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=utf-8" />
+    <META NAME="save" CONTENT="history" />
+    <title>Using the JDBC Driver</title>
+    
+    <link rel="stylesheet" type="text/css" href="../local/Classic.css">
+      
+    </link>
+    
+    <script src="../local/script.js">
+      
+    </script><script src="../local/script_main.js">&amp;nbsp;</script>
+  </head>
+  <body>
+    <!--Topic built:06/26/2008 22:42:43-->
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div id="header">
+      <table width="100%" id="topTable"><tr>
+          <td align="left">
+            <span id="headerBold">Using the JDBC Driver</span>
+          </td>
+          <td align="right">
+            
+          </td>
+        </tr></table>
+      
+      
+      
+    </div>
+    <div id="mainSection">
+      
+        
+        
+		<font color="DarkGray">[This topic is pre-release documentation and is subject to change in future releases. Blank topics are included as placeholders.] </font> <p /> <p />
+	
+        <div id="introductionSection" class="section">
+    <p>This section provides quick start instructions for making a simple connection to a SQL Server database by using the Microsoft SQL Server 2005 JDBC Driver. Before you connect to a SQL Server database, SQL Server must first be installed on either your local computer or a server, and the JDBC driver must be installed on your local computer. </p>
+  </div><h1 class="heading">Choosing the Right JAR file</h1><div id="sectionSection0" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">The Microsoft SQL Server 2005 JDBC Driver version 2.0 provides <b>sqljdbc.jar</b> and <b>sqljdbc4.jar</b> class library files to be used depending on your preferred Java Runtime Environment (JRE) settings. For more information about which JAR file to choose, see <a href="447792bb-f39b-49b4-9fd0-1ef4154c74ab.htm">System Requirements for the JDBC Driver</a>.</p>
+      <div style="margin: .5em 1.5em .5em 1.5em" xmlns=""><b>Note: </b>
+        All references to <b>sqljdbc.jar</b> in the following sections can also be <b>sqljdbc4.jar</b>, depending on your JRE settings. <p />
+      </div>
+    </content></div><h1 class="heading">Setting the Classpath</h1><div id="sectionSection1" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">The JDBC driver is not part of the Java SDK. Therefore, you must set the classpath to include the sqljdbc.jar file if you want to use it. If the classpath is missing an entry for sqljdbc.jar, your application will throw the common "Class not found" exception.</p>
+      <p xmlns="">The sqljdbc.jar file is installed in the following location:</p>
+      <p xmlns="">&lt;<i>installation directory</i>&gt;\sqljdbc_&lt;<i>version</i>&gt;\&lt;<i>language</i>&gt;\sqljdbc.jar</p>
+      <p xmlns="">The following is an example of the CLASSPATH statement that is used for a Windows application:</p>
+      <p xmlns="">
+        <code>CLASSPATH =.;C:\Program Files\Microsoft SQL Server JDBC Driver\sqljdbc_2.0\enu\sqljdbc.jar</code>
+      </p>
+      <p xmlns="">The following is an example of the CLASSPATH statement that is used for a Unix/Linux application:</p>
+      <p xmlns="">
+        <code>CLASSPATH =.:/home/usr1/mssqlserver2005jdbc/Driver/sqljdbc_2.0/enu/sqljdbc.jar</code>
+      </p>
+      <div style="margin: .5em 1.5em .5em 1.5em" xmlns=""><b>Note: </b>
+        On Window systems, directory names longer than 8.3 or folder names with spaces may cause problems with classpaths. If you suspect these types of issues, you should temporarily move the sqljdbc.jar file into a simple directory name such as<code> C:\Temp</code>, change the classpath, and determine whether that addresses the problem.<p />
+      </div>
+    </content><sections xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <h1 class="heading" xmlns="">Applications that are run directly at the command prompt</h1><div id="sectionSection" class="section" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <p xmlns="">The classpath is configured in the operating system. Append sqljdbc.jar to the classpath of the system. Alternatively, you can specify the classpath on the Java command line that runs the application by using the<code> java -classpath </code>option.</p>
+        </content></div>
+      <h1 class="heading" xmlns="">Applications that run in an IDE</h1><div id="sectionSection" class="section" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <p xmlns="">Each IDE vendor provides a different method for setting the classpath in its IDE. Just setting the classpath in the operating system will not work. You must add sqljdbc.jar to the IDE classpath.</p>
+        </content></div>
+      <h1 class="heading" xmlns="">Servlets and JSPs</h1><div id="sectionSection" class="section" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <p xmlns="">Servlets and JSPs are run in a servlet/JSP engine such as Tomcat. The classpath must be set according to the servlet/JSP engine documentation. Just setting the classpath in the operating system will not work. Some servlet/JSP engines provide setup screens that you can use to set the classpath of the engine. In that situation, you must append the correct JDBC Driver JAR file to the existing engine classpath and restart the engine. In other situations, you can deploy the driver by copying sqljdbc.jar to a specific directory, such as lib, during engine installation. The engine driver classpath can also be specified in an engine specific configuration file.</p>
+        </content></div>
+      <h1 class="heading" xmlns="">Enterprise Java Beans</h1><div id="sectionSection" class="section" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <p xmlns="">Enterprise Java Beans (EJB) are run in an EJB container. EJB containers are sourced from various vendors. Java applets run in a browser but are downloaded from a Web server. Copy sqljdbc.jar to the Web server root and specify the name of the JAR file in the HTML archive tab of the applet, for example, <code>&lt;applet ... archive=sqljdbc.jar&gt;</code>.</p>
+        </content></div>
+    </sections></div><h1 class="heading">Making a Simple Connection to a Database</h1><div id="sectionSection2" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">To connect to a database by using the <b>DriverManager</b> class, you must first register the driver as follows:</p>
+      <p xmlns="">
+        <code>Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");</code>
+      </p>
+      <p xmlns="">When the driver is loaded, you can establish a connection by using a connection URL:</p>
+      <div class="sampleCode" xmlns=""><span codeLanguage="other"><pre>String connectionUrl = "jdbc:sqlserver://localhost:1433;" +
+   "databaseName=AdventureWorks;user=MyUserName;password=*****;";
+Connection con = DriverManager.getConnection(connectionUrl);</pre></span></div>
+      <p xmlns="">For more information about how to connect with data sources and use a connection URL, see <a href="44996746-d373-4f59-9863-a8a20bb8024a.htm">Building the Connection URL</a> and <a href="f1b62700-f046-488d-bd6b-a5cd8fc345b7.htm">Setting the Connection Properties</a>.</p>
+    </content></div><span id="seeAlsoSpan"><h1 class="heading">See Also</h1></span><div id="seeAlsoSection" class="section" name="collapseableSection"><a href="939a8773-2583-49a4-bf00-6b892fbe39dc.htm">Overview of the JDBC Driver</a><br /><br /></div><!--[if gte IE 5]>
+			<tool:tip element="seeAlsoToolTip" avoidmouse="false"/><tool:tip element="languageFilterToolTip" avoidmouse="false"/><tool:tip element="roleInfoSpan" avoidmouse="false"/>
+		<![endif]-->
+      <div id="footer" class="section">
+        
+		<hr />
+		
+		<span id="fb" class="feedbackcss">
+			
+			
+		</span>
+		
+		<a href="9bad553b-9e70-4696-8499-2e35f772a1e0.htm">
+			
+			© 2008 Microsoft Corporation. All rights reserved.
+		</a>
+ 	
+	
+      </div>
+    </div>
+  </body>
+</html>

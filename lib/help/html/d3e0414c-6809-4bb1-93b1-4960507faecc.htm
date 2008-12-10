@@ -1,0 +1,102 @@
+﻿<html DIR="LTR" xmlns:tool="http://www.microsoft.com/tooltip" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=utf-8" />
+    <META NAME="save" CONTENT="history" />
+    <title>Understanding Transactions</title>
+    
+    <link rel="stylesheet" type="text/css" href="../local/Classic.css">
+      
+    </link>
+    
+    <script src="../local/script.js">
+      
+    </script><script src="../local/script_main.js">&amp;nbsp;</script>
+  </head>
+  <body>
+    <!--Topic built:06/26/2008 22:42:43-->
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div id="header">
+      <table width="100%" id="topTable"><tr>
+          <td align="left">
+            <span id="headerBold">Understanding Transactions</span>
+          </td>
+          <td align="right">
+            
+          </td>
+        </tr></table>
+      
+      
+      
+    </div>
+    <div id="mainSection">
+      
+        
+        
+		<font color="DarkGray">[This topic is pre-release documentation and is subject to change in future releases. Blank topics are included as placeholders.] </font> <p /> <p />
+	
+        <div id="introductionSection" class="section">
+    <p>Transactions are groups of operations that are combined into logical units of work. They are used to control and maintain the consistency and integrity of each action in a transaction, despite errors that might occur in the system. </p>
+    <p>With the Microsoft SQL Server 2005 JDBC Driver, transactions can be either local or distributed. Transactions can also use isolation levels. For more information about the isolation levels supported by the JDBC driver, see <a href="2c41e23a-da6c-4650-b5fc-b5fe53ba65c3.htm">Understanding Isolation Levels</a>. </p>
+  </div><h1 class="heading">Using Local Transactions</h1><div id="sectionSection0" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">A transaction is considered to be local when it is a single-phase transaction, and it is handled by the database directly. The JDBC driver supports local transactions by using various methods of the <a href="937292a6-1525-423e-a2b2-a18fd34c2893.htm">SQLServerConnection</a> class, including <a href="db1e22d2-e53f-474e-8c99-cb1fff7f491a.htm">setAutoCommit</a>, <a href="c7346165-51bf-4844-b64c-29833c147236.htm">commit</a>, and <a href="7adb6772-4047-4d8e-931d-b3d20eec44b5.htm">rollback</a>. Local transactions are typically managed explicitly by the application or automatically by the J2EE application server.</p>
+      <p xmlns="">The following example performs a local transaction that consists of two separate statements in the<code> try </code>block. The statements are run against the Production.ScrapReason table in the AdventureWorks SQL Server 2005 sample database, and they are committed if no exceptions are thrown. The code in the<code> catch </code>block rolls back the transaction if an exception is thrown.</p>
+      <div class="sampleCode" xmlns=""><span codeLanguage="other"><pre>public static void executeTransaction(Connection con) {
+   try {
+      //Switch to manual transaction mode by setting
+      //autocommit to false. Note that this starts the first 
+      //manual transaction.
+      con.setAutoCommit(false);
+      Statement stmt = con.createStatement();
+      stmt.executeUpdate("INSERT INTO Production.ScrapReason(Name) VALUES('Wrong size')");
+      stmt.executeUpdate("INSERT INTO Production.ScrapReason(Name) VALUES('Wrong color')");
+      con.commit(); //This commits the transaction and starts a new one.
+      stmt.close(); //This turns off the transaction.
+      System.out.println("Transaction succeeded. Both records were written to the database.");
+   }
+   catch (SQLException ex) {
+      ex.printStackTrace();
+      try {
+         con.rollback();
+         System.out.println("Transaction failed. No records were written to the database.");
+      }
+      catch (SQLException se) {
+         se.printStackTrace();
+      }
+   }
+}
+</pre></span></div>
+    </content></div><h1 class="heading">Using Distributed Transactions</h1><div id="sectionSection1" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">A distributed transaction updates data on two or more networked databases while retaining the important atomic, consistent, isolated, and durable (ACID) properties of transaction processing. Distributed transaction support was added to the JDBC API in the JDBC 2.0 Optional API specification. The management of distributed transactions is typically performed automatically by the Java Transaction Service (JTS) transaction manager in a J2EE application server environment. However, the Microsoft SQL Server 2005 JDBC Driver supports distributed transactions under any Java Transaction API (JTA) compliant transaction manager.</p>
+      <p xmlns="">The JDBC driver seamlessly integrates with Microsoft Distributed Transaction Coordinator (MS DTC) to provide true distributed transaction support with SQL Server 2000 and SQL Server 2005. MS DTC is a distributed transaction facility provided by Microsoft for Microsoft Windows systems. MS DTC uses proven transaction processing technology from Microsoft to support XA features such as the complete two-phase distributed commit protocol and the recovery of distributed transactions.</p>
+      <p xmlns="">For more information about how to use distributed transactions, see <a href="574e326f-0520-4003-bdf1-62d92c3db457.htm">Understanding XA Transactions</a>.</p>
+    </content></div><span id="seeAlsoSpan"><h1 class="heading">See Also</h1></span><div id="seeAlsoSection" class="section" name="collapseableSection"><a href="afbb776f-05dc-4e79-bb25-2c340483e401.htm">Performing Transactions with the JDBC Driver</a><br /><br /></div><!--[if gte IE 5]>
+			<tool:tip element="seeAlsoToolTip" avoidmouse="false"/><tool:tip element="languageFilterToolTip" avoidmouse="false"/><tool:tip element="roleInfoSpan" avoidmouse="false"/>
+		<![endif]-->
+      <div id="footer" class="section">
+        
+		<hr />
+		
+		<span id="fb" class="feedbackcss">
+			
+			
+		</span>
+		
+		<a href="9bad553b-9e70-4696-8499-2e35f772a1e0.htm">
+			
+			© 2008 Microsoft Corporation. All rights reserved.
+		</a>
+ 	
+	
+      </div>
+    </div>
+  </body>
+</html>

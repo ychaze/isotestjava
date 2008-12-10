@@ -1,0 +1,96 @@
+﻿<html DIR="LTR" xmlns:tool="http://www.microsoft.com/tooltip" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=utf-8" />
+    <META NAME="save" CONTENT="history" />
+    <title>Deploying the JDBC Driver</title>
+    
+    <link rel="stylesheet" type="text/css" href="../local/Classic.css">
+      
+    </link>
+    
+    <script src="../local/script.js">
+      
+    </script><script src="../local/script_main.js">&amp;nbsp;</script>
+  </head>
+  <body>
+    <!--Topic built:06/26/2008 22:42:43-->
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div id="header">
+      <table width="100%" id="topTable"><tr>
+          <td align="left">
+            <span id="headerBold">Deploying the JDBC Driver</span>
+          </td>
+          <td align="right">
+            
+          </td>
+        </tr></table>
+      
+      
+      
+    </div>
+    <div id="mainSection">
+      
+        
+        
+		<font color="DarkGray">[This topic is pre-release documentation and is subject to change in future releases. Blank topics are included as placeholders.] </font> <p /> <p />
+	
+        <div id="introductionSection" class="section">
+    <p>When you deploy an application that depends on the Microsoft SQL Server 2005 JDBC Driver, you must redistribute the JDBC driver together with your application. Unlike Windows Data Access Components (Windows DAC), which is a component of the Windows operating system, the JDBC driver is considered to be a component of SQL Server. </p>
+    <div style="margin: .5em 1.5em .5em 1.5em"><b>Note: </b>
+      Although you can freely distribute the JDBC driver as your application requires, you must first register to do this. To register to redistribute the JDBC driver, see <a href="http://go.microsoft.com/fwlink/?LinkId=70164" target="_blank" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">Register for Microsoft SQL Server 2005 JDBC Driver Redistribution Rights</linkText></a>.<p />
+    </div>
+    <p>There are two approaches to deploying the JDBC driver with your application. One is to include the JDBC driver files as part of your own custom installation package. The second approach involves using the JDBC installation package provided by Microsoft, which you can download from the <a href="http://go.microsoft.com/fwlink/?LinkId=70166" target="_blank" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">Microsoft SQL Server 2005 JDBC Driver Developer Center</linkText></a>.</p>
+    <p>The following sections discuss how to use the JDBC installation package on Windows and UNIX operating systems.</p>
+    <div style="margin: .5em 1.5em .5em 1.5em"><b>Note: </b>
+      For information about deploying Java applications in general, see the <a href="http://go.microsoft.com/fwlink/?LinkId=70165" target="_blank" alt=""><linkText xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">Java Deployment Overview</linkText></a> on the Sun Microsystems Web site.<p />
+    </div>
+  </div><h1 class="heading">Deploying the JDBC Driver on Windows Systems</h1><div id="sectionSection0" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">When you deploy the JDBC driver on Windows operating systems, you must use the executable zip file version of the installation package, which is typically named <code>sqljdbc_&lt;version&gt;_enu.exe</code>.</p>
+      <p xmlns="">To run the executable zip file silently, you must use the<code> /auto </code>command-line option on the command line or in a batch file as in the following:</p>
+      <p xmlns="">
+        <code>sqljdbc_&lt;version&gt;_enu.exe /auto</code>
+      </p>
+      <div style="margin: .5em 1.5em .5em 1.5em" xmlns=""><b>Note: </b>
+        When you use the<code> /auto </code>option it is not a truly silent installation, as a WinZip dialog box still appears on the user's screen. However, you will not need to interact with it and it closes as soon as the unzip operation is complete.<p />
+      </div>
+    </content></div><h1 class="heading">Deploying the Driver on UNIX Systems</h1><div id="sectionSection1" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">When you deploy the JDBC driver on UNIX operating systems, you must use the gzip file version of the installation package, which is typically named <code>sqljdbc_&lt;version&gt;_enu.tar.gz</code>.</p>
+      <p xmlns="">Before you install the JDBC driver, make sure that both the gzip and tar utilities are installed on the user's system, and that the folders that contain the executables for both utilities are added to the PATH environment variable.</p>
+      <p xmlns="">To run the gzip file silently, use the<code> xfz </code>command-line options on the command line or in a batch file, as in the following:</p>
+      <p xmlns="">
+        <code>tar xfz sqljdbc_&lt;version&gt;_enu.tar.gz</code>
+      </p>
+      <div style="margin: .5em 1.5em .5em 1.5em" xmlns=""><b>Note: </b>
+        When you use the<code> xfz </code>options, it is not a truly silent installation, because some warnings might be sent to the standard output.<p />
+      </div>
+    </content></div><span id="seeAlsoSpan"><h1 class="heading">See Also</h1></span><div id="seeAlsoSection" class="section" name="collapseableSection"><a href="939a8773-2583-49a4-bf00-6b892fbe39dc.htm">Overview of the JDBC Driver</a><br /><br /></div><!--[if gte IE 5]>
+			<tool:tip element="seeAlsoToolTip" avoidmouse="false"/><tool:tip element="languageFilterToolTip" avoidmouse="false"/><tool:tip element="roleInfoSpan" avoidmouse="false"/>
+		<![endif]-->
+      <div id="footer" class="section">
+        
+		<hr />
+		
+		<span id="fb" class="feedbackcss">
+			
+			
+		</span>
+		
+		<a href="9bad553b-9e70-4696-8499-2e35f772a1e0.htm">
+			
+			© 2008 Microsoft Corporation. All rights reserved.
+		</a>
+ 	
+	
+      </div>
+    </div>
+  </body>
+</html>

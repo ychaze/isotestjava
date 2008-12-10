@@ -1,0 +1,137 @@
+﻿<html DIR="LTR" xmlns:tool="http://www.microsoft.com/tooltip" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=utf-8" />
+    <META NAME="save" CONTENT="history" />
+    <title>Understanding J2EE Support</title>
+    
+    <link rel="stylesheet" type="text/css" href="../local/Classic.css">
+      
+    </link>
+    
+    <script src="../local/script.js">
+      
+    </script><script src="../local/script_main.js">&amp;nbsp;</script>
+  </head>
+  <body>
+    <!--Topic built:06/26/2008 22:42:43-->
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div id="header">
+      <table width="100%" id="topTable"><tr>
+          <td align="left">
+            <span id="headerBold">Understanding J2EE Support</span>
+          </td>
+          <td align="right">
+            
+          </td>
+        </tr></table>
+      
+      
+      
+    </div>
+    <div id="mainSection">
+      
+        
+        
+		<font color="DarkGray">[This topic is pre-release documentation and is subject to change in future releases. Blank topics are included as placeholders.] </font> <p /> <p />
+	
+        <div id="introductionSection" class="section">
+    <p>The following sections document how the Microsoft SQL Server 2005 JDBC Driver provides support for the J2EE and JDBC 3.0 optional API features. The source code examples provided in this Help system provide a good reference for getting started with these features. </p>
+    <p>First, make sure that your Java environment (JDK, JRE) includes the javax.sql package. This is a required package for any JDBC application that uses the optional API. JDK 1.5 and later versions already contain this package, so you do not have to install it separately. </p>
+  </div><h1 class="heading">Driver Name</h1><div id="sectionSection0" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">The driver class name is <b>com.microsoft.sqlserver.jdbc.SQLServerDriver</b>. The driver is contained in the sqljdbc.jar file.</p>
+      <p xmlns="">The class name is used whenever you load the driver with the JDBC <b>DriverManager</b> class. It is also used whenever you must specify the class name of the driver in any driver configuration. For example, configuring a data source within a J2EE application server might require that you enter the driver class name.</p>
+    </content></div><h1 class="heading">Data Sources</h1><div id="sectionSection1" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">The JDBC driver provides support for J2EE / JDBC 3.0 data sources. The JDBC driver <a href="95fc7b07-2498-4a7e-8f7f-ee0d86b598b4.htm">SQLServerXADataSource</a> class is implemented by <b>com.microsoft.sqlserver.jdbc.SQLServerXADataSource</b>. </p>
+    </content><sections xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <h1 class="heading" xmlns="">Datasource Names</h1><div id="sectionSection" class="section" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <p xmlns="">You can make database connections by using data sources. The data sources available with JDBC driver are described in the following table:</p>
+          <table width="100%" cellspacing="0" cellpadding="0" border="1" style="background-color: #CCCCCC;" xmlns=""><tr>
+                <th>
+                  DataSource Type
+                </th>
+                <th>
+                  Class Name
+                </th>
+                <th>
+                  Description
+                </th>
+              </tr><tr>
+              <td>
+                <p>DataSource</p>
+              </td>
+              <td>
+                <p>com.microsoft.sqlserver.jdbc.SQLServerDataSource</p>
+              </td>
+              <td>
+                <p>The non pooling data source.</p>
+              </td>
+            </tr><tr>
+              <td>
+                <p>ConnectionPoolDataSource</p>
+              </td>
+              <td>
+                <p>com.microsoft.sqlserver.jdbc.SQLServerConnectionPoolDataSource</p>
+              </td>
+              <td>
+                <p>The data source to configure J2EE application server connection pools. Typically used when the application runs within a J2EE application server.</p>
+              </td>
+            </tr><tr>
+              <td>
+                <p>XADataSource</p>
+              </td>
+              <td>
+                <p>com.microsoft.sqlserver.jdbc.SQLServerXADataSource</p>
+              </td>
+              <td>
+                <p>The data source to configure J2EE XA data sources. Typically used when the application runs within a J2EE application server and an XA transaction manager.</p>
+              </td>
+            </tr></table>
+        </content></div>
+      <h1 class="heading" xmlns="">Data Source Properties</h1><div id="sectionSection" class="section" xmlns=""><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+          <p xmlns="">All data sources support the ability to set and get any property that is associated with the underlying driver's property set. </p>
+          <p xmlns="">Examples:</p>
+          <p xmlns="">
+            <code>setServerName("localhost");</code>
+          </p>
+          <p xmlns="">
+            <code>setDatabaseName("AdventureWorks"); </code>
+          </p>
+          <p xmlns="">The following shows how an application connects by using a data source:</p>
+          <div class="sampleCode" xmlns=""><span codeLanguage="other"><pre>initialize JNDI ..
+Context ctx = new InitialContext(System.getProperties());
+...
+DataSource ds = (DataSource) ctx.lookup("MyDataSource");
+Connection c = ds.getConnection("user", "pwd");</pre></span></div>
+          <p xmlns="">For more information about the data source properties, see <a href="f3363d05-07fc-4bf8-ae5e-2a7a968808ad.htm">Setting the Data Source Properties</a>.</p>
+        </content></div>
+    </sections></div><span id="seeAlsoSpan"><h1 class="heading">See Also</h1></span><div id="seeAlsoSection" class="section" name="collapseableSection"><a href="939a8773-2583-49a4-bf00-6b892fbe39dc.htm">Overview of the JDBC Driver</a><br /><br /></div><!--[if gte IE 5]>
+			<tool:tip element="seeAlsoToolTip" avoidmouse="false"/><tool:tip element="languageFilterToolTip" avoidmouse="false"/><tool:tip element="roleInfoSpan" avoidmouse="false"/>
+		<![endif]-->
+      <div id="footer" class="section">
+        
+		<hr />
+		
+		<span id="fb" class="feedbackcss">
+			
+			
+		</span>
+		
+		<a href="9bad553b-9e70-4696-8499-2e35f772a1e0.htm">
+			
+			© 2008 Microsoft Corporation. All rights reserved.
+		</a>
+ 	
+	
+      </div>
+    </div>
+  </body>
+</html>

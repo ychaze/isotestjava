@@ -1,0 +1,102 @@
+﻿<html DIR="LTR" xmlns:tool="http://www.microsoft.com/tooltip" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=utf-8" />
+    <META NAME="save" CONTENT="history" />
+    <title>Using Holdability</title>
+    
+    <link rel="stylesheet" type="text/css" href="../local/Classic.css">
+      
+    </link>
+    
+    <script src="../local/script.js">
+      
+    </script><script src="../local/script_main.js">&amp;nbsp;</script>
+  </head>
+  <body>
+    <!--Topic built:06/26/2008 22:42:43-->
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div id="header">
+      <table width="100%" id="topTable"><tr>
+          <td align="left">
+            <span id="headerBold">Using Holdability</span>
+          </td>
+          <td align="right">
+            
+          </td>
+        </tr></table>
+      
+      
+      
+    </div>
+    <div id="mainSection">
+      
+        
+        
+		<font color="DarkGray">[This topic is pre-release documentation and is subject to change in future releases. Blank topics are included as placeholders.] </font> <p /> <p />
+	
+        <div id="introductionSection" class="section">
+    <p>By default, a result set created within a transaction is closed after the transaction is committed to the database, or when it is rolled back. However, it is sometimes useful for the result set to remain open, even after the transaction has been committed. To do this, the Microsoft SQL Server 2005 JDBC Driver supports the use of result set holdability. </p>
+    <p>Result set holdability can be set by using the <a href="552eebd0-4c38-43f0-961f-35244f99109b.htm">setHoldability</a> method of the <a href="937292a6-1525-423e-a2b2-a18fd34c2893.htm">SQLServerConnection</a> class. When setting the holdability by using the <b>setHoldability</b> method, the result set holdability constants of HOLD_CURSORS_OVER_COMMIT or CLOSE_CURSORS_AT_COMMIT can be used. </p>
+    <div style="margin: .5em 1.5em .5em 1.5em"><b>Note: </b>
+      The JDBC driver does not support setting holdability when creating one of the <b>Statement</b> objects. Statement objects that have overloads with result set holdability parameters will throw an exception when called.<p />
+    </div>
+    <p>The holdability of a result set is the holdability of the <b>SQLServerConnection</b> object that is associated with the result set at the time when the result set is created for server-side cursors only. It does not apply to client-side cursors.</p>
+    <p>In the following example, the result set holdability is set while performing a local transaction consisting of two separate statements in the <code>try</code> block. The statements are run against the Production.ScrapReason table in the SQL Server 2005 AdventureWorks sample database, and a savepoint is used to roll back the second statement. This results in only the first statement being committed to the database.</p>
+    <div class="sampleCode"><span codeLanguage="other"><pre>public static void executeTransaction(Connection con) {
+   try {
+      con.setAutoCommit(false);
+      con.setHoldability(ResultSet.HOLD_CURSORS_OVER_COMMIT);
+      Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+      stmt.executeUpdate("INSERT INTO Production.ScrapReason(Name) VALUES('Bad part')");
+      ResultSet rs = stmt.executeQuery("SELECT * FROM Production.ScrapReason");
+      con.commit();
+      System.out.println("Transaction succeeded.");
+
+      //Display results.
+      while (rs.next()) {
+         System.out.println(rs.getString(2));
+      }
+      stmt.close();
+   }
+   catch (SQLException ex) {
+      ex.printStackTrace();
+   try {
+      con.rollback();
+      System.out.println("Transaction failed.");
+   }
+   catch (SQLException se) {
+      se.printStackTrace();
+   }
+}
+</pre></span></div>
+  </div><span id="seeAlsoSpan"><h1 class="heading">See Also</h1></span><div id="seeAlsoSection" class="section" name="collapseableSection"><a href="afbb776f-05dc-4e79-bb25-2c340483e401.htm">Performing Transactions with the JDBC Driver</a><br /><br /></div><!--[if gte IE 5]>
+			<tool:tip element="seeAlsoToolTip" avoidmouse="false"/><tool:tip element="languageFilterToolTip" avoidmouse="false"/><tool:tip element="roleInfoSpan" avoidmouse="false"/>
+		<![endif]-->
+      <div id="footer" class="section">
+        
+		<hr />
+		
+		<span id="fb" class="feedbackcss">
+			
+			
+		</span>
+		
+		<a href="9bad553b-9e70-4696-8499-2e35f772a1e0.htm">
+			
+			© 2008 Microsoft Corporation. All rights reserved.
+		</a>
+ 	
+	
+      </div>
+    </div>
+  </body>
+</html>

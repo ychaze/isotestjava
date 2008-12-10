@@ -1,0 +1,377 @@
+﻿<html DIR="LTR" xmlns:tool="http://www.microsoft.com/tooltip" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=utf-8" />
+    <META NAME="save" CONTENT="history" />
+    <title>Using Basic Data Types</title>
+    
+    <link rel="stylesheet" type="text/css" href="../local/Classic.css">
+      
+    </link>
+    
+    <script src="../local/script.js">
+      
+    </script><script src="../local/script_main.js">&amp;nbsp;</script>
+  </head>
+  <body>
+    <!--Topic built:06/26/2008 22:42:43-->
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div id="header">
+      <table width="100%" id="topTable"><tr>
+          <td align="left">
+            <span id="headerBold">Using Basic Data Types</span>
+          </td>
+          <td align="right">
+            
+          </td>
+        </tr></table>
+      
+      
+      
+    </div>
+    <div id="mainSection">
+      
+        
+        
+		<font color="DarkGray">[This topic is pre-release documentation and is subject to change in future releases. Blank topics are included as placeholders.] </font> <p /> <p />
+	
+        <div id="introductionSection" class="section">
+    <p>The Microsoft SQL Server 2005 JDBC Driver uses the JDBC basic data types to convert the SQL Server data types to a format that can be understood by the Java programming language, and vice versa. </p>
+    <p>Starting with the Microsoft SQL Server 2005 JDBC Driver version 2.0, the JDBC driver provides support for the JDBC Spec 4.0, which includes the following National (Unicode) data types: <b>NCHAR</b>, <b>NVARCHAR</b>, <b>LONGNVARCHAR</b>, and <b>NCLOB</b>. </p>
+    <p>The following table lists the default mappings between the basic SQL Server, JDBC, and Java programming language data types:</p>
+    <table width="100%" cellspacing="0" cellpadding="0" border="1" style="background-color: #CCCCCC;"><tr>
+          <th>
+            SQL Server Types
+          </th>
+          <th>
+            JDBC Types (java.sql.Types)
+          </th>
+          <th>
+            Java Language Types
+          </th>
+        </tr><tr>
+        <td>
+          <p>bigint</p>
+        </td>
+        <td>
+          <p>BIGINT</p>
+        </td>
+        <td>
+          <p>long</p>
+        </td>
+      </tr><tr>
+        <td>
+          <p>timestamp</p>
+          <p>binary</p>
+        </td>
+        <td>
+          <p>BINARY</p>
+        </td>
+        <td>
+          <p>byte[]</p>
+        </td>
+      </tr><tr>
+        <td>
+          <p>bit</p>
+        </td>
+        <td>
+          <p>BIT</p>
+        </td>
+        <td>
+          <p>boolean</p>
+        </td>
+      </tr><tr>
+        <td>
+          <p>char</p>
+        </td>
+        <td>
+          <p>CHAR</p>
+        </td>
+        <td>
+          <p>String</p>
+        </td>
+      </tr><tr>
+        <td>
+          <p>decimal</p>
+          <p>money</p>
+          <p>smallmoney</p>
+        </td>
+        <td>
+          <p>DECIMAL</p>
+        </td>
+        <td>
+          <p>java.math.BigDecimal</p>
+        </td>
+      </tr><tr>
+        <td>
+          <p>float</p>
+        </td>
+        <td>
+          <p>DOUBLE</p>
+        </td>
+        <td>
+          <p>double</p>
+        </td>
+      </tr><tr>
+        <td>
+          <p>int</p>
+        </td>
+        <td>
+          <p>INTEGER</p>
+        </td>
+        <td>
+          <p>int</p>
+        </td>
+      </tr><tr>
+        <td>
+          <p>image</p>
+          <p>varbinary(max)</p>
+          <p>udt</p>
+        </td>
+        <td>
+          <p>LONGVARBINARY</p>
+        </td>
+        <td>
+          <p>byte[]</p>
+        </td>
+      </tr><tr>
+        <td>
+          <p>varchar(max)</p>
+          <p>text</p>
+        </td>
+        <td>
+          <p>LONGVARCHAR</p>
+        </td>
+        <td>
+          <p>String</p>
+        </td>
+      </tr><tr>
+        <td>
+          <p>nchar</p>
+        </td>
+        <td>
+          <p>CHAR</p>
+          <p>NCHAR (Java SE 6.0)</p>
+        </td>
+        <td>
+          <p>String</p>
+        </td>
+      </tr><tr>
+        <td>
+          <p>nvarchar</p>
+        </td>
+        <td>
+          <p>VARCHAR</p>
+          <p>NVARCHAR (Java SE 6.0)</p>
+        </td>
+        <td>
+          <p>String</p>
+        </td>
+      </tr><tr>
+        <td>
+          <p>nvarchar(max)</p>
+          <p>ntext</p>
+          <p>xml</p>
+        </td>
+        <td>
+          <p>LONGVARCHAR</p>
+          <p>LONGNVARCHAR (Java SE 6.0)</p>
+        </td>
+        <td>
+          <p>String</p>
+        </td>
+      </tr><tr>
+        <td>
+          <p>numeric</p>
+        </td>
+        <td>
+          <p>NUMERIC</p>
+        </td>
+        <td>
+          <p>java.math.BigDecimal</p>
+        </td>
+      </tr><tr>
+        <td>
+          <p>real</p>
+        </td>
+        <td>
+          <p>REAL</p>
+        </td>
+        <td>
+          <p>float</p>
+        </td>
+      </tr><tr>
+        <td>
+          <p>smallint</p>
+        </td>
+        <td>
+          <p>SMALLINT</p>
+        </td>
+        <td>
+          <p>short</p>
+        </td>
+      </tr><tr>
+        <td>
+          <p>datetime</p>
+          <p>smalldatetime</p>
+        </td>
+        <td>
+          <p>TIMESTAMP</p>
+        </td>
+        <td>
+          <p>java.sql.Timestamp</p>
+        </td>
+      </tr><tr>
+        <td>
+          <p>varbinary</p>
+        </td>
+        <td>
+          <p>VARBINARY</p>
+        </td>
+        <td>
+          <p>byte[]</p>
+        </td>
+      </tr><tr>
+        <td>
+          <p>varchar</p>
+        </td>
+        <td>
+          <p>VARCHAR</p>
+        </td>
+        <td>
+          <p>String</p>
+        </td>
+      </tr><tr>
+        <td>
+          <p>tinyint</p>
+        </td>
+        <td>
+          <p>TINYINT</p>
+        </td>
+        <td>
+          <p>short</p>
+        </td>
+      </tr><tr>
+        <td>
+          <p>uniqueidentifier</p>
+        </td>
+        <td>
+          <p>CHAR</p>
+        </td>
+        <td>
+          <p>String</p>
+        </td>
+      </tr></table>
+    <div style="margin: .5em 1.5em .5em 1.5em"><b>Note: </b>
+      The SQL Server sqlvariant data type is not currently supported by the JDBC driver. If a query is used to retrieve data from a table that contains a column of the sqlvariant data type, an exception will occur.<p />
+    </div>
+    <p>The following sections provide examples of how you can use the JDBC Driver and the basic data types. For a more detailed example of how to use the basic data types in a Java application, see <a href="59ac80cf-fc66-4493-933d-38e479c5f54d.htm">Basic Data Types Sample</a>.</p>
+  </div><h1 class="heading">Retrieving Data as a String</h1><div id="sectionSection0" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">If you have to retrieve data from a data source that maps to any of the JDBC basic data types for viewing as a string, or if strongly typed data is not required, you can use the <a href="f81dde01-d328-4b32-8871-1efac645b68e.htm">getString</a> method of the <a href="eaffcff1-286c-459f-83da-3150778480c9.htm">SQLServerResultSet</a> class, as in the following:</p>
+      <div class="sampleCode" xmlns=""><span codeLanguage="other"><pre>String SQL = "SELECT TOP 10 * FROM Person.Contact";
+Statement stmt = con.createStatement();
+ResultSet rs = stmt.executeQuery(SQL);
+
+while (rs.next()) {
+   System.out.println(rs.getString(4) + " " + rs.getString(6));
+}
+rs.close();
+stmt.close();
+</pre></span></div>
+    </content></div><h1 class="heading">Retrieving Data by Data Type</h1><div id="sectionSection1" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">If you have to retrieve data from a data source and you know the type of data that is being retrieved, you should use one of the <b>get&lt;Type&gt;</b> methods of the <b>SQLServerResultSet</b> class, also known as the getter methods. You can use either a column name or a column index with the <b>get&lt;Type&gt;</b> methods, as in the following:</p>
+      <div class="sampleCode" xmlns=""><span codeLanguage="other"><pre>ResultSet rs = stmt.executeQuery("SELECT lname, job_id FROM employee
+   WHERE (lname = 'Brown')");
+rs.next();
+short empJobID = rs.getShort("job_id");
+rs.close();
+stmt.close();
+</pre></span></div>
+      <div style="margin: .5em 1.5em .5em 1.5em" xmlns=""><b>Note: </b>
+        The <b>getUnicodeStream</b> and <b>getBigDecimal</b> with scale methods are deprecated and are not supported by the JDBC driver.<p />
+      </div>
+    </content></div><h1 class="heading">Updating Data by Data Type</h1><div id="sectionSection2" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">If you have to update the value of a field in a data source, you should use one of the <b>update&lt;Type&gt;</b> methods of the <b>SQLServerResultSet</b> class. In the following example, the <a href="2bb0319e-12cb-4604-a7e3-b22a24b02296.htm">updateInt</a> method is used in conjunction with the <a href="cfced0ca-a281-40dc-8d2f-370d5f0bf12b.htm">updateRow</a> method to update the data in the data source:</p>
+      <div class="sampleCode" xmlns=""><span codeLanguage="other"><pre>Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE); 
+ResultSet rs = stmt.executeQuery("SELECT lname, job_id FROM employee
+   WHERE (lname = 'Brown')");
+rs.next();
+short empJobID = rs.getInt(2);
+empJobID++;
+rs.first();
+rs.updateInt(2, empJobID);
+rs.updateRow();
+rs.close();
+stmt.close();
+</pre></span></div>
+      <div style="margin: .5em 1.5em .5em 1.5em" xmlns=""><b>Note: </b>
+        The JDBC driver cannot update a SQL Server column with a column name that is more than 127 characters long. If an update to a column whose name is more than 127 characters is attempted, an exception will be thrown.<p />
+      </div>
+    </content></div><h1 class="heading">Updating Data by Parameterized Query</h1><div id="sectionSection3" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">If you have to update data in a data source by using a parameterized query, you can set the data type of the parameters by using one of the <b>set&lt;Type&gt;</b> methods of the <a href="a8481c06-fbba-432b-8c69-4f4619c20ad4.htm">SQLServerPreparedStatement</a> class, also known as the setter methods. In the following example, the <a href="bd4e4085-f704-4a73-b6a7-7d443d564728.htm">prepareStatement</a> method is used to pre-compile the parameterized query, and then the <a href="25dabdc9-c60f-485a-87eb-306067964765.htm">setString</a> method is used to set the string value of the parameter before the <a href="ca534c6b-ef4d-4ae8-8cc3-514728623cff.htm">executeUpdate</a> method is called.</p>
+      <div class="sampleCode" xmlns=""><span codeLanguage="other"><pre>PreparedStatement pstmt = con.prepareStatement("UPDATE employee SET
+   fname = ? WHERE (lname = 'Brown')");
+String first = "Bob";
+pstmt.setString(1, first);
+int rowCount = pstmt.executeUpdate();
+pstmt.close();
+</pre></span></div>
+      <p xmlns="">For more information about parameterized queries, see <a href="3202b88f-ce13-44dd-982c-c6a3b0260378.htm">Using an SQL Statement with Parameters</a>.</p>
+    </content></div><h1 class="heading">Passing Parameters to a Stored Procedure</h1><div id="sectionSection4" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">If you have to pass typed parameters into a stored procedure, you can set the parameters by index or name by using one of the <b>set&lt;Type&gt;</b> methods of the <a href="30710a63-c05d-47d9-9cf9-c087a1c76373.htm">SQLServerCallableStatement</a> class. In the following example, the <a href="265b024c-898a-4bd0-98b5-f06076717b9e.htm">prepareCall</a> method is used to set up the call to the stored procedure, and then the <a href="f38b97b5-d4f0-4f74-a33d-740241a85842.htm">setString</a> method is used to set the parameter for the call before the <a href="599cf463-e19f-4baa-bacb-513cad7c6cd8.htm">executeQuery</a> method is called. </p>
+      <div class="sampleCode" xmlns=""><span codeLanguage="other"><pre>CallableStatement cstmt = con.prepareCall("{call employee_jobid(?)}");
+String lname = "Brown";
+cstmt.setString(1, lname);
+Resultset rs = cstmt.executeQuery();
+rs.close();
+cstmt.close();
+</pre></span></div>
+      <div style="margin: .5em 1.5em .5em 1.5em" xmlns=""><b>Note: </b>
+        In this example, a result set is returned with the results of running the stored procedure. <p />
+      </div>
+      <p xmlns="">For more information about using the JDBC driver with stored procedures and input parameters, see <a href="8f491b70-7d1b-42bd-964f-9a8b86af5eaa.htm">Using a Stored Procedure with Input Parameters</a>.</p>
+    </content></div><h1 class="heading">Retrieving Parameters from a Stored Procedure</h1><div id="sectionSection5" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">If you have to retrieve parameters back from a stored procedure, you must first register an out parameter by name or index by using the <a href="82f8d608-efc1-4af8-a985-ec25d19420aa.htm">registerOutParameter</a> method of the <b>SQLServerCallableStatement</b> class, and then assign the returned out parameter to an appropriate variable after you run the call to the stored procedure. In the following example, the <b>prepareCall</b> method is used to set up the call to the stored procedure, the <b>registerOutParameter</b> method is used to set up the out parameter, and then the <a href="f38b97b5-d4f0-4f74-a33d-740241a85842.htm">setString</a> method is used to set the parameter for the call before <b>executeQuery</b> method is called. The value that is returned by the out parameter of the stored procedure is retrieved by using the <a href="9e3c51bc-7285-4f28-92c8-cfa05e49da9e.htm">getShort</a> method.</p>
+      <div class="sampleCode" xmlns=""><span codeLanguage="other"><pre>CallableStatement cstmt = con.prepareCall("{call employee_jobid (?, ?)}");
+Cstmt.registerOutParameter(2, java.sql.Types.SMALLINT);
+String lname = "Brown";
+cstmt.setString(1, lname);
+Resultset rs = cstmt.executeQuery();
+short empJobID = cstmt.getShort(2);
+rs.close();
+cstmt.close();
+</pre></span></div>
+      <div style="margin: .5em 1.5em .5em 1.5em" xmlns=""><b>Note: </b>
+        In addition to the returned out parameter, a result set might also be returned with the results of running the stored procedure.<p />
+      </div>
+      <p xmlns="">For more information about how to use the JDBC driver with stored procedures and output parameters, see <a href="1c006f27-7e99-43d5-974c-7b782659290c.htm">Using a Stored Procedure with Output Parameters</a>.</p>
+    </content></div><span id="seeAlsoSpan"><h1 class="heading">See Also</h1></span><div id="seeAlsoSection" class="section" name="collapseableSection"><a href="7802328d-4d23-4775-9573-4169b127d258.htm">Understanding the JDBC Driver Data Types</a><br /><br /></div><!--[if gte IE 5]>
+			<tool:tip element="seeAlsoToolTip" avoidmouse="false"/><tool:tip element="languageFilterToolTip" avoidmouse="false"/><tool:tip element="roleInfoSpan" avoidmouse="false"/>
+		<![endif]-->
+      <div id="footer" class="section">
+        
+		<hr />
+		
+		<span id="fb" class="feedbackcss">
+			
+			
+		</span>
+		
+		<a href="9bad553b-9e70-4696-8499-2e35f772a1e0.htm">
+			
+			© 2008 Microsoft Corporation. All rights reserved.
+		</a>
+ 	
+	
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,267 @@
+﻿<html DIR="LTR" xmlns:tool="http://www.microsoft.com/tooltip" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=utf-8" />
+    <META NAME="save" CONTENT="history" />
+    <title>Using SQL Escape Sequences</title>
+    
+    <link rel="stylesheet" type="text/css" href="../local/Classic.css">
+      
+    </link>
+    
+    <script src="../local/script.js">
+      
+    </script><script src="../local/script_main.js">&amp;nbsp;</script>
+  </head>
+  <body>
+    <!--Topic built:06/26/2008 22:42:43-->
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div id="header">
+      <table width="100%" id="topTable"><tr>
+          <td align="left">
+            <span id="headerBold">Using SQL Escape Sequences</span>
+          </td>
+          <td align="right">
+            
+          </td>
+        </tr></table>
+      
+      
+      
+    </div>
+    <div id="mainSection">
+      
+        
+        
+		<font color="DarkGray">[This topic is pre-release documentation and is subject to change in future releases. Blank topics are included as placeholders.] </font> <p /> <p />
+	
+        <div id="introductionSection" class="section">
+    <p>The Microsoft SQL Server 2005 JDBC Driver supports the use of SQL escape sequences, as defined by the JDBC API. Escape sequences are used within an SQL statement to tell the driver that the escaped part of the SQL string should be handled differently. When the JDBC driver processes the escaped part of an SQL string, it translates that part of the string into SQL code that SQL Server understands. </p>
+    <p>There are five types of escape sequences that the JDBC API requires, and all are supported by the JDBC driver:</p>
+    <ul><li>
+        LIKE wildcard literals<br />
+      </li><li>
+        Function handling<br />
+      </li><li>
+        Date and time literals<br />
+      </li><li>
+        Stored procedure calls<br />
+      </li><li>
+        Outer joins<br />
+      </li></ul>
+    <p>The escape sequence syntax used by the JDBC driver is the following: </p>
+    <p>
+      <code>{keyword ...parameters...}</code>
+    </p>
+    <div style="margin: .5em 1.5em .5em 1.5em"><b>Note: </b>
+      SQL escape processing is always turned on for the JDBC driver.<p />
+    </div>
+    <p>The following sections describe the five types of escape sequences and how they are supported by the JDBC driver.</p>
+  </div><h1 class="heading">LIKE Wildcard Literals</h1><div id="sectionSection0" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">The JDBC driver supports the <code>{escape 'escape character'}</code> syntax for using LIKE clause wildcards as literals. For example, the following code will return values for col3, where the value of col2 literally begins with an underscore (and not its wildcard usage).</p>
+      <div class="sampleCode" xmlns=""><span codeLanguage="other"><pre>ResultSet rst = stmt.executeQuery("SELECT col3 FROM test1 WHERE col2 
+LIKE '\\_%' {escape '\\'}");</pre></span></div>
+      <div style="margin: .5em 1.5em .5em 1.5em" xmlns=""><b>Note: </b>
+        The escape sequence must be at the end of the SQL statement. For multiple SQL statements in a command string, the escape sequence needs to be at the end of each relevant SQL statement.<p />
+      </div>
+    </content></div><h1 class="heading">Function Handling</h1><div id="sectionSection1" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">The JDBC driver supports function escape sequences in SQL statements with the following syntax:</p>
+      <div class="sampleCode" xmlns=""><span codeLanguage="other"><pre>{fn functionName}</pre></span></div>
+      <p xmlns="">where <code>functionName</code> is a function supported by the JDBC driver. For example:</p>
+      <div class="sampleCode" xmlns=""><span codeLanguage="other"><pre>SELECT {fn UCASE(Name)} FROM Employee</pre></span></div>
+      <p xmlns="">The following table lists the various functions that are supported by the JDBC driver when using a function escape sequence:</p>
+      <table width="100%" cellspacing="0" cellpadding="0" border="1" style="background-color: #CCCCCC;" xmlns=""><tr>
+            <th>
+              String Functions
+            </th>
+            <th>
+              Numeric Functions
+            </th>
+            <th>
+              Datetime Functions
+            </th>
+            <th>
+              System Functions
+            </th>
+          </tr><tr>
+          <td>
+            <p>ASCII</p>
+            <p>CHAR</p>
+            <p>CONCAT</p>
+            <p>DIFFERENCE</p>
+            <p>INSERT</p>
+            <p>LCASE</p>
+            <p>LEFT</p>
+            <p>LENGTH</p>
+            <p>LOCATE</p>
+            <p>LTRIM</p>
+            <p>REPEAT</p>
+            <p>REPLACE</p>
+            <p>RIGHT</p>
+            <p>RTRIM</p>
+            <p>SOUNDEX</p>
+            <p>SPACE</p>
+            <p>SUBSTRING</p>
+            <p>UCASE</p>
+          </td>
+          <td>
+            <p>ABS</p>
+            <p>ACOS</p>
+            <p>ASIN</p>
+            <p>ATAN</p>
+            <p>ATAN2</p>
+            <p>CEILING</p>
+            <p>COS</p>
+            <p>COT</p>
+            <p>DEGREES</p>
+            <p>EXP</p>
+            <p>FLOOR</p>
+            <p>LOG</p>
+            <p>LOG10</p>
+            <p>MOD</p>
+            <p>PI</p>
+            <p>POWER</p>
+            <p>RADIANS</p>
+            <p>RAND</p>
+            <p>ROUND</p>
+            <p>SIGN</p>
+            <p>SIN</p>
+            <p>SQRT</p>
+            <p>TAN</p>
+            <p>TRUNCATE</p>
+          </td>
+          <td>
+            <p>CURDATE</p>
+            <p>CURTIME</p>
+            <p>DAYNAME</p>
+            <p>DAYOFMONTH</p>
+            <p>DAYOFWEEK</p>
+            <p>DAYOFYEAR</p>
+            <p>EXTRACT</p>
+            <p>HOUR</p>
+            <p>MINUTE</p>
+            <p>MONTH</p>
+            <p>MONTHNAME</p>
+            <p>NOW</p>
+            <p>QUARTER</p>
+            <p>SECOND</p>
+            <p>TIMESTAMPADD</p>
+            <p>TIMESTAMPDIFF</p>
+            <p>WEEK</p>
+            <p>YEAR</p>
+          </td>
+          <td>
+            <p>DATABASE</p>
+            <p>IFNULL</p>
+            <p>USER</p>
+          </td>
+        </tr></table>
+      <div style="margin: .5em 1.5em .5em 1.5em" xmlns=""><b>Note: </b>
+        If you try to use a function that the database does not support, an error will occur.<p />
+      </div>
+    </content></div><h1 class="heading">Date and Time Literals</h1><div id="sectionSection2" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">The escape syntax for date, time, and timestamp literals is the following: </p>
+      <div class="sampleCode" xmlns=""><span codeLanguage="other"><pre>{literal-type 'value'}</pre></span></div>
+      <p xmlns="">where <code>literal-type</code> is one of the following:</p>
+      <table width="100%" cellspacing="0" cellpadding="0" border="1" style="background-color: #CCCCCC;" xmlns=""><tr>
+            <th>
+              Literal Type
+            </th>
+            <th>
+              Description
+            </th>
+            <th>
+              Value Format
+            </th>
+          </tr><tr>
+          <td>
+            <p>d</p>
+          </td>
+          <td>
+            <p>Date</p>
+          </td>
+          <td>
+            <p>yyyy-mm-dd</p>
+          </td>
+        </tr><tr>
+          <td>
+            <p>t</p>
+          </td>
+          <td>
+            <p>Time</p>
+          </td>
+          <td>
+            <p>hh:mm:ss [1]</p>
+          </td>
+        </tr><tr>
+          <td>
+            <p>ts</p>
+          </td>
+          <td>
+            <p>TimeStamp</p>
+          </td>
+          <td>
+            <p>yyyy-mm-dd hh:mm:ss[.f...]</p>
+          </td>
+        </tr></table>
+      <p xmlns="">For example:</p>
+      <div class="sampleCode" xmlns=""><span codeLanguage="other"><pre>UPDATE Orders SET OpenDate={d '2005-01-31'} 
+WHERE OrderID=1025</pre></span></div>
+    </content></div><h1 class="heading">Stored Procedure Calls</h1><div id="sectionSection3" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">The JDBC driver supports the <code>{? = call proc_name(?,...)}</code> and <code>{call proc_name(?,...)}</code> escape syntax for stored procedure calls, depending on whether you need to process a return parameter. </p>
+      <p xmlns="">A procedure is an executable object stored in the database. Generally, it is one or more SQL statements that have been precompiled. The escape sequence syntax for calling a stored procedure is the following: </p>
+      <div class="sampleCode" xmlns=""><span codeLanguage="other"><pre>{[?=]call procedure-name[([parameter][,[parameter]]...)]}</pre></span></div>
+      <p xmlns="">where <code>procedure-name</code> specifies the name of a stored procedure and <code>parameter</code> specifies a stored procedure parameter.</p>
+      <p xmlns="">For more information about using the <code>call</code> escape sequence with stored procedures, see <a href="0041f9e1-09b6-4487-b052-afd636c8e89a.htm">Using Statements with Stored Procedures</a>.</p>
+    </content></div><h1 class="heading">Outer Joins</h1><div id="sectionSection4" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">The JDBC driver supports the SQL92 left, right, and full outer join syntax. The escape sequence for outer joins is the following: </p>
+      <div class="sampleCode" xmlns=""><span codeLanguage="other"><pre>{oj outer-join}</pre></span></div>
+      <p xmlns="">where outer-join is:</p>
+      <div class="sampleCode" xmlns=""><span codeLanguage="other"><pre>table-reference {LEFT | RIGHT | FULL} OUTER JOIN  
+{table-reference | outer-join} ON search-condition</pre></span></div>
+      <p xmlns="">where <code>table-reference</code> is a table name and <code>search-condition</code> is the join condition you want to use for the tables.</p>
+      <p xmlns="">For example:</p>
+      <div class="sampleCode" xmlns=""><span codeLanguage="other"><pre>SELECT Customers.CustID, Customers.Name, Orders.OrderID, Orders.Status 
+   FROM {oj Customers LEFT OUTER JOIN 
+      Orders ON Customers.CustID=Orders.CustID} 
+   WHERE Orders.Status='OPEN'</pre></span></div>
+      <p xmlns="">The following outer join escape sequences are supported by the JDBC driver:</p>
+      <ul xmlns=""><li>
+          Left outer joins<br />
+        </li><li>
+          Right outer joins<br />
+        </li><li>
+          Full outer joins<br />
+        </li><li>
+          Nested outer joins<br />
+        </li></ul>
+    </content></div><span id="seeAlsoSpan"><h1 class="heading">See Also</h1></span><div id="seeAlsoSection" class="section" name="collapseableSection"><a href="7f8f3e8f-841e-4449-9154-b5366870121f.htm">Using Statements with the JDBC Driver</a><br /><br /></div><!--[if gte IE 5]>
+			<tool:tip element="seeAlsoToolTip" avoidmouse="false"/><tool:tip element="languageFilterToolTip" avoidmouse="false"/><tool:tip element="roleInfoSpan" avoidmouse="false"/>
+		<![endif]-->
+      <div id="footer" class="section">
+        
+		<hr />
+		
+		<span id="fb" class="feedbackcss">
+			
+			
+		</span>
+		
+		<a href="9bad553b-9e70-4696-8499-2e35f772a1e0.htm">
+			
+			© 2008 Microsoft Corporation. All rights reserved.
+		</a>
+ 	
+	
+      </div>
+    </div>
+  </body>
+</html>

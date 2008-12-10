@@ -1,0 +1,80 @@
+﻿<html DIR="LTR" xmlns:tool="http://www.microsoft.com/tooltip" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=utf-8" />
+    <META NAME="save" CONTENT="history" />
+    <title>getResponseBuffering Method (SQLServerStatement)</title>
+    
+    <link rel="stylesheet" type="text/css" href="../local/Classic.css">
+      
+    </link>
+    
+    <script src="../local/script.js">
+      
+    </script><script src="../local/script_main.js">&amp;nbsp;</script>
+  </head>
+  <body>
+    <!--Topic built:06/26/2008 22:42:43-->
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div id="header">
+      <table width="100%" id="topTable"><tr>
+          <td align="left">
+            <span id="headerBold">getResponseBuffering Method (SQLServerStatement)</span>
+          </td>
+          <td align="right">
+            
+          </td>
+        </tr></table>
+      
+      
+      
+    </div>
+    <div id="mainSection">
+      
+        
+        
+		<font color="DarkGray">[This topic is pre-release documentation and is subject to change in future releases. Blank topics are included as placeholders.] </font> <p /> <p />
+	
+        <div id="introductionSection" class="section">
+    <p>Retrieves the response buffering mode for this <a href="ec24963c-8b51-4838-91e9-1fbfa2347451.htm">SQLServerStatement</a> object.</p>
+  </div><h1 class="heading">Syntax</h1><div id="syntaxSection" class="section"><div class="sampleCode"><span codeLanguage="other"><pre>
+public final java.lang.String <b>getResponseBuffering</b>()</pre></span></div></div><h1 class="heading">Return Value</h1><div id="returnValueSection" class="section" name="collapseableSection">
+    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">A<b> String </b>that contains a lower-case <b>full</b> or <b>adaptive</b>. </p>
+    </content>
+  </div><h1 class="heading">Remarks</h1><div id="remarksSection" class="section" name="collapseableSection">
+    <content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">The <b>full</b> value specifies reading the entire result from the server at run time. The <b>full</b> value is the default behavior for the Microsoft SQL Server 2005 JDBC Driver version 1.2 or later and provides a backward compatibility with the Microsoft SQL Server 2005 JDBC Driver versions 1.0 and 1.1. </p>
+      <p xmlns="">The <b>adaptive</b> value specifies buffering the minimum possible data when necessary. The <b>adaptive</b> value is the preferred buffering mode for the Microsoft SQL Server 2005 JDBC Driver version 1.2 or later. </p>
+      <p xmlns="">For more information about using the response buffering mode, see <a href="92d4e3be-c3e9-4732-9a60-b57f4d0f7cb7.htm">Using Adaptive Buffering</a>.</p>
+    </content>
+  </div><span id="seeAlsoSpan"><h1 class="heading">See Also</h1></span><div id="seeAlsoSection" class="section" name="collapseableSection"><a href="9f489835-6cda-4c8c-b139-079639a169cf.htm">setResponseBuffering Method (SQLServerStatement)</a><br /><a href="ec24963c-8b51-4838-91e9-1fbfa2347451.htm">SQLServerStatement Class</a><br /><a href="de170a1a-fd06-4b70-8749-d86e2e0fb286.htm">SQLServerStatement Methods</a><br /><a href="828cbaa9-ea7a-4986-95c3-5ba0d7d01d83.htm">SQLServerStatement Members</a><br /><br /></div><!--[if gte IE 5]>
+			<tool:tip element="seeAlsoToolTip" avoidmouse="false"/><tool:tip element="languageFilterToolTip" avoidmouse="false"/><tool:tip element="roleInfoSpan" avoidmouse="false"/>
+		<![endif]-->
+      <div id="footer" class="section">
+        
+		<hr />
+		
+		<span id="fb" class="feedbackcss">
+			
+			
+		</span>
+		
+		<a href="9bad553b-9e70-4696-8499-2e35f772a1e0.htm">
+			
+			© 2008 Microsoft Corporation. All rights reserved.
+		</a>
+ 	
+	
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,110 @@
+﻿<html DIR="LTR" xmlns:tool="http://www.microsoft.com/tooltip" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=utf-8" />
+    <META NAME="save" CONTENT="history" />
+    <title>Using Multiple Result Sets</title>
+    
+    <link rel="stylesheet" type="text/css" href="../local/Classic.css">
+      
+    </link>
+    
+    <script src="../local/script.js">
+      
+    </script><script src="../local/script_main.js">&amp;nbsp;</script>
+  </head>
+  <body>
+    <!--Topic built:06/26/2008 22:42:43-->
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div id="header">
+      <table width="100%" id="topTable"><tr>
+          <td align="left">
+            <span id="headerBold">Using Multiple Result Sets</span>
+          </td>
+          <td align="right">
+            
+          </td>
+        </tr></table>
+      
+      
+      
+    </div>
+    <div id="mainSection">
+      
+        
+        
+		<font color="DarkGray">[This topic is pre-release documentation and is subject to change in future releases. Blank topics are included as placeholders.] </font> <p /> <p />
+	
+        <div id="introductionSection" class="section">
+    <p>When working with inline SQL or SQL Server stored procedures that return more than one result set, the Microsoft SQL Server 2005 JDBC Driver provides the <a href="929a14e2-8e98-4c32-89aa-86733c717ec1.htm">getResultSet</a> method in the <a href="ec24963c-8b51-4838-91e9-1fbfa2347451.htm">SQLServerStatement</a> class for retrieving each set of data returned. In addition, when running a statement that returns more than one result set, you can use the <a href="e1367f39-23d7-4e26-b160-6d988d7e6988.htm">execute</a> method of the <b>SQLServerStatement</b> class, because it will return a <b>boolean</b> value that indicates if the value returned is a result set or an update count. </p>
+    <p>If the <b>execute</b> method returns <b>true</b>, the statement that was run has returned one or more result sets. You can access the first result set by calling the <b>getResultSet</b> method. To determine if more result sets are available, you can call the <a href="6b18510a-4d6d-4eeb-a9d0-32e920eb0048.htm">getMoreResults</a> method, which returns a <b>boolean</b> value of <b>true</b> if more result sets are available. If more result sets are available, you can call the <b>getResultSet</b> method again to access them, continuing the process until all result sets have been processed. If the <b>getMoreResults</b> method returns <b>false</b>, there are no more result sets to process.</p>
+    <p>If the <b>execute</b> method returns <b>false</b>, the statement that was run has returned an update count value, which you can retrieve by calling the <a href="e9570228-4500-44b6-b2f1-84ac050b5112.htm">getUpdateCount</a> method.</p>
+    <div style="margin: .5em 1.5em .5em 1.5em"><b>Note: </b>
+      For more information about update counts, see <a href="64cf4877-5995-4bfc-8865-b7618a5c8d01.htm">Using a Stored Procedure with an Update Count</a>.<p />
+    </div>
+    <p>In the following example, an open connection to the SQL Server AdventureWorks sample database is passed in to the function, and an SQL statement is constructed that, when run, returns two result sets:</p>
+    <div class="sampleCode"><span codeLanguage="other"><pre>public static void executeStatement(Connection con) {
+   try {
+      String SQL = "SELECT TOP 10 * FROM Person.Contact; _" +
+                   "SELECT TOP 20 * FROM Person.Contact";
+      Statement stmt = con.createStatement();
+      boolean results = stmt.execute(SQL);
+      int rsCount = 0;
+
+      //Loop through the available result sets.
+     do {
+        if(results) {
+           ResultSet rs = stmt.getResultSet();
+           rsCount++;
+
+           //Show data from the result set.
+           System.out.println("RESULT SET #" + rsCount);
+           while (rs.next()) {
+              System.out.println(rs.getString("LastName") + ", " + rs.getString("FirstName"));
+           }
+           rs.close();
+        }
+        System.out.println();
+        results = stmt.getMoreResults();
+        } while(results);
+      stmt.close();
+      }
+   catch (Exception e) {
+      e.printStackTrace();
+   }
+}
+</pre></span></div>
+    <p>In this case, the number of result sets returned is known to be two. However, the code is written so that if an unknown number of result sets were returned, such as when calling a stored procedure, they would all be processed. To see an example of calling a stored procedure that returns multiple result sets along with update values, see <a href="6b807a45-a8b5-4b1c-8b7b-d8175c710ce0.htm">Handling Complex Statements</a>.</p>
+    <div style="margin: .5em 1.5em .5em 1.5em"><b>Note: </b>
+      When you make the call to the <b>getMoreResults</b> method of the <b>SQLServerStatement</b> class, the previously returned result set is implicitly closed.<p />
+    </div>
+  </div><span id="seeAlsoSpan"><h1 class="heading">See Also</h1></span><div id="seeAlsoSection" class="section" name="collapseableSection"><a href="7f8f3e8f-841e-4449-9154-b5366870121f.htm">Using Statements with the JDBC Driver</a><br /><br /></div><!--[if gte IE 5]>
+			<tool:tip element="seeAlsoToolTip" avoidmouse="false"/><tool:tip element="languageFilterToolTip" avoidmouse="false"/><tool:tip element="roleInfoSpan" avoidmouse="false"/>
+		<![endif]-->
+      <div id="footer" class="section">
+        
+		<hr />
+		
+		<span id="fb" class="feedbackcss">
+			
+			
+		</span>
+		
+		<a href="9bad553b-9e70-4696-8499-2e35f772a1e0.htm">
+			
+			© 2008 Microsoft Corporation. All rights reserved.
+		</a>
+ 	
+	
+      </div>
+    </div>
+  </body>
+</html>

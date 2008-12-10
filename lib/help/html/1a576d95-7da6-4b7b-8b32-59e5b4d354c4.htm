@@ -1,0 +1,93 @@
+﻿<html DIR="LTR" xmlns:tool="http://www.microsoft.com/tooltip" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=utf-8" />
+    <META NAME="save" CONTENT="history" />
+    <title>Performing Batch Operations</title>
+    
+    <link rel="stylesheet" type="text/css" href="../local/Classic.css">
+      
+    </link>
+    
+    <script src="../local/script.js">
+      
+    </script><script src="../local/script_main.js">&amp;nbsp;</script>
+  </head>
+  <body>
+    <!--Topic built:06/26/2008 22:42:43-->
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div id="header">
+      <table width="100%" id="topTable"><tr>
+          <td align="left">
+            <span id="headerBold">Performing Batch Operations</span>
+          </td>
+          <td align="right">
+            
+          </td>
+        </tr></table>
+      
+      
+      
+    </div>
+    <div id="mainSection">
+      
+        
+        
+		<font color="DarkGray">[This topic is pre-release documentation and is subject to change in future releases. Blank topics are included as placeholders.] </font> <p /> <p />
+	
+        <div id="introductionSection" class="section">
+    <p>To improve performance when multiple updates to a SQL Server database are occurring, the Microsoft SQL Server 2005 JDBC Driver provides the ability to submit multiple updates as a single unit of work, also referred to as a batch. </p>
+    <p>The <a href="ec24963c-8b51-4838-91e9-1fbfa2347451.htm">SQLServerStatement</a>, <a href="a8481c06-fbba-432b-8c69-4f4619c20ad4.htm">SQLServerPreparedStatement</a>, and <a href="30710a63-c05d-47d9-9cf9-c087a1c76373.htm">SQLServerCallableStatement</a> classes can all be used to submit batch updates. The <a href="134f1455-c98c-4112-ab2d-9205a0db73df.htm">addBatch</a> method is used to add a command. The <a href="6e5cda26-e24d-4637-8dfd-8135ba126e3b.htm">clearBatch</a> method is used to clear the list of commands. The <a href="fb034f63-2532-4da8-a1b0-bc125734585a.htm">executeBatch</a> method is used to submit all commands for processing. Only Data Definition Language (DDL) and Data Manipulation Language (DML) statements that return a simple update count can be run as part of a batch. </p>
+    <p>The <b>executeBatch</b> method returns an array of <b>int</b> values that correspond to the update count of each command. If one of the commands fails, a <b>BatchUpdateException</b> is thrown, and you should use the <b>getUpdateCounts</b> method of the <b>BatchUpdateException</b> class to retrieve the update count array. If a command fails, the driver continues processing the remaining commands. However, if a command has a syntax error, the statements in the batch fail.</p>
+    <div style="margin: .5em 1.5em .5em 1.5em"><b>Note: </b>
+      If you do not have to use update counts, you can first issue a SET NOCOUNT ON statement to SQL Server. This will reduce network traffic and additionally enhance the performance of your application.<p />
+    </div>
+    <p>As an example, create the following table in the SQL Server 2005 AdventureWorks sample database:</p>
+    <div class="sampleCode"><span codeLanguage="other"><pre>CREATE TABLE TestTable 
+   (Col1 int IDENTITY, 
+    Col2 varchar(50), 
+    Col3 int);</pre></span></div>
+    <p>In the following example, an open connection to the AdventureWorks sample database is passed in to the function, the <b>addBatch</b> method is used to create the statements to be executed, and the <b>executeBatch</b> method is called to submit the batch to the database.</p>
+    <div class="sampleCode"><span codeLanguage="other"><pre>public static void executeBatchUpdate(Connection con) {
+   try {
+      Statement stmt = con.createStatement();
+      stmt.addBatch("INSERT INTO TestTable (Col2, Col3) VALUES ('X', 100)");
+      stmt.addBatch("INSERT INTO TestTable (Col2, Col3) VALUES ('Y', 200)");
+      stmt.addBatch("INSERT INTO TestTable (Col2, Col3) VALUES ('Z', 300)");
+      int[] updateCounts = stmt.executeBatch();
+      stmt.close();
+   }
+   catch (Exception e) {
+      e.printStackTrace();
+   }
+}</pre></span></div>
+  </div><span id="seeAlsoSpan"><h1 class="heading">See Also</h1></span><div id="seeAlsoSection" class="section" name="collapseableSection"><a href="7f8f3e8f-841e-4449-9154-b5366870121f.htm">Using Statements with the JDBC Driver</a><br /><br /></div><!--[if gte IE 5]>
+			<tool:tip element="seeAlsoToolTip" avoidmouse="false"/><tool:tip element="languageFilterToolTip" avoidmouse="false"/><tool:tip element="roleInfoSpan" avoidmouse="false"/>
+		<![endif]-->
+      <div id="footer" class="section">
+        
+		<hr />
+		
+		<span id="fb" class="feedbackcss">
+			
+			
+		</span>
+		
+		<a href="9bad553b-9e70-4696-8499-2e35f772a1e0.htm">
+			
+			© 2008 Microsoft Corporation. All rights reserved.
+		</a>
+ 	
+	
+      </div>
+    </div>
+  </body>
+</html>

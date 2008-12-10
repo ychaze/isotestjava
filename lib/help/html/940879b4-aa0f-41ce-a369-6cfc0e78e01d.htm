@@ -1,0 +1,99 @@
+﻿<html DIR="LTR" xmlns:tool="http://www.microsoft.com/tooltip" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=utf-8" />
+    <META NAME="save" CONTENT="history" />
+    <title>Application Security</title>
+    
+    <link rel="stylesheet" type="text/css" href="../local/Classic.css">
+      
+    </link>
+    
+    <script src="../local/script.js">
+      
+    </script><script src="../local/script_main.js">&amp;nbsp;</script>
+  </head>
+  <body>
+    <!--Topic built:06/26/2008 22:42:43-->
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div id="header">
+      <table width="100%" id="topTable"><tr>
+          <td align="left">
+            <span id="headerBold">Application Security</span>
+          </td>
+          <td align="right">
+            
+          </td>
+        </tr></table>
+      
+      
+      
+    </div>
+    <div id="mainSection">
+      
+        
+        
+		<font color="DarkGray">[This topic is pre-release documentation and is subject to change in future releases. Blank topics are included as placeholders.] </font> <p /> <p />
+	
+        <div id="introductionSection" class="section">
+    <p>When you use the Microsoft SQL Server 2005 JDBC Driver, it is important to take precautions to ensure the security of your application. The following sections provide information regarding steps you can take to help secure your application. </p>
+  </div><h1 class="heading">Using Java Policy Permissions</h1><div id="sectionSection0" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">When you use the Microsoft SQL Server 2005 JDBC Driver, it is important to specify the required Java policy permissions that the JDBC driver requires. The Java Runtime Environment (JRE) provides an extensive security model that you can use at runtime to determine whether a thread has access to a resource. Security policy files can control this access. The policy files themselves are managed by the deployer and the sysadmin for the container, but the permissions listed in this topic are those that affect the functioning of the JDBC driver.</p>
+      <p xmlns="">A typical permission in the policy file looks like the following.</p>
+      <div class="sampleCode" xmlns=""><span codeLanguage="other"><pre>// Example policy file entry.
+grant [signedBy &lt;signer&gt;,] [codeBase &lt;code source&gt;] {
+   permission  &lt;class&gt;  [&lt;name&gt; [, &lt;action list&gt;]];
+};</pre></span></div>
+      <p xmlns="">The following codebase should be restricted to the JDBC driver codebase to ensure that you grant the least amount of privileges.</p>
+      <div class="sampleCode" xmlns=""><span codeLanguage="other"><pre>grant codeBase "file:/install_dir/lib/-" {
+
+// Grant access to data source.
+permission java.util.PropertyPermission "java.naming.*", "read,write";
+
+// Specify which hosts can be connected to.
+permission java.net.socketPermission "host:port", "connect";
+
+// Logger permission to take advantage of logging.
+permission java.util.logging.LoggingPermission;
+
+// Grant listen/connect/accept permissions to the driver if 
+// connecting to a named instance as the client driver. 
+// This connects to a udp service and listens for a response.
+permission java.net.SocketPermission "*", "listen, connect, accept"; 
+}; </pre></span></div>
+      <div style="margin: .5em 1.5em .5em 1.5em" xmlns=""><b>Note: </b>
+        The code "file:/install_dir/lib/-" refers to the installation directory of the JDBC driver.<p />
+      </div>
+    </content></div><h1 class="heading">Protecting Server Communication</h1><div id="sectionSection1" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">When you use the JDBC driver to communicate with a SQL Server database, you can secure the communication channel by using either Internet Protocol Security (IPSEC) or Secure Sockets Layer (SSL); or you can use both. </p>
+      <p xmlns="">SSL support is introduced in the Microsoft SQL Server 2005 JDBC Driver version 1.2 and it can be used to provide an additional level of protection besides IPSEC. For more information about using SSL, see <a href="8e566243-2f93-4b21-8065-3c8336649309.htm">Using SSL Encryption</a>.</p>
+    </content></div><span id="seeAlsoSpan"><h1 class="heading">See Also</h1></span><div id="seeAlsoSection" class="section" name="collapseableSection"><a href="90724ec6-a9cb-43ef-903e-793f89410bc0.htm">Securing JDBC Driver Applications</a><br /><br /></div><!--[if gte IE 5]>
+			<tool:tip element="seeAlsoToolTip" avoidmouse="false"/><tool:tip element="languageFilterToolTip" avoidmouse="false"/><tool:tip element="roleInfoSpan" avoidmouse="false"/>
+		<![endif]-->
+      <div id="footer" class="section">
+        
+		<hr />
+		
+		<span id="fb" class="feedbackcss">
+			
+			
+		</span>
+		
+		<a href="9bad553b-9e70-4696-8499-2e35f772a1e0.htm">
+			
+			© 2008 Microsoft Corporation. All rights reserved.
+		</a>
+ 	
+	
+      </div>
+    </div>
+  </body>
+</html>

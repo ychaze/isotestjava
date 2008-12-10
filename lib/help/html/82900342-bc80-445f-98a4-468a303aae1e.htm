@@ -1,0 +1,72 @@
+﻿<html DIR="LTR" xmlns:tool="http://www.microsoft.com/tooltip" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=utf-8" />
+    <META NAME="save" CONTENT="history" />
+    <title>Managing Transaction Size</title>
+    
+    <link rel="stylesheet" type="text/css" href="../local/Classic.css">
+      
+    </link>
+    
+    <script src="../local/script.js">
+      
+    </script><script src="../local/script_main.js">&amp;nbsp;</script>
+  </head>
+  <body>
+    <!--Topic built:06/26/2008 22:42:43-->
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div id="header">
+      <table width="100%" id="topTable"><tr>
+          <td align="left">
+            <span id="headerBold">Managing Transaction Size</span>
+          </td>
+          <td align="right">
+            
+          </td>
+        </tr></table>
+      
+      
+      
+    </div>
+    <div id="mainSection">
+      
+        
+        
+		<font color="DarkGray">[This topic is pre-release documentation and is subject to change in future releases. Blank topics are included as placeholders.] </font> <p /> <p />
+	
+        <div id="introductionSection" class="section">
+    <p>When you work with transactions, it is important to keep your transactions as brief as possible. The default mode of auto-commit, which you can enable or disable by using the <a href="db1e22d2-e53f-474e-8c99-cb1fff7f491a.htm">setAutoCommit</a> method, will commit every action for you. This is the easiest mode to work with for most developers. </p>
+    <p>When you use manual transactions, make sure that your code commits the transaction as quickly as possible. Holding open a transaction blocks other users from accessing the data. For example, a good programming practice might be to put a rollback call in your catch block and a commit call in the finally block. However, this depends on the design of your application. </p>
+    <p>Keeping the size of your transactions small creates better concurrency. For example, if you start a manual transaction and modify 10,000 rows in a 20,000-row table, you will have half the table completely blocked from all other users, even if they are only reading the data. Reducing your modifications to 2,000 rows leaves 90 percent of the table available.</p>
+    <p>Additionally, be sure to use the lock time out setting if your application expects some blocking issues and needs to time out from these. You can do this by using the <a href="10dca5aa-1851-4326-9ae9-7a8430d12d11.htm">setLockTimeout</a> method. The default for the lock time out is -1, which means that it will block indefinitely while waiting for the lock. You can set the lock time out to 30 seconds, which will cause the blocked connection to time out in 30 seconds if blocked by another connection.</p>
+  </div><span id="seeAlsoSpan"><h1 class="heading">See Also</h1></span><div id="seeAlsoSection" class="section" name="collapseableSection"><a href="e1592499-b87b-45ee-bab8-beaba8fde841.htm">Improving Performance and Reliability with the JDBC Driver</a><br /><br /></div><!--[if gte IE 5]>
+			<tool:tip element="seeAlsoToolTip" avoidmouse="false"/><tool:tip element="languageFilterToolTip" avoidmouse="false"/><tool:tip element="roleInfoSpan" avoidmouse="false"/>
+		<![endif]-->
+      <div id="footer" class="section">
+        
+		<hr />
+		
+		<span id="fb" class="feedbackcss">
+			
+			
+		</span>
+		
+		<a href="9bad553b-9e70-4696-8499-2e35f772a1e0.htm">
+			
+			© 2008 Microsoft Corporation. All rights reserved.
+		</a>
+ 	
+	
+      </div>
+    </div>
+  </body>
+</html>

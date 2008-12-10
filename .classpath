@@ -36,5 +36,8 @@
 	<classpathentry kind="lib" path="/Polytemp/WebContent/WEB-INF/lib/slf4j-api-1.5.5.jar"/>
 	<classpathentry kind="lib" path="/Polytemp/WebContent/WEB-INF/lib/slf4j-jdk14-1.5.5.jar"/>
 	<classpathentry kind="lib" path="/Polytemp/WebContent/WEB-INF/lib/xalan.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.7-bin.jar"/>
+	<classpathentry kind="lib" path="lib/sqljdbc4.jar"/>
+	<classpathentry kind="lib" path="lib/sqljdbc.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

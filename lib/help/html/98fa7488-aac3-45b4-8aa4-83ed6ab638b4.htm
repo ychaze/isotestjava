@@ -1,0 +1,99 @@
+﻿<html DIR="LTR" xmlns:tool="http://www.microsoft.com/tooltip" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=utf-8" />
+    <META NAME="save" CONTENT="history" />
+    <title>Understanding Data Type Conversions</title>
+    
+    <link rel="stylesheet" type="text/css" href="../local/Classic.css">
+      
+    </link>
+    
+    <script src="../local/script.js">
+      
+    </script><script src="../local/script_main.js">&amp;nbsp;</script>
+  </head>
+  <body>
+    <!--Topic built:06/26/2008 22:42:43-->
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div id="header">
+      <table width="100%" id="topTable"><tr>
+          <td align="left">
+            <span id="headerBold">Understanding Data Type Conversions</span>
+          </td>
+          <td align="right">
+            
+          </td>
+        </tr></table>
+      
+      
+      
+    </div>
+    <div id="mainSection">
+      
+        
+        
+		<font color="DarkGray">[This topic is pre-release documentation and is subject to change in future releases. Blank topics are included as placeholders.] </font> <p /> <p />
+	
+        <div id="introductionSection" class="section">
+    <p>To facilitate the conversion of Java programming language data types to SQL Server data types, the Microsoft SQL Server 2005 JDBC Driver provides data type conversions as required by the JDBC specification. For added flexibility, all types are convertible to and from <b>Object</b>, <b>String</b>, and <b>byte[]</b> data types. </p>
+  </div><h1 class="heading">Getter Method Conversions</h1><div id="sectionSection0" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">Based on the SQL Server 2005 data types, the following chart contains the JDBC driver’s conversion map for the <b>get&lt;Type&gt;</b> methods of the <a href="eaffcff1-286c-459f-83da-3150778480c9.htm">SQLServerResultSet</a> class, and the supported conversions for the <b>get&lt;Type&gt;</b> methods of the <a href="30710a63-c05d-47d9-9cf9-c087a1c76373.htm">SQLServerCallableStatement</a> class.</p>
+      <div xmlns=""><img src="../local/a01384f7-3912-4a57-beca-eb876955c6f6.gif" target="_blank" alt="JDBCGetterConversions" /></div>
+      <p xmlns="">There are three basic categories of conversions that are supported by the JDBC driver’s getter methods:</p>
+      <ul xmlns=""><li>
+          
+            <b>Non-Lossy (x)</b>: Conversions for cases where the getter type is the same or smaller than the underlying server type. For example, when calling <b>getBigDecimal</b> on an underlying server decimal column, no conversion is necessary.<br />
+        </li><li>
+          
+            <b>Converted (y)</b>: Conversions from numeric server types to Java language types where the conversion is regular and follows Java language conversion rules. For these conversions, precision is always truncated—never rounded—and overflow is handled as modulo of the destination type, which is smaller. For example, calling <b>getInt</b> on an underlying <b>decimal</b> column that contains "1.9999" will return "1", or if the underlying <b>decimal</b> value is "3000000000" then the <b>int</b> value overflows to "-1294967296".<br />
+        </li><li>
+          
+            <b>Data Dependent (z)</b>: Conversions from underlying character types to numeric types require that the character types contain values that can be converted into that type. No other conversions are performed. If the value is too large for the getter type, the value is not valid. For example, if <b>getInt</b> is called on a varchar(50) column that contains "53", the value is returned as an <b>int</b>; but if the underlying value is "xyz" or "3000000000", an error is thrown.<br />
+        </li></ul>
+    </content></div><h1 class="heading">Setter Method Conversions</h1><div id="sectionSection1" class="section"><content xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+      <p xmlns="">For the Java typed data passed to the <b>update&lt;Type&gt;</b> methods of the <b>SQLServerResultSet</b> class, and the <b>setObject&lt;Type&gt;</b> methods of the <a href="a8481c06-fbba-432b-8c69-4f4619c20ad4.htm">SQLServerPreparedStatement</a> class, the following conversions apply. </p>
+      <div xmlns=""><img src="../local/b8fd33af-de65-4fcb-a0da-cd6bfa73f32a.gif" target="_blank" alt="JDBCSetterConversions" /></div>
+      <p xmlns="">The <b>setObject</b> method with no specified target type will use the default mapping. The typed setters for parameters, the <b>set&lt;Type&gt;</b> methods of the <b>SQLServerPreparedStatement</b> class, and the <b>set&lt;Type&gt;</b> methods of the <b>SQLServerCallableStatement</b> class also use the default Java to JDBC type mapping, and will pass that type to the server. The server will try any conversions and return errors on failure.</p>
+      <p xmlns="">In the case of the <b>String</b> data type, if the value exceeds the length of <b>VARCHAR</b>, it maps to <b>LONGVARCHAR</b>. Similarly, <b>NVARCHAR</b> will map to <b>LONGNVARCHAR</b> if the value exceeds the supported length of <b>NVARCHAR</b>. The same is true for <b>byte[]</b>. Values longer than <b>VARBINARY</b> become <b>LONGVARBINARY</b>.</p>
+      <p xmlns="">There are two basic categories of conversions that are supported by the JDBC driver’s setter methods:</p>
+      <ul xmlns=""><li>
+          
+            <b>Non-Lossy (x)</b>: Conversions for numeric cases where the setter type is the same or smaller than the underlying server type. For example, when calling <b>setBigDecimal</b> on an underlying server <b>decimal</b> column, no conversion is necessary. For numeric to character cases, the Java <b>numeric</b> data type is converted to a <b>String</b>. For example, calling <b>setDouble</b> with a value of "53" on a varchar(50) column will produce a character value "53" in that destination column.<br />
+        </li><li>
+          
+            <b>Converted (y)</b>: Conversions from a Java <b>numeric</b> type to an underlying server <b>numeric</b> type that is smaller. This conversion is regular and follows SQL Server conversion conventions. Precision is always truncated—never rounded—and overflow throws an unsupported conversion error. For example, using <b>updateDecimal</b> with a value of "1.9999" on an underlying integer column will result in a "1" in the destination column; but if "3000000000" is passed, the driver will throw an error.<br />
+        </li></ul>
+      <p xmlns="">
+        SQL Server performs the bulk of the set and update conversions and will pass errors back to the JDBC driver when there are problems. Client-side conversions are the exception and are performed only in the case of <b>date</b>, <b>time</b>, <b>timestamp</b>, <b>Boolean</b>, and <b>String</b> values.</p>
+      <p xmlns="">In the case of <b>updateObject</b> and <b>setObject</b>, the methods look up the type of the passed object and make the call to the appropriately typed setter method.</p>
+    </content></div><span id="seeAlsoSpan"><h1 class="heading">See Also</h1></span><div id="seeAlsoSection" class="section" name="collapseableSection"><a href="7802328d-4d23-4775-9573-4169b127d258.htm">Understanding the JDBC Driver Data Types</a><br /><br /></div><!--[if gte IE 5]>
+			<tool:tip element="seeAlsoToolTip" avoidmouse="false"/><tool:tip element="languageFilterToolTip" avoidmouse="false"/><tool:tip element="roleInfoSpan" avoidmouse="false"/>
+		<![endif]-->
+      <div id="footer" class="section">
+        
+		<hr />
+		
+		<span id="fb" class="feedbackcss">
+			
+			
+		</span>
+		
+		<a href="9bad553b-9e70-4696-8499-2e35f772a1e0.htm">
+			
+			© 2008 Microsoft Corporation. All rights reserved.
+		</a>
+ 	
+	
+      </div>
+    </div>
+  </body>
+</html>
