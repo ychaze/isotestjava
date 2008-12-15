@@ -21,7 +21,6 @@ public class DataSourceHandler implements IMessageHandler {
 			st = (String)message.getData();
 			String[] values = st.split("##");
 			ds = DataSourceFactory.createDS(values[3], values[0], values[1], Integer.decode(values[2]));
-			System.out.println(message.getSourceType());
 			if(message.getSourceType() !=null){
 				JdbcTemplate t = new JdbcTemplate(ds);
 				if(message.getSourceType().compareTo("getDBSqlServer")==0){
