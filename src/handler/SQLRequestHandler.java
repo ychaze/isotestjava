@@ -5,6 +5,8 @@ import java.util.logging.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
+import util.DataSourceFactory;
+
 import java.util.List;
 
 import merapi.Bridge;
@@ -18,8 +20,12 @@ public class SQLRequestHandler implements IMessageHandler {
 	
 	@Override
 	public void handleMessage(IMessage message) {
-		String request = new String();
-		request = (String)message.getData();
+		
+		String st = (String)message.getData();
+		String[] values = st.split("##");
+		ds = DataSourceFactory.createDS(values[3], values[0], values[1], Integer.decode(values[2]));
+		String request = values[4];
+		
 		Logger.getAnonymousLogger().info(request);
 		JdbcTemplate t = new JdbcTemplate(ds);
 		try {

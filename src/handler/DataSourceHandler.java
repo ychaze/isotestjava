@@ -60,10 +60,7 @@ public class DataSourceHandler implements IMessageHandler {
 		Message m;
 		boolean b=true;
 		try {
-				ds.getConnection();
-				synchronized(this){
-					notify();
-				}
+			ds.getConnection();
 		} catch (SQLException e) {
 			m = new Message ("testBase",null,"ERROR : "+e.getMessage());
 			try {

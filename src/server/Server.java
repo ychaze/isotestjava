@@ -14,22 +14,7 @@ public class Server {
 		Logger.getAnonymousLogger().info("Registrering a new data source handler");
 		Bridge.getInstance().registerMessageHandler("dataSource",dsh);
 		Bridge.getInstance().registerMessageHandler("sqlRequest", sqlrh);
-		waitForDS();
-
 	}
-	private void waitForDS(){
-		try {
-			synchronized(dsh){
-				dsh.wait();
-			}
-			Logger.getAnonymousLogger().info(dsh.getDs().toString());
-			sqlrh.setDs(dsh.getDs());
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	
 	
 	public static void main(String[] args) {
 		new Server();
