@@ -11,5 +11,7 @@
 	<classpathentry kind="lib" path="lib/sqljdbc4.jar"/>
 	<classpathentry kind="lib" path="lib/ojdbc14(2).jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.15.jar"/>
+	<classpathentry kind="lib" path="src/log4j.properties"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
