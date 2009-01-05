@@ -17,5 +17,10 @@
 	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.15.jar"/>
 	<classpathentry kind="lib" path="src/log4j.properties"/>
+	<classpathentry kind="lib" path="lib/javacsv.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/D:/Devel/ws/IsoTestJava/doc/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -29,7 +29,7 @@ public class Server {
 		//Start the air application
 		
 		//Get the os name
-		
+			/*
 		String os = System.getProperty("os.name");
 		System.out.println(os);
 		Runtime runtime = Runtime.getRuntime();
@@ -53,6 +53,6 @@ public class Server {
 			}
 			} catch (IOException e) {
 				e.printStackTrace();
-			}
+			}*/
 	}
 }

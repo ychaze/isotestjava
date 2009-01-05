@@ -24,9 +24,13 @@ public class DataSourceHandler implements IMessageHandler {
 		try{
 			st = (String)message.getData();
 			String[] values = st.split("##");
+			// SPLIT INFOS
 			ds = DataSourceFactory.createDS(values[3], values[0], values[1], Integer.decode(values[2]));
+			
+			// GET DB TYPE 
 			if(message.getSourceType() !=null){
 				JdbcTemplate t = new JdbcTemplate(ds);
+				// SQL SERVER: GET DBs
 				if(message.getSourceType().compareTo("getDBSqlServer")==0){
 					if (testBase()){
 						List l = null;
@@ -34,11 +38,20 @@ public class DataSourceHandler implements IMessageHandler {
 						Bridge.getInstance().sendMessage(new Message("DBSqlServer",null,l));
 					}
 				}
+				// MYSQL: GET DBs
 				else if(message.getSourceType().compareTo("getDBMySql")==0){
 					if (testBase()){
 						List l = null;
 						l = t.queryForList("show databases");
 						Bridge.getInstance().sendMessage(new Message("DBMySql",null,l));
+					}
+				}
+				// POSTGRE: GET DBs
+				else if(message.getSourceType().compareTo("getDBPostgre")==0){
+					if (testBase()){
+						List l = null;
+						l = t.queryForList("show databases");
+						Bridge.getInstance().sendMessage(new Message("DBPostgre",null,l));
 					}
 				}
 			}

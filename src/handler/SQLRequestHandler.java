@@ -51,6 +51,13 @@ public class SQLRequestHandler implements IMessageHandler {
 			sqlreqTH.stop();
 			logger.debug("STOPPING THREAD : "+sqlreqTH.isInterrupted());
 			sqlreqTH=null;
+			try {
+				Bridge.getInstance().sendMessage(
+						new Message("sqlInfo", null, "Query canceled !"));
+			} catch (Exception e1) {
+				e1.printStackTrace();
+				logger.error(e1.getMessage());
+			}
 		}
 	}
 }
