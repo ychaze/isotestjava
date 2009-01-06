@@ -1,11 +1,7 @@
 package util;
 
-import handler.SQLRequestHandler;
 
 import java.util.List;
-
-import merapi.Bridge;
-import merapi.messages.Message;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -32,17 +28,15 @@ public class SqlRequestThread extends Thread {
 		try {
 			l = (List) t.queryForList(request);
 			try {
-				Bridge.getInstance().sendMessage(
-						new Message("sqlInfo", null, "Operation successful"));
+				Messenger.sendMessage("sqlInfo", null, "Operation successful");
 			} catch (Exception e1) {
 				e1.printStackTrace();
 				logger.error(e1.getMessage());
 			}
 		} catch (Exception e) {
 			try {
-				Bridge.getInstance().sendMessage(
-						new Message("sqlInfo", null, "ERROR : "
-								+ e.getMessage()));
+				Messenger.sendMessage("sqlInfo", null, "ERROR : "
+								+ e.getMessage());
 			} catch (Exception e1) {
 				e1.printStackTrace();
 				logger.error(e1.getMessage());
@@ -52,8 +46,7 @@ public class SqlRequestThread extends Thread {
 		// SEND LIST ---------------
 		if (l != null) {
 			try {
-				Bridge.getInstance().sendMessage(
-						new Message("sqlResult", null, l));
+				Messenger.sendMessage("sqlResult", null, l);
 			} catch (Exception e) {
 				e.printStackTrace();
 				logger.error(e.getMessage());

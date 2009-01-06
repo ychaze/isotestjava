@@ -9,64 +9,58 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import util.DataSourceFactory;
+import util.Messenger;
 
-import merapi.messages.IMessage;
-import merapi.messages.IMessageHandler;
-import merapi.messages.Message;
-import merapi.Bridge;;
-
-public class DataSourceHandler implements IMessageHandler {
+public class DataSourceManager {
 	private DriverManagerDataSource ds = new DriverManagerDataSource();
-	private final Log logger = LogFactory.getLog(DataSourceHandler.class);
-	public void handleMessage(IMessage message) {
+	private final Log logger = LogFactory.getLog(DataSourceManager.class);
+	
+	
+	public void process(String type, String sourceType, String data) {
 		logger.debug("Handling DataSource infos...");
-		String st = new String();
 		try{
-			st = (String)message.getData();
-			String[] values = st.split("##");
+			String[] values = data.split("##");
 			// SPLIT INFOS
 			ds = DataSourceFactory.createDS(values[3], values[0], values[1], Integer.decode(values[2]));
-			
 			// GET DB TYPE 
-			if(message.getSourceType() !=null){
+			if(sourceType != null){
 				JdbcTemplate t = new JdbcTemplate(ds);
 				// SQL SERVER: GET DBs
-				if(message.getSourceType().compareTo("getDBSqlServer")==0){
+				if(sourceType.compareTo("getDBSqlServer")==0){
 					if (testBase()){
 						List l = null;
 						l = t.queryForList("SELECT NAME FROM SYS.DATABASES");
-						Bridge.getInstance().sendMessage(new Message("DBSqlServer",null,l));
+						Messenger.sendMessage("DBSqlServer", null, l);
 					}
 				}
 				// MYSQL: GET DBs
-				else if(message.getSourceType().compareTo("getDBMySql")==0){
+				else if(sourceType.compareTo("getDBMySql")==0){
 					if (testBase()){
 						List l = null;
 						l = t.queryForList("show databases");
-						Bridge.getInstance().sendMessage(new Message("DBMySql",null,l));
+						Messenger.sendMessage("DBMySql", null, l);
 					}
 				}
 				// POSTGRE: GET DBs
-				else if(message.getSourceType().compareTo("getDBPostgre")==0){
+				else if(sourceType.compareTo("getDBPostgre")==0){
 					if (testBase()){
 						List l = null;
-						l = t.queryForList("show databases");
-						Bridge.getInstance().sendMessage(new Message("DBPostgre",null,l));
+						l = t.queryForList("select datname from pg_database");
+						Messenger.sendMessage("DBPostgre", null, l);
 					}
 				}
 			}
 			else{
-				Bridge.getInstance().sendMessage(new Message("testBase",null,"Trying to connect to the DB..."));
+				Messenger.sendMessage("testBase", null, "Trying to connect to the DB...");
 				if(testBase()){
-					Bridge.getInstance().sendMessage(new Message ("testBase",null,"Succes"));
+					Messenger.sendMessage("testBase", null, "Succes");
 				}
 			}
 			
 		}catch(Exception e){
-			Message m = new Message ("testBase",null,e.getMessage());
 			logger.error(e.getMessage());
 			try {
-				Bridge.getInstance().sendMessage(m);
+				Messenger.sendMessage("testBase",null,e.getMessage());
 			} catch (Exception e2) {
 				e2.printStackTrace();
 				logger.error(e2.getMessage());
@@ -75,17 +69,15 @@ public class DataSourceHandler implements IMessageHandler {
 	}
 	
 	private boolean testBase(){
-		Message m;
 		boolean b=true;
 		logger.info("Testing DB connection...");
 		try {
 			ds.getConnection();
 		} catch (SQLException e) {
-			m = new Message ("testBase",null,"ERROR : "+e.getMessage());
 			logger.error(e.getMessage());
 			try {
-				Bridge.getInstance().sendMessage(m);
-				Logger.getAnonymousLogger().info(m.getData().toString());
+				Messenger.sendMessage("testBase",null,"ERROR : "+e.getMessage());
+				Logger.getAnonymousLogger().info(e.getMessage().toString());
 			} catch (Exception e2) {
 				e2.printStackTrace();
 				logger.error(e2.getMessage());

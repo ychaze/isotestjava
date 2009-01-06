@@ -1,25 +1,19 @@
 package server;
 
-import handler.DataSourceHandler;
-import handler.SQLRequestHandler;
-
-import java.io.IOException;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import merapi.Bridge;
+import util.Messenger;
 
 public class Server {
-	private DataSourceHandler dsh = new DataSourceHandler();
-	private SQLRequestHandler sqlrh = new SQLRequestHandler();
+	private Messenger messenger = new Messenger();
 	private final Log logger = LogFactory.getLog(Server.class);
 	public Server(){
 		logger.info("Starting Java Server for PaperBoy...");
 		logger.info("Registrering a new data source handler");
-		Bridge.getInstance().registerMessageHandler("dataSource",dsh);
+		messenger.registerHandler("dataSource");
 		logger.info("Registrering a new SQL Request handler");
-		Bridge.getInstance().registerMessageHandler("sqlRequest", sqlrh);
+		messenger.registerHandler("sqlRequest");
 	}
 	
 	public static void main(String[] args) {
