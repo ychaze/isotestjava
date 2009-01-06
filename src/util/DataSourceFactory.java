@@ -20,7 +20,14 @@ public class DataSourceFactory {
 		case 3:
 			ds.setDriverClassName("com.mysql.jdbc.Driver");
 			break;
+		case 4:
+			ds.setDriverClassName("org.postgresql.Driver");
+			break;
+		case 5:
+			ds.setDriverClassName("com.ibm.db2.jcc.DB2Driver");
+			break;
 		}
+		
 		ds.setPassword(pass);
 		ds.setUsername(user);
 		ds.setUrl(url);
