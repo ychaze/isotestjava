@@ -19,6 +19,7 @@ public class DataSourceManager {
 	public void process(String type, String sourceType, String data) {
 		logger.debug("Handling DataSource infos...");
 		try{
+			System.out.println(data);
 			String[] values = data.split("##");
 			// SPLIT INFOS
 			ds = DataSourceFactory.createDS(values[3], values[0], values[1], Integer.decode(values[2]));
@@ -46,7 +47,7 @@ public class DataSourceManager {
 					if (testBase()){
 						List l = null;
 						l = t.queryForList("select datname from pg_database");
-						Messenger.sendMessage("DBPostgre", null, l);
+						Messenger.sendMessage("DBPostgreSql", null, l);
 					}
 				}
 			}
