@@ -17,6 +17,7 @@ public class SQLRequestManager  {
 		if(sourceType.compareTo("request")==0 ){
 			// HANDLE SQL REQUEST ----------
 			logger.debug("Handling SQL request...");
+			System.out.println(data);
 			String[] values = data.split("##");
 			DriverManagerDataSource ds = DataSourceFactory.createDS(values[3],
 					values[0], values[1], Integer.decode(values[2]));

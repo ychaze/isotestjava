@@ -22,5 +22,7 @@
 			<attribute name="javadoc_location" value="file:/D:/Devel/ws/IsoTestJava/doc/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/jxl.jar"/>
+	<classpathentry kind="lib" path="lib/postgresql-8.3-604.jdbc3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
