@@ -15,6 +15,12 @@ public class Messenger implements IMessageHandler {
 	// Envoie un message sans devoir détenir un objet
 	public static void sendMessage(String type, String sourceType,Object message) throws Exception{
 			try {
+				//TODO DECOUPAGE EN SEGMENTS ---------------
+				
+				
+				
+				
+				// -----------------------------------------
 				Bridge.getInstance().sendMessage(new Message(type, sourceType, message));
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
