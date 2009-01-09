@@ -13,7 +13,11 @@ public class Server {
 		logger.info("Registrering a new data source handler");
 		messenger.registerHandler("dataSource");
 		logger.info("Registrering a new SQL Request handler");
-		messenger.registerHandler("sqlRequest");
+		messenger.registerHandler("sqlRequest_request");
+		messenger.registerHandler("dataSource_getDBSqlServer");
+		messenger.registerHandler("dataSource_getDBMySql");
+		messenger.registerHandler("dataSource_getDBPostgre");
+		messenger.registerHandler("sqlRequest_cancel");
 	}
 	
 	public static void main(String[] args) {
