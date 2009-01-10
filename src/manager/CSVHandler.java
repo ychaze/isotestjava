@@ -1,4 +1,4 @@
-package handler;
+package manager;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

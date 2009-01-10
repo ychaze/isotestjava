@@ -1,7 +1,7 @@
 package util;
 
-import handler.DataSourceManager;
-import handler.SQLRequestManager;
+import manager.DataSourceManager;
+import manager.SQLRequestManager;
 import merapi.Bridge;
 import merapi.messages.IMessage;
 import merapi.messages.IMessageHandler;
@@ -13,11 +13,17 @@ public class Messenger implements IMessageHandler {
 	private SQLRequestManager sqlm = new SQLRequestManager();
 	
 	// Envoie un message sans devoir détenir un objet
-	public static void sendMessage(String type, String sourceType,Object message) throws Exception{
+	public static void sendMessage(String type,Object message) throws Exception{
 			try {
-				Bridge.getInstance().sendMessage(new Message(type, sourceType, message));
+				//TODO DECOUPAGE EN SEGMENTS ---------------
+				
+
+
+				
+				
+				// -----------------------------------------
+				Bridge.getInstance().sendMessage(new Message(type, message));
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				throw(e);
 			}
 	}
@@ -25,11 +31,25 @@ public class Messenger implements IMessageHandler {
 	// Prends en charge tous les messages pour les types enregistrés
 	public void handleMessage(IMessage message) {
 		String type = message.getType();
+		System.out.println(type);
 		if(type.compareTo("dataSource")==0){
-			dsm.process(type, message.getSourceType(), (String)message.getData());
+			dsm.process((String)message.getData());
 		}
-		else if (type.compareTo("sqlRequest")==0){
-			sqlm.process(type, message.getSourceType(), (String)message.getData());
+		else if(type.compareTo("dataSource_getDBSqlServer")==0){
+			dsm.getDbSqlServer((String)message.getData());
+		}
+		else if(type.compareTo("dataSource_getDBMySql")==0){
+			System.out.println("OK LA ?");
+			dsm.getDbMySql((String)message.getData());
+		}
+		else if(type.compareTo("dataSource_getDBPostgre")==0){
+			dsm.getDbPostGre((String)message.getData());
+		}
+		else if (type.compareTo("sqlRequest_request")==0){
+			sqlm.process((String)message.getData());
+		}
+		else if (type.compareTo("sqlRequest_cancel")==0){
+			sqlm.stopThread();
 		}
 	}
 	
