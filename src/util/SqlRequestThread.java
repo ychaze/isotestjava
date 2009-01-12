@@ -3,15 +3,17 @@ package util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
+import java.sql.ResultSet;
+import java.sql.Types;
 import java.util.List;
-import java.util.Timer;
+import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import flex.messaging.io.SerializationContext;
 import flex.messaging.io.amf.Amf3Output;
@@ -30,9 +32,33 @@ public class SqlRequestThread extends Thread {
 	
 	public void run(){
 		List l = null;
+		SqlRowSet rs = null;
 		// QUERY -----------------------
 		try {
-			l = (List) t.queryForList(request);
+			t.setFetchSize(Integer.MIN_VALUE);
+			
+			 long debut = System.currentTimeMillis();
+			 // ----------------------------------
+			 rs = t.queryForRowSet(request);
+			 /*
+			 int nbRow = 0;
+			 
+			 while (rs.next()){
+				 rs.
+				 
+				 nbRow++;
+				 if (nbRow==100){
+					 //TO DISC
+				 }
+			 }
+			 */
+			 
+		//	 l = (List) t.queryForList(request);	 
+			 
+			 // ------------------------------------
+			
+			long fin = System.currentTimeMillis();
+			System.out.println("Load: "+(fin-debut));
 			try {
 				Messenger.sendMessage("sqlInfo", "Operation successful");
 			} catch (Exception e1) {
@@ -51,25 +77,29 @@ public class SqlRequestThread extends Thread {
 		// -------------------------
 		// SEND LIST ---------------
 		  try {
-			  /*
+			  long debut = System.currentTimeMillis();
+			  System.out.println(debut);
 			  SerializationContext context = SerializationContext.getSerializationContext();
 			 
 		      ByteArrayOutputStream bout = new ByteArrayOutputStream();
 		      Amf3Output amf3Output = new Amf3Output(context);
 		      amf3Output.setOutputStream(bout);
-		      amf3Output.writeObject(l);
+		      amf3Output.writeObject(rs);
 		      amf3Output.flush();
 		      byte[] b = bout.toByteArray();
 		      amf3Output.close();		      
 		      //FileOutputStream f = new FileOutputStream("Data.dat");
 		      
-		      FileOutputStream outFile = new FileOutputStream("data.zip");
-		      ZipOutputStream zipOut = new ZipOutputStream(outFile);
-		      zipOut.putNextEntry(new ZipEntry("0"));
+		      FileOutputStream outFile = new FileOutputStream("data.gzip");
+		      GZIPOutputStream zipOut = new GZIPOutputStream(outFile);
+//		      zipOut.setLevel(9);
+	//	      zipOut.setMethod(ZipOutputStream.DEFLATED);
+		//      zipOut.putNextEntry(new ZipEntry("0"));
 		      zipOut.write(b);
 		      zipOut.flush();
 		      zipOut.close();
-		      */
+		      long fin = System.currentTimeMillis();
+				System.out.println("Compression: "+(fin-debut));
 //		      FileOutputStream fout = new FileOutputStream("DATA.dat");
 //		      byte[] b = bout.toByteArray();
 //		      fout.write(b);
@@ -93,7 +123,7 @@ public class SqlRequestThread extends Thread {
 		      */
 		      }
 		   catch (Exception e) { e.printStackTrace(); }
-		if (l != null) {
+/*		if (l != null) {
 			long debut = System.currentTimeMillis();
 			System.out.println(debut);
 			try {
@@ -106,7 +136,7 @@ public class SqlRequestThread extends Thread {
 				long fin = System.currentTimeMillis();
 				System.out.println(fin);
 				System.out.println("temps: "+(fin-debut));
-		}
+		}*/
 		// -------------------------
 	}
 }
