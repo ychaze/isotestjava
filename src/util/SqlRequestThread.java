@@ -2,6 +2,8 @@ package util;
 
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+
 import java.io.FileOutputStream;
 import java.sql.ResultSet;
 import java.sql.Types;
@@ -9,6 +11,7 @@ import java.util.List;
 import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -39,7 +42,7 @@ public class SqlRequestThread extends Thread {
 			
 			 long debut = System.currentTimeMillis();
 			 // ----------------------------------
-			 rs = t.queryForRowSet(request);
+			 //rs = t.queryForRowSet(request);
 			 /*
 			 int nbRow = 0;
 			 
@@ -53,11 +56,11 @@ public class SqlRequestThread extends Thread {
 			 }
 			 */
 			 
-		//	 l = (List) t.queryForList(request);	 
-			 
+			 l = (List) t.queryForList(request);	 
+		 	 
 			 // ------------------------------------
 			
-			long fin = System.currentTimeMillis();
+	 		long fin = System.currentTimeMillis();
 			System.out.println("Load: "+(fin-debut));
 			try {
 				Messenger.sendMessage("sqlInfo", "Operation successful");
@@ -84,22 +87,34 @@ public class SqlRequestThread extends Thread {
 		      ByteArrayOutputStream bout = new ByteArrayOutputStream();
 		      Amf3Output amf3Output = new Amf3Output(context);
 		      amf3Output.setOutputStream(bout);
-		      amf3Output.writeObject(rs);
+		      amf3Output.writeObject(l);  
 		      amf3Output.flush();
 		      byte[] b = bout.toByteArray();
 		      amf3Output.close();		      
 		      //FileOutputStream f = new FileOutputStream("Data.dat");
-		      
-		      FileOutputStream outFile = new FileOutputStream("data.gzip");
+		      File path=new File("data.gz");
+		      FileOutputStream outFile = new FileOutputStream(path);
 		      GZIPOutputStream zipOut = new GZIPOutputStream(outFile);
 //		      zipOut.setLevel(9);
 	//	      zipOut.setMethod(ZipOutputStream.DEFLATED);
 		//      zipOut.putNextEntry(new ZipEntry("0"));
-		      zipOut.write(b);
+		      
+		      zipOut.write(b); 
 		      zipOut.flush();
 		      zipOut.close();
+		      
+		      
+
 		      long fin = System.currentTimeMillis();
 				System.out.println("Compression: "+(fin-debut));
+				
+				try {
+					Messenger.sendMessage("sqlResult", path.getAbsolutePath());
+				} catch (Exception e1) {
+					e1.printStackTrace();
+					logger.error(e1.getMessage());
+				}
+				
 //		      FileOutputStream fout = new FileOutputStream("DATA.dat");
 //		      byte[] b = bout.toByteArray();
 //		      fout.write(b);
