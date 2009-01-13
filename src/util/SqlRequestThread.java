@@ -4,15 +4,14 @@ package util;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.sql.ResultSet;
-import java.sql.Types;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.zip.GZIPOutputStream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import flex.messaging.io.SerializationContext;
@@ -36,7 +35,6 @@ public class SqlRequestThread extends Thread {
 		// QUERY -----------------------
 		try {
 			t.setFetchSize(Integer.MIN_VALUE);
-			
 			 long debut = System.currentTimeMillis();
 			 // ----------------------------------
 			 rs = t.queryForRowSet(request);
@@ -53,7 +51,10 @@ public class SqlRequestThread extends Thread {
 			 }
 			 */
 			 
-		//	 l = (List) t.queryForList(request);	 
+			 
+			 
+			 
+			 l = (List) t.queryForList(request);	 
 			 
 			 // ------------------------------------
 			
@@ -84,21 +85,26 @@ public class SqlRequestThread extends Thread {
 		      ByteArrayOutputStream bout = new ByteArrayOutputStream();
 		      Amf3Output amf3Output = new Amf3Output(context);
 		      amf3Output.setOutputStream(bout);
-		      amf3Output.writeObject(rs);
+		      amf3Output.writeObject(l);
 		      amf3Output.flush();
 		      byte[] b = bout.toByteArray();
 		      amf3Output.close();		      
 		      //FileOutputStream f = new FileOutputStream("Data.dat");
 		      
-		      FileOutputStream outFile = new FileOutputStream("data.gzip");
+		      FileOutputStream outFile = new FileOutputStream("data.gz");
 		      GZIPOutputStream zipOut = new GZIPOutputStream(outFile);
 //		      zipOut.setLevel(9);
 	//	      zipOut.setMethod(ZipOutputStream.DEFLATED);
-		//      zipOut.putNextEntry(new ZipEntry("0"));
+//		      zipOut.putNextEntry(new ZipEntry("0"));
 		      zipOut.write(b);
 		      zipOut.flush();
 		      zipOut.close();
 		      long fin = System.currentTimeMillis();
+		      try{
+		    	  Messenger.sendMessage("load", "OK'");
+		      }catch(Exception e){
+		    	  e.printStackTrace();
+		      }
 				System.out.println("Compression: "+(fin-debut));
 //		      FileOutputStream fout = new FileOutputStream("DATA.dat");
 //		      byte[] b = bout.toByteArray();
@@ -139,4 +145,21 @@ public class SqlRequestThread extends Thread {
 		}*/
 		// -------------------------
 	}
+	public Page getCompanies(final int pageNo, final int pageSize) throws SQLException {
+        PaginationHelper ph = new PaginationHelper();
+        return ph.fetchPage(
+                t,
+                request,
+                request,
+                null,
+                pageNo,
+                pageSize,
+                new RowMapper() {
+                    public Object mapRow(ResultSet rs, int i) throws SQLException {
+                        return new Object 
+                    }
+                }
+        );
+
+    }
 }
