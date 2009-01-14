@@ -26,15 +26,15 @@ public class SqlRequestThread extends Thread {
 	}
 	
 	public void run(){
-		    
-
+		
 		    try {
 				t.query(new PreparedStatementCreator()
 				{
 					public PreparedStatement createPreparedStatement(Connection connection) throws SQLException
 					{
 						PreparedStatement pS = connection.prepareStatement(request, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-						pS.setFetchSize(Integer.MIN_VALUE);
+						//  -----------------
+						pS.setFetchSize(1000);
 						return pS;
 					}
 				},new ResultSetExtractor()
@@ -53,8 +53,11 @@ public class SqlRequestThread extends Thread {
 							e.printStackTrace();
 							logger.error(e.getMessage());
 						}
+						long deb = System.currentTimeMillis();
+						int j=0;
 						while (rs.next())
 						{
+							j++;
 							for(i=1;i<=numberColum;i++)
 								line[i-1]=rs.getString(i);
 							try
@@ -66,7 +69,12 @@ public class SqlRequestThread extends Thread {
 								e.printStackTrace();
 								logger.error(e.getMessage());
 							}
+							if(j%1000 == 0){
+								System.out.println(System.currentTimeMillis()-deb);
+							}
 						}
+						long fin = System.currentTimeMillis();
+						System.out.println("Time:"+(fin-deb));
 						try
 						{
 							Messenger.sendMessage("sqlResultStop",null);
