@@ -54,16 +54,13 @@ public class SqlRequestThread extends Thread {
 			 }
 			 */
 			 
-<<<<<<< HEAD:src/util/SqlRequestThread.java
-			 l = (List) t.queryForList(request);	 
-		 	 
-=======
+
 			 
 			 
 			 
 			 l = (List) t.queryForList(request);	 
 			 
->>>>>>> origin/master:src/util/SqlRequestThread.java
+
 			 // ------------------------------------
 			
 	 		long fin = System.currentTimeMillis();
@@ -93,33 +90,22 @@ public class SqlRequestThread extends Thread {
 		      ByteArrayOutputStream bout = new ByteArrayOutputStream();
 		      Amf3Output amf3Output = new Amf3Output(context);
 		      amf3Output.setOutputStream(bout);
-<<<<<<< HEAD:src/util/SqlRequestThread.java
-		      amf3Output.writeObject(l);  
-=======
+
 		      amf3Output.writeObject(l);
->>>>>>> origin/master:src/util/SqlRequestThread.java
+
 		      amf3Output.flush();
 		      byte[] b = bout.toByteArray();
 		      amf3Output.close();		      
 		      //FileOutputStream f = new FileOutputStream("Data.dat");
-<<<<<<< HEAD:src/util/SqlRequestThread.java
+
 		      File path=new File("data.gz");
 		      FileOutputStream outFile = new FileOutputStream(path);
 		      GZIPOutputStream zipOut = new GZIPOutputStream(outFile);
 //		      zipOut.setLevel(9);
 	//	      zipOut.setMethod(ZipOutputStream.DEFLATED);
-		//      zipOut.putNextEntry(new ZipEntry("0"));
+		//    zipOut.putNextEntry(new ZipEntry("0"));
 		      
 		      zipOut.write(b); 
-=======
-		      
-		      FileOutputStream outFile = new FileOutputStream("data.gz");
-		      GZIPOutputStream zipOut = new GZIPOutputStream(outFile);
-//		      zipOut.setLevel(9);
-	//	      zipOut.setMethod(ZipOutputStream.DEFLATED);
-//		      zipOut.putNextEntry(new ZipEntry("0"));
-		      zipOut.write(b);
->>>>>>> origin/master:src/util/SqlRequestThread.java
 		      zipOut.flush();
 		      zipOut.close();
 		      
@@ -179,7 +165,7 @@ public class SqlRequestThread extends Thread {
 		}*/
 		// -------------------------
 	}
-	public Page getCompanies(final int pageNo, final int pageSize) throws SQLException {
+	/*public Page getCompanies(final int pageNo, final int pageSize) throws SQLException {
         PaginationHelper ph = new PaginationHelper();
         return ph.fetchPage(
                 t,
@@ -195,5 +181,5 @@ public class SqlRequestThread extends Thread {
                 }
         );
 
-    }
+    }*/
 }
