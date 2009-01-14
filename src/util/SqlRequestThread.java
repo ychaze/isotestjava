@@ -1,10 +1,18 @@
 package util;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.zip.GZIPOutputStream;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
+
+import flex.messaging.io.SerializationContext;
+import flex.messaging.io.amf.Amf3Output;
 
 public class SqlRequestThread extends Thread {
 	
@@ -27,6 +35,8 @@ public class SqlRequestThread extends Thread {
 				stat.setFetchSize(Integer.MIN_VALUE);
 			else
 				stat.setFetchSize(1500);
+			
+			long deb = System.currentTimeMillis();
 		    ResultSet results = stat.executeQuery();
 
 		    
@@ -42,24 +52,37 @@ public class SqlRequestThread extends Thread {
 				e.printStackTrace();
 				logger.error(e.getMessage());
 			}
+			// INITIALIZE FOR WRITING TO FILE
+			 SerializationContext context = SerializationContext.getSerializationContext();
+			 Character c = '\n';
+		    
+		     File path=new File("data.gz");
+		      FileOutputStream outFile = new FileOutputStream(path);
+		      GZIPOutputStream zipOut = new GZIPOutputStream(outFile);
+			// WORK ON EACH ROW
+		     int j = 0;
 			while (results.next())
-			{
+			{ j++;
+				// CREATE THE ROW ARRAY
 				for(i=1;i<=numberColum;i++)
 					line[i-1]=results.getString(i);
-				try
-				{
+				// NOW WRITING TO FILE
+				 ByteArrayOutputStream bout = new ByteArrayOutputStream();
+			     Amf3Output amf3Output = new Amf3Output(context);
+			     amf3Output.setOutputStream(bout);
+			    amf3Output.writeObject(line);
+			    amf3Output.flush();
+			      byte[] b = bout.toByteArray();
+			      amf3Output.close();		      
+			      zipOut.write(b); 
+			}
 
-					Messenger.sendMessage("sqlResult",line);
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-					logger.error(e.getMessage());
-				}
-			}			
+		      zipOut.close();
+		      long fin = System.currentTimeMillis();
+		      System.out.println("Time total:"+(fin-deb));
 			try
 			{
-				Messenger.sendMessage("sqlResultStop",null);
+				Messenger.sendMessage("sqlResult",path.getAbsolutePath());
 			}
 			catch (Exception e)
 			{							
@@ -81,7 +104,7 @@ public class SqlRequestThread extends Thread {
 			}
 		}
 		    
-
+		System.out.println("FINI3)");
 		
 		
 //		List l = null;
@@ -128,41 +151,7 @@ public class SqlRequestThread extends Thread {
 //			}
 //		}
 //		// -------------------------
-//		// SEND LIST ---------------
-//		  try {
-//			  long debut = System.currentTimeMillis();
-//			  System.out.println(debut);
-//			  SerializationContext context = SerializationContext.getSerializationContext();
-//			 
-//		      ByteArrayOutputStream bout = new ByteArrayOutputStream();
-//		      Amf3Output amf3Output = new Amf3Output(context);
-//		      amf3Output.setOutputStream(bout);
-//		      amf3Output.writeObject(l);
-//		      amf3Output.flush();
-//		      byte[] b = bout.toByteArray();
-//		      amf3Output.close();		      
-//		      //FileOutputStream f = new FileOutputStream("Data.dat");
-//
-//		      File path=new File("data.gz");
-//		      FileOutputStream outFile = new FileOutputStream(path);
-//		      GZIPOutputStream zipOut = new GZIPOutputStream(outFile);
-////		      zipOut.setLevel(9);
-//	//	      zipOut.setMethod(ZipOutputStream.DEFLATED);
-//		//      zipOut.putNextEntry(new ZipEntry("0"));
-//		      
-//		      zipOut.write(b); 
-//		      zipOut.flush();
-//		      zipOut.close();
-//		      
-//		      
-//
-//		      long fin = System.currentTimeMillis();
-//		      try{
-//		    	  Messenger.sendMessage("load", "OK'");
-//		      }catch(Exception e){
-//		    	  e.printStackTrace();
-//		      }
-//				System.out.println("Compression: "+(fin-debut));
+
 //				
 //				try {
 //					Messenger.sendMessage("sqlResult", path.getAbsolutePath());
@@ -227,4 +216,22 @@ public class SqlRequestThread extends Thread {
 ////        );
 ////
     }
+	
+	private void dataToFile(Object line){
+		// SEND LIST ---------------
+		  try {
+			  long debut = System.currentTimeMillis();
+			  System.out.println(debut);
+
+
+		      long fin = System.currentTimeMillis();
+		      try{
+		    	  Messenger.sendMessage("load", "OK'");
+	      }catch(Exception e){
+		    	  e.printStackTrace();
+		      }
+				System.out.println("Compression: "+(fin-debut));
+		  }
+	   catch (Exception e) { e.printStackTrace(); }
+	}
 }
