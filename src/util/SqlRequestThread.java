@@ -46,7 +46,7 @@ public class SqlRequestThread extends Thread {
 						String[] line = new String[numberColum];
 						try
 						{
-							Messenger.sendMessage("sqlResultStart",line);
+							Messenger.sendMessage("sqlResultStart",null);
 						}
 						catch (Exception e)
 						{
