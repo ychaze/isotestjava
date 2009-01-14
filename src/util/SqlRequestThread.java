@@ -1,17 +1,10 @@
 package util;
 
-
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.ResultSetExtractor;
-
 
 public class SqlRequestThread extends Thread {
 	
@@ -27,73 +20,70 @@ public class SqlRequestThread extends Thread {
 	
 	public void run(){
 		    
+		PreparedStatement stat;
+		try {
+			stat = t.getDataSource().getConnection().prepareStatement(request,ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY);
+			if(t.getDataSource().getConnection().getMetaData().getDriverName().toUpperCase().contains("MYSQL"))
+				stat.setFetchSize(Integer.MIN_VALUE);
+			else
+				stat.setFetchSize(1500);
+		    ResultSet results = stat.executeQuery();
 
-		    try {
-				t.query(new PreparedStatementCreator()
-				{
-					public PreparedStatement createPreparedStatement(Connection connection) throws SQLException
-					{
-						PreparedStatement pS = connection.prepareStatement(request, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-						pS.setFetchSize(Integer.MIN_VALUE);
-						return pS;
-					}
-				},new ResultSetExtractor()
-				{
-					public Object extractData(ResultSet rs) throws SQLException,
-							DataAccessException {
-						int numberColum = rs.getMetaData().getColumnCount();
-						int i = 1;
-						String[] line = new String[numberColum];
-						try
-						{
-							Messenger.sendMessage("sqlResultStart",null);
-						}
-						catch (Exception e)
-						{
-							e.printStackTrace();
-							logger.error(e.getMessage());
-						}
-						while (rs.next())
-						{
-							for(i=1;i<=numberColum;i++)
-								line[i-1]=rs.getString(i);
-							try
-							{
-								Messenger.sendMessage("sqlResult",line);
-							}
-							catch (Exception e)
-							{
-								e.printStackTrace();
-								logger.error(e.getMessage());
-							}
-						}
-						try
-						{
-							Messenger.sendMessage("sqlResultStop",null);
-						}
-						catch (Exception e)
-						{							
-							e.printStackTrace();
-							logger.error(e.getMessage());
-						}
-						return null;
-					}
-					
-				});
+		    
+		    int numberColum = results.getMetaData().getColumnCount();
+			int i = 1;
+			String[] line = new String[numberColum];
+			try
+			{
+				Messenger.sendMessage("sqlResultStart",null);
 			}
-		    catch (Exception e2)
-		    {				
-		    	logger.error(e2.getMessage());
-		    	try
+			catch (Exception e)
+			{
+				e.printStackTrace();
+				logger.error(e.getMessage());
+			}
+			while (results.next())
+			{
+				for(i=1;i<=numberColum;i++)
+					line[i-1]=results.getString(i);
+				try
 				{
-					Messenger.sendMessage("sqlInfo", "ERROR : "+e2.getMessage());
+
+					Messenger.sendMessage("sqlResult",line);
 				}
 				catch (Exception e)
 				{
 					e.printStackTrace();
 					logger.error(e.getMessage());
 				}
-			}		
+			}			
+			try
+			{
+				Messenger.sendMessage("sqlResultStop",null);
+			}
+			catch (Exception e)
+			{							
+				e.printStackTrace();
+				logger.error(e.getMessage());
+			}		    
+		}
+		catch (Exception e2)
+		{				
+			logger.error(e2.getMessage());
+			try
+			{
+				Messenger.sendMessage("sqlInfo", "ERROR : "+e2.getMessage());
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+				logger.error(e.getMessage());
+			}
+		}
+		    
+
+		
+		
 //		List l = null;
 //		SqlRowSet rs = null;
 //		// QUERY -----------------------
