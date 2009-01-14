@@ -44,20 +44,21 @@ public class SqlRequestThread extends Thread {
 						String[] line = new String[numberColum];
 						try
 						{
-							Messenger.sendMessage("sqlResultStart",null);
+							//Messenger.sendMessage("sqlResultStart",null);
 						}
 						catch (Exception e)
 						{
 							e.printStackTrace();
 							logger.error(e.getMessage());
 						}
+						long debut = System.nanoTime();
 						while (rs.next())
 						{
 							for(i=1;i<=numberColum;i++)
 								line[i-1]=rs.getString(i);
 							try
 							{
-								Messenger.sendMessage("sqlResult",line);
+								//Messenger.sendMessage("sqlResult",line);
 							}
 							catch (Exception e)
 							{
@@ -65,9 +66,10 @@ public class SqlRequestThread extends Thread {
 								logger.error(e.getMessage());
 							}
 						}
+						System.out.println((System.nanoTime()-debut)/1000000);
 						try
 						{
-							Messenger.sendMessage("sqlResultStop",null);
+							//Messenger.sendMessage("sqlResultStop",null);
 						}
 						catch (Exception e)
 						{							
