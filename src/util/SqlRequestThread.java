@@ -26,88 +26,6 @@ public class SqlRequestThread extends Thread {
 	}
 	
 	public void run(){
-<<<<<<< HEAD:src/util/SqlRequestThread.java
-		List l = null;
-		SqlRowSet rs = null;
-		// QUERY -----------------------
-		try {
-			t.setFetchSize(Integer.MIN_VALUE);
-			 long debut = System.currentTimeMillis();
-			 // ----------------------------------
-			 //rs = t.queryForRowSet(request);
-			 /*
-			 int nbRow = 0;
-			 
-			 while (rs.next()){
-				 rs.
-				 
-				 nbRow++;
-				 if (nbRow==100){
-					 //TO DISC
-				 }
-			 }
-			 */
-			 
-
-			 
-			 
-			 
-			 l = (List) t.queryForList(request);	 
-			 
-
-			 // ------------------------------------
-			
-	 		long fin = System.currentTimeMillis();
-			System.out.println("Load: "+(fin-debut));
-			try {
-				Messenger.sendMessage("sqlInfo", "Operation successful");
-			} catch (Exception e1) {
-				e1.printStackTrace();
-				logger.error(e1.getMessage());
-			}
-		} catch (Exception e) {
-			try {
-				Messenger.sendMessage("sqlInfo", "ERROR : "
-								+ e.getMessage());
-			} catch (Exception e1) {
-				e1.printStackTrace();
-				logger.error(e1.getMessage());
-			}
-		}
-		// -------------------------
-		// SEND LIST ---------------
-		  try {
-			  long debut = System.currentTimeMillis();
-			  System.out.println(debut);
-			  SerializationContext context = SerializationContext.getSerializationContext();
-			 
-		      ByteArrayOutputStream bout = new ByteArrayOutputStream();
-		      Amf3Output amf3Output = new Amf3Output(context);
-		      amf3Output.setOutputStream(bout);
-
-		      amf3Output.writeObject(l);
-
-		      amf3Output.flush();
-		      byte[] b = bout.toByteArray();
-		      amf3Output.close();		      
-		      //FileOutputStream f = new FileOutputStream("Data.dat");
-
-		      File path=new File("data.gz");
-		      FileOutputStream outFile = new FileOutputStream(path);
-		      GZIPOutputStream zipOut = new GZIPOutputStream(outFile);
-//		      zipOut.setLevel(9);
-	//	      zipOut.setMethod(ZipOutputStream.DEFLATED);
-		//    zipOut.putNextEntry(new ZipEntry("0"));
-		      
-		      zipOut.write(b); 
-		      zipOut.flush();
-		      zipOut.close();
-		      
-		      
-=======
-		    
->>>>>>> origin/master:src/util/SqlRequestThread.java
-
 		    try {
 				t.query(new PreparedStatementCreator()
 				{
@@ -173,31 +91,6 @@ public class SqlRequestThread extends Thread {
 					e.printStackTrace();
 					logger.error(e.getMessage());
 				}
-<<<<<<< HEAD:src/util/SqlRequestThread.java
-				long fin = System.currentTimeMillis();
-				System.out.println(fin);
-				System.out.println("temps: "+(fin-debut));
-		}*/
-		// -------------------------
-	}
-	/*public Page getCompanies(final int pageNo, final int pageSize) throws SQLException {
-        PaginationHelper ph = new PaginationHelper();
-        return ph.fetchPage(
-                t,
-                request,
-                request,
-                null,
-                pageNo,
-                pageSize,
-                new RowMapper() {
-                    public Object mapRow(ResultSet rs, int i) throws SQLException {
-                        return new Object 
-                    }
-                }
-        );
-
-    }*/
-=======
 			}		
 //		List l = null;
 //		SqlRowSet rs = null;
@@ -342,5 +235,5 @@ public class SqlRequestThread extends Thread {
 ////        );
 ////
     }
->>>>>>> origin/master:src/util/SqlRequestThread.java
+
 }
