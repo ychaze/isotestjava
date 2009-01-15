@@ -1,10 +1,17 @@
 package util;
 
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Vector;
 import java.util.zip.GZIPOutputStream;
 
 import org.apache.commons.logging.Log;
@@ -27,63 +34,7 @@ public class SqlRequestThread extends Thread {
 	}
 	
 	public void run(){
-<<<<<<< HEAD:src/util/SqlRequestThread.java
-		    try {
-				t.query(new PreparedStatementCreator()
-				{
-					public PreparedStatement createPreparedStatement(Connection connection) throws SQLException
-					{
-						PreparedStatement pS = connection.prepareStatement(request, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-						pS.setFetchSize(Integer.MIN_VALUE);
-						return pS;
-					}
-				},new ResultSetExtractor()
-				{
-					public Object extractData(ResultSet rs) throws SQLException,
-							DataAccessException {
-						int numberColum = rs.getMetaData().getColumnCount();
-						int i = 1;
-						String[] line = new String[numberColum];
-						try
-						{
-							//Messenger.sendMessage("sqlResultStart",null);
-						}
-						catch (Exception e)
-						{
-							e.printStackTrace();
-							logger.error(e.getMessage());
-						}
-						long debut = System.nanoTime();
-						while (rs.next())
-						{
-							for(i=1;i<=numberColum;i++)
-								line[i-1]=rs.getString(i);
-							try
-							{
-								//Messenger.sendMessage("sqlResult",line);
-							}
-							catch (Exception e)
-							{
-								e.printStackTrace();
-								logger.error(e.getMessage());
-							}
-						}
-						System.out.println((System.nanoTime()-debut)/1000000);
-						try
-						{
-							//Messenger.sendMessage("sqlResultStop",null);
-						}
-						catch (Exception e)
-						{							
-							e.printStackTrace();
-							logger.error(e.getMessage());
-						}
-						return null;
-					}
-					
-				});
-=======
-		    
+
 		PreparedStatement stat;
 		try {
 			stat = t.getDataSource().getConnection().prepareStatement(request,ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY);
@@ -98,7 +49,7 @@ public class SqlRequestThread extends Thread {
 		    
 		    int numberColum = results.getMetaData().getColumnCount();
 			int i = 1;
-			String[] line = new String[numberColum];
+			
 			try
 			{
 				Messenger.sendMessage("sqlResultStart",null);
@@ -116,23 +67,61 @@ public class SqlRequestThread extends Thread {
 		      FileOutputStream outFile = new FileOutputStream(path);
 		      GZIPOutputStream zipOut = new GZIPOutputStream(outFile);
 			// WORK ON EACH ROW
+		     
+		     Vector<String[]> list= new Vector<String[]>();
+		    
+		     String[] ColumnName = new String[numberColum];
+		     for(i=1;i<=numberColum;i++){
+		    	 ColumnName[i-1]=results.getMetaData().getColumnName(i);
+				}
+		     
+		  // NOW WRITING TO FILE
+			 ByteArrayOutputStream bout = new ByteArrayOutputStream();
+			 DataOutputStream sortie=new DataOutputStream(bout);
+			 sortie.writeBytes("<sessions>"+'\n');
+			 byte[] b;
+			 b= bout.toByteArray();
+			 
+		      zipOut.write(b);
+		      zipOut.flush();
 		     int j = 0;
+		     
 			while (results.next())
 			{ j++;
+			String[] line = new String[numberColum];
 				// CREATE THE ROW ARRAY
-				for(i=1;i<=numberColum;i++)
+				for(i=1;i<=numberColum;i++){
 					line[i-1]=results.getString(i);
-				// NOW WRITING TO FILE
-				 ByteArrayOutputStream bout = new ByteArrayOutputStream();
-			     Amf3Output amf3Output = new Amf3Output(context);
+				}
+				 bout = new ByteArrayOutputStream();
+				  sortie=new DataOutputStream(bout);
+				
+			 
+				
+				 sortie.writeBytes("<session");
+				 for(i=1;i<=numberColum;i++){
+					 sortie.writeBytes(' '+ColumnName[i-1]+"="+'"'+line[i-1]+'"');
+					}
+				 sortie.writeBytes("/>"+'\n');
+			     /*Amf3Output amf3Output = new Amf3Output(context);
 			     amf3Output.setOutputStream(bout);
-			    amf3Output.writeObject(line);
-			    amf3Output.flush();
-			      byte[] b = bout.toByteArray();
-			      amf3Output.close();		      
-			      zipOut.write(b); 
+			    amf3Output.writeObject(list);
+			    list.clear();
+			    
+			    //amf3Output.flush();
+			    /*amf3Output.writeChars("\n");
+			    amf3Output.flush();*/
+				  b= bout.toByteArray();
+			     // amf3Output.close();	
+			      
+			      zipOut.write(b);
+			      zipOut.flush();
 			}
-
+			 
+			sortie.writeBytes("</sessions>"+'\n');
+			b = bout.toByteArray();
+			 zipOut.write(b);
+			 zipOut.flush();
 		      zipOut.close();
 		      long fin = System.currentTimeMillis();
 		      System.out.println("Time total:"+(fin-deb));
@@ -144,7 +133,8 @@ public class SqlRequestThread extends Thread {
 			{							
 				e.printStackTrace();
 				logger.error(e.getMessage());
-			}		    
+			}	
+			System.out.println(j);
 		}
 		catch (Exception e2)
 		{				
@@ -152,7 +142,7 @@ public class SqlRequestThread extends Thread {
 			try
 			{
 				Messenger.sendMessage("sqlInfo", "ERROR : "+e2.getMessage());
->>>>>>> origin/master:src/util/SqlRequestThread.java
+
 			}
 			catch (Exception e)
 			{
@@ -273,9 +263,7 @@ public class SqlRequestThread extends Thread {
 ////        );
 ////
     }
-<<<<<<< HEAD:src/util/SqlRequestThread.java
 
-=======
 	
 	private void dataToFile(Object line){
 		// SEND LIST ---------------
@@ -294,5 +282,5 @@ public class SqlRequestThread extends Thread {
 		  }
 	   catch (Exception e) { e.printStackTrace(); }
 	}
->>>>>>> origin/master:src/util/SqlRequestThread.java
+
 }
