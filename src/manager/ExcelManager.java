@@ -95,7 +95,10 @@ public class ExcelManager {
 					}
 					isSended = true;
 					// New array hope for the garbage collector to collect the old object to prevent memory overflow
-					data = new String [STREAM_INTERVAL][s.getRow(0).length];
+					if (s.getRows() - i >= STREAM_INTERVAL)
+						data = new String [STREAM_INTERVAL][s.getRow(0).length];
+					else
+						data = new String [s.getRows() - i][s.getRow(0).length];
 	            }
 		    }
 			if(!isSended){
