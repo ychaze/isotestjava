@@ -3,6 +3,7 @@ package server;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import util.ApplicationConstants;
 import util.Messenger;
 
 public class Server {
@@ -11,13 +12,15 @@ public class Server {
 	public Server(){
 		logger.info("Starting Java Server for PaperBoy...");
 		logger.info("Registrering a new data source handler");
-		messenger.registerHandler("dataSource");
+		messenger.registerHandler(ApplicationConstants.DATA_SOURCE);
 		logger.info("Registrering a new SQL Request handler");
-		messenger.registerHandler("sqlRequest_request");
-		messenger.registerHandler("dataSource_getDBSqlServer");
-		messenger.registerHandler("dataSource_getDBMySql");
-		messenger.registerHandler("dataSource_getDBPostgre");
-		messenger.registerHandler("sqlRequest_cancel");
+		messenger.registerHandler(ApplicationConstants.REQUEST);
+		messenger.registerHandler(ApplicationConstants.GET_DB_SQLSERVER);
+		messenger.registerHandler(ApplicationConstants.GET_DB_MYSQL);
+		messenger.registerHandler(ApplicationConstants.GET_DB_POSTGRESQL);
+		messenger.registerHandler(ApplicationConstants.CANCEL_QUERY);
+		messenger.registerHandler(ApplicationConstants.GET_EXCEL_DATA);
+		messenger.registerHandler(ApplicationConstants.GET_NAME_SHEETS);
 	}
 	
 	public static void main(String[] args) {

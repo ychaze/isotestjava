@@ -4,6 +4,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
+import util.ApplicationConstants;
 import util.DataSourceFactory;
 import util.Messenger;
 import util.SqlRequestThread;
@@ -24,7 +25,7 @@ public class SQLRequestManager  {
 	
 			JdbcTemplate t = new JdbcTemplate(ds);
 			try {
-				Messenger.sendMessage("sqlInfo", "Executing query...");
+				Messenger.sendMessage(ApplicationConstants.SQL_INFO, "Executing query...");
 			} catch (Exception e1) {
 				e1.printStackTrace();
 				logger.error(e1.getMessage());
@@ -44,7 +45,7 @@ public class SQLRequestManager  {
 				sqlreqTH=null;
 			}
 			try {
-				Messenger.sendMessage("sqlInfo", "Query canceled !");
+				Messenger.sendMessage(ApplicationConstants.SQL_INFO, "Query canceled !");
 			} catch (Exception e1) {
 				e1.printStackTrace();
 				logger.error(e1.getMessage());
