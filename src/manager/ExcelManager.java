@@ -105,6 +105,12 @@ public class ExcelManager {
 					e.printStackTrace();
 				}
 			}
+			// SAY TO FLEX THAT IT HAS THE COMPLETE LIST OF DATA
+			try {
+				Messenger.sendMessage(ApplicationConstants.EXCEL_STOP, null);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		catch (BiffException e) {
 			e.printStackTrace();

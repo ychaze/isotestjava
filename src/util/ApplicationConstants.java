@@ -16,4 +16,5 @@ public class ApplicationConstants {
 	public final static  String  GET_NAME_SHEETS 		=	"getNameSheets";
 	public final static  String  GET_EXCEL_DATA 		=	"getExcelData";
 	public final static  String  EXCEL_RESULT 			=	"excelResult";
+	public final static  String  EXCEL_STOP 			=	"excelStop";
 }
