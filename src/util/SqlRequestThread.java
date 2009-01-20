@@ -49,7 +49,7 @@ public class SqlRequestThread extends Thread {
 		    
 		    int numberColum = results.getMetaData().getColumnCount();
 			int i = 1;
-			
+			String[] line = new String[numberColum];
 			try
 			{
 				Messenger.sendMessage("sqlResultStart",null);
@@ -59,6 +59,69 @@ public class SqlRequestThread extends Thread {
 				e.printStackTrace();
 				logger.error(e.getMessage());
 			}
+		//	 ---------------------------------------------------------------AMF
+			List l = null;
+			// QUERY -----------------------
+			try {
+				t.setFetchSize(Integer.MIN_VALUE);
+				 long debut = System.currentTimeMillis();
+				 // ----------------------------------
+				 //rs = t.queryForRowSet(request);
+				 /*
+				 int nbRow = 0;
+				 
+				 while (rs.next()){
+					 rs.
+					 
+					 nbRow++;
+					 if (nbRow==100){
+						 //TO DISC
+					 }
+				 }
+				 */
+				 
+	
+				 l = (List) t.queryForList(request);	 
+	
+				 // ------------------------------------
+			  SerializationContext context = SerializationContext.getSerializationContext();
+			 
+		      ByteArrayOutputStream bout = new ByteArrayOutputStream();
+		      Amf3Output amf3Output = new Amf3Output(context);
+		      amf3Output.setOutputStream(bout);
+		      amf3Output.writeObject(l);
+		      amf3Output.flush();
+		      byte[] b = bout.toByteArray();
+		      amf3Output.close();		      
+		      //FileOutputStream f = new FileOutputStream("Data.dat");
+
+		      File path=new File("data.gz");
+		      FileOutputStream outFile = new FileOutputStream(path);
+		      GZIPOutputStream zipOut = new GZIPOutputStream(outFile);
+//		      zipOut.setLevel(9);
+	//	      zipOut.setMethod(ZipOutputStream.DEFLATED);
+		//      zipOut.putNextEntry(new ZipEntry("0"));
+		      
+		      zipOut.write(b); 
+		      zipOut.flush();
+		      zipOut.close();
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			// --------------------------------------------------------------------
+			
+			/*
 			// INITIALIZE FOR WRITING TO FILE
 			 SerializationContext context = SerializationContext.getSerializationContext();
 			 Character c = '\n';
@@ -76,6 +139,7 @@ public class SqlRequestThread extends Thread {
 				}
 		     
 		  // NOW WRITING TO FILE
+		     
 			 ByteArrayOutputStream bout = new ByteArrayOutputStream();
 			 DataOutputStream sortie=new DataOutputStream(bout);
 			 sortie.writeBytes("<sessions>"+'\n');
@@ -102,7 +166,7 @@ public class SqlRequestThread extends Thread {
 				 for(i=1;i<=numberColum;i++){
 					 sortie.writeBytes(' '+ColumnName[i-1]+"="+'"'+line[i-1]+'"');
 					}
-				 sortie.writeBytes("/>"+'\n');
+				 sortie.writeBytes("/>"+'\n');/*
 			     /*Amf3Output amf3Output = new Amf3Output(context);
 			     amf3Output.setOutputStream(bout);
 			    amf3Output.writeObject(list);
@@ -110,7 +174,7 @@ public class SqlRequestThread extends Thread {
 			    
 			    //amf3Output.flush();
 			    /*amf3Output.writeChars("\n");
-			    amf3Output.flush();*/
+			    amf3Output.flush();
 				  b= bout.toByteArray();
 			     // amf3Output.close();	
 			      
@@ -124,7 +188,7 @@ public class SqlRequestThread extends Thread {
 			 zipOut.flush();
 		      zipOut.close();
 		      long fin = System.currentTimeMillis();
-		      System.out.println("Time total:"+(fin-deb));
+		      System.out.println("Time total:"+(fin-deb));*/
 			try
 			{
 				Messenger.sendMessage("sqlResult",path.getAbsolutePath());
@@ -134,7 +198,6 @@ public class SqlRequestThread extends Thread {
 				e.printStackTrace();
 				logger.error(e.getMessage());
 			}	
-			System.out.println(j);
 		}
 		catch (Exception e2)
 		{				
@@ -150,8 +213,8 @@ public class SqlRequestThread extends Thread {
 				logger.error(e.getMessage());
 			}
 		}
-		    
-		System.out.println("FINI3)");
+		}catch (Exception e){}
+		
 		
 		
 //		List l = null;

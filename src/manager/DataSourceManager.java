@@ -8,6 +8,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
+import util.ApplicationConstants;
 import util.DataSourceFactory;
 import util.Messenger;
 
@@ -26,7 +27,7 @@ public class DataSourceManager {
 			// GET DB TYPE 
 				Messenger.sendMessage("testBase", "Trying to connect to the DB...");
 				if(testBase()){
-					Messenger.sendMessage("testBase", "Succes");
+					Messenger.sendMessage(ApplicationConstants.TEST_BASE, "Succes");
 				}
 		}catch(Exception e){
 			e.printStackTrace();
@@ -46,14 +47,14 @@ public class DataSourceManager {
 			}catch(Exception e){
 				logger.error(e.getMessage());
 				try {
-					Messenger.sendMessage("testBase",e.getMessage());
+					Messenger.sendMessage(ApplicationConstants.TEST_BASE,e.getMessage());
 				} catch (Exception e2) {
 					e2.printStackTrace();
 					logger.error(e2.getMessage());
 				}
 			}
 			try {
-				Messenger.sendMessage("DBSqlServer", l);
+				Messenger.sendMessage(ApplicationConstants.DB_SQL_SERVER, l);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -73,14 +74,14 @@ public class DataSourceManager {
 			}catch(Exception e){
 				logger.error(e.getMessage());
 				try {
-					Messenger.sendMessage("testBase",e.getMessage());
+					Messenger.sendMessage(ApplicationConstants.TEST_BASE,e.getMessage());
 				} catch (Exception e2) {
 					e2.printStackTrace();
 					logger.error(e2.getMessage());
 				}
 			}
 			try {
-				Messenger.sendMessage("DBMySql", l);
+				Messenger.sendMessage(ApplicationConstants.DB_MYSQL, l);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -98,14 +99,14 @@ public class DataSourceManager {
 			}catch(Exception e){
 				logger.error(e.getMessage());
 				try {
-					Messenger.sendMessage("testBase",e.getMessage());
+					Messenger.sendMessage(ApplicationConstants.TEST_BASE,e.getMessage());
 				} catch (Exception e2) {
 					e2.printStackTrace();
 					logger.error(e2.getMessage());
 				}
 			}
 			try {
-				Messenger.sendMessage("DBPostgreSql", l);
+				Messenger.sendMessage(ApplicationConstants.DB_POSTGRESQL, l);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -122,7 +123,7 @@ public class DataSourceManager {
 		} catch (SQLException e) {
 			logger.error(e.getMessage());
 			try {
-				Messenger.sendMessage("testBase","ERROR : "+e.getMessage());
+				Messenger.sendMessage(ApplicationConstants.TEST_BASE,"ERROR : "+e.getMessage());
 				Logger.getAnonymousLogger().info(e.getMessage().toString());
 			} catch (Exception e2) {
 				e2.printStackTrace();
