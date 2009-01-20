@@ -2,6 +2,125 @@ package util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Vector;
+
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import flex.messaging.io.SerializationContext;
+import flex.messaging.io.amf.Amf3Output;
+
+public class SqlRequestThread extends Thread {
+	
+	private String request;
+	private JdbcTemplate t;
+	private final Log logger = LogFactory.getLog(SqlRequestThread.class);
+	
+	public SqlRequestThread (String request, JdbcTemplate t){
+		super();
+		this.t=t;
+		this.request=request;
+	}
+	
+	public void run(){
+		    
+		PreparedStatement stat;
+		try {
+			stat = t.getDataSource().getConnection().prepareStatement(request,ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY);
+			if(t.getDataSource().getConnection().getMetaData().getDriverName().toUpperCase().contains("MYSQL"))
+				stat.setFetchSize(Integer.MIN_VALUE);
+			else
+				stat.setFetchSize(1500);
+		    ResultSet results = stat.executeQuery();
+
+		    
+		    int numberColum = results.getMetaData().getColumnCount();
+		    
+		    
+			String[] line;
+			String[][] vec = new String[1000][numberColum];
+			int i = 1;
+			//String[] ColumnName = new String[numberColum];
+		     for(i=1;i<=numberColum;i++){
+		    	 vec[0][i-1]=results.getMetaData().getColumnName(i);
+				}
+			/*try
+			{
+				Messenger.sendMessage("sqlResultStart",null);
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+				logger.error(e.getMessage());
+			}
+*/
+			/* ByteArrayOutputStream bout = new ByteArrayOutputStream();
+			 DataOutputStream sortie=new DataOutputStream(bout);
+
+			 SerializationContext context = SerializationContext.getSerializationContext();*/
+			int j=1;
+			while ((results.next())&& (j<1000))
+			{line = new String[numberColum];
+				for(i=1;i<=numberColum;i++)
+					vec[j][i-1]=results.getString(i);
+				 //vec.add(line);
+				 
+				 if (j==999)
+				 {
+					 try
+					 {
+						/* Amf3Output amf3Output = new Amf3Output(context);
+					     amf3Output.setOutputStream(bout);
+					    amf3Output.writeObject(vec);
+					    amf3Output.flush();
+					    byte[] b = bout.toByteArray();
+					    amf3Output.close();*/
+					    
+						 Messenger.sendMessage("sqlResult",vec);
+						 //vec.removeAllElements();
+					 }
+					 catch (Exception e)
+					 {
+						 e.printStackTrace();
+						 logger.error(e.getMessage());
+					 }
+					 
+				}
+				 j++;
+			}			
+			/*try
+			{
+				Messenger.sendMessage("sqlResultStop",null);
+			}
+			catch (Exception e)
+			{							
+				e.printStackTrace();
+				logger.error(e.getMessage());
+			}	*/	    
+		}
+		catch (Exception e2)
+		{				
+			logger.error(e2.getMessage());
+			try
+			{
+				Messenger.sendMessage("sqlInfo", "ERROR : "+e2.getMessage());
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+				logger.error(e.getMessage());
+			}
+		}
+	}
+}
+/*import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
@@ -103,7 +222,7 @@ public class SqlRequestThread extends Thread {
 					 sortie.writeBytes(' '+ColumnName[i-1]+"="+'"'+line[i-1]+'"');
 					}
 				 sortie.writeBytes("/>"+'\n');
-			     /*Amf3Output amf3Output = new Amf3Output(context);
+			     Amf3Output amf3Output = new Amf3Output(context);
 			     amf3Output.setOutputStream(bout);
 			    amf3Output.writeObject(list);
 			    list.clear();
@@ -111,6 +230,7 @@ public class SqlRequestThread extends Thread {
 			    //amf3Output.flush();
 			    /*amf3Output.writeChars("\n");
 			    amf3Output.flush();*/
+/*
 				  b= bout.toByteArray();
 			     // amf3Output.close();	
 			      
@@ -261,8 +381,8 @@ public class SqlRequestThread extends Thread {
 ////                    }
 ////                }
 ////        );
-////
-    }
+////*/
+   /* }
 
 	
 	private void dataToFile(Object line){
@@ -283,4 +403,4 @@ public class SqlRequestThread extends Thread {
 	   catch (Exception e) { e.printStackTrace(); }
 	}
 
-}
+}*/
