@@ -47,7 +47,7 @@ public class ExcelManager {
 			
 			System.out.println(wb.getSheets()[0].getName()+"\n");
 			// get the specified sheet
-			Sheet s = wb.getSheet(Integer.parseInt(values[1]));
+			Sheet s = wb.getSheet(values[1]);
 			
 			// get rows
 			Cell[] row = null;

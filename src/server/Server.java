@@ -19,6 +19,8 @@ public class Server {
 		messenger.registerHandler(ApplicationConstants.GET_DB_MYSQL);
 		messenger.registerHandler(ApplicationConstants.GET_DB_POSTGRESQL);
 		messenger.registerHandler(ApplicationConstants.CANCEL_QUERY);
+		messenger.registerHandler(ApplicationConstants.GET_EXCEL_DATA);
+		messenger.registerHandler(ApplicationConstants.GET_NAME_SHEETS);
 	}
 	
 	public static void main(String[] args) {
