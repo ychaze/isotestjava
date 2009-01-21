@@ -27,28 +27,28 @@ public class Messenger implements IMessageHandler {
 		String type = message.getType();
 		System.out.println(type);
 		if(type.compareTo(ApplicationConstants.DATA_SOURCE)==0){
-			dsm.process((String)message.getData());
+			dsm.process((String)((Message) message).getData());
 		}
 		else if(type.compareTo(ApplicationConstants.GET_DB_SQLSERVER)==0){
-			dsm.getDbSqlServer((String)message.getData());
+			dsm.getDbSqlServer((String)((Message) message).getData());
 		}
 		else if(type.compareTo(ApplicationConstants.GET_DB_MYSQL)==0){
-			dsm.getDbMySql((String)message.getData());
+			dsm.getDbMySql((String)((Message) message).getData());
 		}
 		else if(type.compareTo(ApplicationConstants.GET_DB_POSTGRESQL)==0){
-			dsm.getDbPostGre((String)message.getData());
+			dsm.getDbPostGre((String)((Message) message).getData());
 		}
 		else if (type.compareTo(ApplicationConstants.REQUEST)==0){
-			sqlm.process((String)message.getData());
+			sqlm.process((String)((Message) message).getData());
 		}
 		else if (type.compareTo(ApplicationConstants.CANCEL_QUERY)==0){
 			sqlm.stopThread();
 		}
 		else if (type.compareTo(ApplicationConstants.GET_NAME_SHEETS)==0){
-			xlm.getNbSheets((String)message.getData());
+			xlm.getNbSheets((String)((Message) message).getData());
 		}
 		else if(type.compareTo(ApplicationConstants.GET_EXCEL_DATA)==0){
-			xlm.process((String)message.getData());
+			xlm.process((String)((Message) message).getData());
 		}
 	}
 	
