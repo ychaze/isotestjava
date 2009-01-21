@@ -7,14 +7,17 @@ import java.util.List;
 
 import com.csvreader.CsvReader;
 
+
+
 import merapi.messages.IMessage;
 import merapi.messages.IMessageHandler;
+import merapi.messages.Message;
 
 public class CSVHandler implements IMessageHandler {
 
 	public void handleMessage(IMessage message) {
 		CsvReader csread = null;
-		String st = (String) message.getData();
+		String st = (String)((Message) message).getData();
 		String[] values = st.split("##");
 		char delimiter = values[1].charAt(0);
 		try {

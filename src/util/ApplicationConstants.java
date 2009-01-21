@@ -11,6 +11,8 @@ public class ApplicationConstants {
 	public final static  String  DB_MYSQL 				=	"DBMySql";
 	public final static  String  DB_POSTGRESQL 			=	"DBPostgreSql";
 	public final static  String  SQL_INFO 				=	"sqlInfo";
+	public final static  String  SQL_RESULT 			=	"sqlResult";
+	public final static  String  SQL_STOP 				=	"sqlStop";
 	public final static  String  CANCEL_QUERY 			=	"sqlRequest_cancel";
 	public final static  String  NAME_SHEETS_EXCEL		=	"nameSheetsExcel";
 	public final static  String  GET_NAME_SHEETS 		=	"getNameSheets";

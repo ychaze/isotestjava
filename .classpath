@@ -23,6 +23,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/jxl.jar"/>
 	<classpathentry kind="lib" path="lib/postgresql-8.3-604.jdbc3.jar"/>
-	<classpathentry kind="lib" path="lib/merapi-core-dev.jar"/>
+	<classpathentry kind="lib" path="lib/merapi-core-0.0.80.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
