@@ -82,10 +82,10 @@ public class SqlRequestThread extends Thread {
 				isSended = false;
 				// Copy the content of the row in the array
 				for (int j = 0; j < numberColum; j++) {
-					data[(nb-1) % STREAM_LENGTH][j] = results.getString(j + 1);
+					data[nb % STREAM_LENGTH][j] = results.getString(j + 1);
 				}
 				// Test if the array is full
-				if (nb % STREAM_LENGTH == 0) {
+				if (nb == STREAM_LENGTH-1) {
 					// and serialize
 					ByteArrayOutputStream bout = new ByteArrayOutputStream();
 					Amf3Output amf3Output = new Amf3Output(context);
@@ -114,12 +114,26 @@ public class SqlRequestThread extends Thread {
 			}
 			
 			if(!isSended){
-				String[][] lastData = new String [nb+1][numberColum];
-				for (int i = 0 ; i <= nb ; i++) {
+				String[][] lastData = new String [nb][numberColum];
+				for (int i = 0 ; i < nb ; i++) {
 					lastData[i] = data[i].clone();
 					
 				}
-				Messenger.sendMessage(ApplicationConstants.SQL_RESULT, lastData);
+				ByteArrayOutputStream bout = new ByteArrayOutputStream();
+				Amf3Output amf3Output = new Amf3Output(context);
+				amf3Output.setOutputStream(bout);
+				amf3Output.writeObject(lastData);
+				amf3Output.flush();
+				byte[] b = bout.toByteArray();
+				amf3Output.close();
+				String filename = "" + System.nanoTime();
+				File path = new File(filename + ".data");
+				FileOutputStream outFile = new FileOutputStream(path);
+				GZIPOutputStream zipOut = new GZIPOutputStream(outFile);
+				zipOut.write(b);
+				zipOut.flush();
+				zipOut.close();
+				Messenger.sendMessage(ApplicationConstants.SQL_RESULT, path.getAbsoluteFile().toString());
 			}
 			
 			
