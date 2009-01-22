@@ -38,8 +38,11 @@ public class SQLRequestManager  {
 			logger.debug("Starting thread for query : "+request);
 			// ----------------------------
 		}
+	@SuppressWarnings("deprecation")
 	public void stopThread(){
 			if(sqlreqTH != null){
+				// The only way i found to be sure to kill the process
+				// I know it is the best solution ever...&
 				sqlreqTH.stop();
 				logger.debug("STOPPING THREAD : "+sqlreqTH.isInterrupted());
 				sqlreqTH=null;

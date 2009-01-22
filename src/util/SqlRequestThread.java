@@ -1,19 +1,10 @@
 package util;
 
 import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.PrintWriter;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Vector;
 import java.util.zip.GZIPOutputStream;
 
 import org.apache.commons.logging.Log;
@@ -24,308 +15,129 @@ import flex.messaging.io.SerializationContext;
 import flex.messaging.io.amf.Amf3Output;
 
 public class SqlRequestThread extends Thread {
-	private final static int STREAM_LENGTH 	=	10000;
+	// CONSTANT DEFINE THE NUMBER OF ROWS PER ARRAY WHEN WE STREAM FROM DATABASE
+	private final static int STREAM_LENGTH = 10000;
+	// REQUEST TO BE EXECUTED
 	private String request;
+	// USEFULL OBJECT FROM SPRING
 	private JdbcTemplate t;
+	// FILE LOGGER
 	private final Log logger = LogFactory.getLog(SqlRequestThread.class);
 
-	public SqlRequestThread (String request, JdbcTemplate t){
+	// Constructor
+	public SqlRequestThread(String request, JdbcTemplate t) {
 		super();
-		this.t=t;
-		this.request=request;
+		this.t = t;
+		this.request = request;
 	}
-
-	public void run(){
+	// THREAD CONTENT
+	public void run() {
 
 		PreparedStatement stat;
 		try {
 			// CREATE AND EXECUTE QUERY ------------
-			stat = t.getDataSource().getConnection().prepareStatement(request,ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY);
-			if(t.getDataSource().getConnection().getMetaData().getDriverName().toUpperCase().contains("MYSQL"))
+			stat = t.getDataSource().getConnection().prepareStatement(request,
+					ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+			if (t.getDataSource().getConnection().getMetaData().getDriverName()
+					.toUpperCase().contains("MYSQL"))
 				stat.setFetchSize(Integer.MIN_VALUE);
 			else
 				stat.setFetchSize(1500);
 
 			ResultSet results = stat.executeQuery();
 			// -------------------------------------------
-
+			
+			// Grab the number of columns of the table
 			int numberColum = results.getMetaData().getColumnCount();
-			int i = 1;
-			try
-			{
-				Messenger.sendMessage("sqlResultStart",null);
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
+			
+			// Send message to air to notice that we start to send data
+			try {
+				Messenger.sendMessage(ApplicationConstants.SQL_START, null);
+			} catch (Exception e) {
 				logger.error(e.getMessage());
 			}
-
-			SerializationContext context = SerializationContext.getSerializationContext();
-
-
-
+			
+			// Prepare for amf serialization
+			SerializationContext context = SerializationContext
+			.getSerializationContext();
+			
+			// Index for the array (row index)
 			int nb = 1;
 
-			String [][] data;
-
+			// Declare the data array
+			String[][] data;
+			
+			// Instantiate the array with correct length
 			data = new String[STREAM_LENGTH][numberColum];
-			for(i = 0 ; i < numberColum ; i++){
-				data[0][i]=results.getMetaData().getColumnName(i+1);
+			
+			// first entry in the array is the header column
+			for (int i = 0; i < numberColum; i++) {
+				data[0][i] = results.getMetaData().getColumnName(i + 1);
 			}
-
-			while(results.next()){
-				for ( int j = 0 ; j < numberColum ; j++){
-					data[nb%STREAM_LENGTH][j] = results.getString(j+1);
+			// Boolean to know if the last rows has been sent
+			boolean isSended = false;
+			
+			// Copying data
+			while (results.next()) {
+				isSended = false;
+				// Copy the content of the row in the array
+				for (int j = 0; j < numberColum; j++) {
+					data[(nb-1) % STREAM_LENGTH][j] = results.getString(j + 1);
 				}
-
-				if (nb%STREAM_LENGTH == 0)
-				{
+				// Test if the array is full
+				if (nb % STREAM_LENGTH == 0) {
+					// and serialize
 					ByteArrayOutputStream bout = new ByteArrayOutputStream();
 					Amf3Output amf3Output = new Amf3Output(context);
 					amf3Output.setOutputStream(bout);
 					amf3Output.writeObject(data);
 					amf3Output.flush();
 					byte[] b = bout.toByteArray();
-					amf3Output.close();		      
-					String filename = ""+System.nanoTime();
-					File path=new File(filename+".data");
+					amf3Output.close();
+					String filename = "" + System.nanoTime();
+					File path = new File(filename + ".data");
 					FileOutputStream outFile = new FileOutputStream(path);
 					GZIPOutputStream zipOut = new GZIPOutputStream(outFile);
-					zipOut.write(b); 
+					zipOut.write(b);
 					zipOut.flush();
 					zipOut.close();
-					try{
-						//String path2 = new String();
-				    	 // path2=path.getAbsoluteFile().toString();
-						//System.out.println(path);path.getAbsoluteFile().toString()
-						//data=new String[1][1];
-						Messenger.sendMessage(ApplicationConstants.SQL_RESULT,path.getAbsoluteFile().toString());
-					}catch (Exception e){
-						e.printStackTrace();
-					}
+					
+					// Ok now sending the array to flex by merapi
+					Messenger.sendMessage(ApplicationConstants.SQL_RESULT,
+								path.getAbsoluteFile().toString());
+					// Create a new array and the array has no reference on it, so it can be collected by the GC! Hope for this.
 					data = new String[STREAM_LENGTH][numberColum];
+					nb=-1;
+					isSended=true;
 				}
 				nb++;
 			}
-			System.out.println(System.currentTimeMillis());
-			Messenger.sendMessage(ApplicationConstants.SQL_STOP,"success");
+			
+			if(!isSended){
+				String[][] lastData = new String [nb+1][numberColum];
+				for (int i = 0 ; i <= nb ; i++) {
+					lastData[i] = data[i].clone();
+					
+				}
+				Messenger.sendMessage(ApplicationConstants.SQL_RESULT, lastData);
+			}
+			
+			
+			
+			// Now saying to flex all is done
+			Messenger.sendMessage(ApplicationConstants.SQL_STOP, "success");
+			
 			// --------------------------------------------------------------------
-
-			/*
-			// INITIALIZE FOR WRITING TO FILE
-			 SerializationContext context = SerializationContext.getSerializationContext();
-			 Character c = '\n';
-
-		     File path=new File("data.gz");
-		      FileOutputStream outFile = new FileOutputStream(path);
-		      GZIPOutputStream zipOut = new GZIPOutputStream(outFile);
-			// WORK ON EACH ROW
-
-		     Vector<String[]> list= new Vector<String[]>();
-
-		     String[] ColumnName = new String[numberColum];
-		     for(i=1;i<=numberColum;i++){
-		    	 ColumnName[i-1]=results.getMetaData().getColumnName(i);
-				}
-
-		  // NOW WRITING TO FILE
-
-			 ByteArrayOutputStream bout = new ByteArrayOutputStream();
-			 DataOutputStream sortie=new DataOutputStream(bout);
-			 sortie.writeBytes("<sessions>"+'\n');
-			 byte[] b;
-			 b= bout.toByteArray();
-
-		      zipOut.write(b);
-		      zipOut.flush();
-		     int j = 0;
-
-			while (results.next())
-			{ j++;
-			String[] line = new String[numberColum];
-				// CREATE THE ROW ARRAY
-				for(i=1;i<=numberColum;i++){
-					line[i-1]=results.getString(i);
-				}
-				 bout = new ByteArrayOutputStream();
-				  sortie=new DataOutputStream(bout);
-
-
-
-				 sortie.writeBytes("<session");
-				 for(i=1;i<=numberColum;i++){
-					 sortie.writeBytes(' '+ColumnName[i-1]+"="+'"'+line[i-1]+'"');
-					}
-				 sortie.writeBytes("/>"+'\n');/*
-			     /*Amf3Output amf3Output = new Amf3Output(context);
-			     amf3Output.setOutputStream(bout);
-			    amf3Output.writeObject(list);
-			    list.clear();
-
-			    //amf3Output.flush();
-			    /*amf3Output.writeChars("\n");
-			    amf3Output.flush();
-				  b= bout.toByteArray();
-			     // amf3Output.close();	
-
-			      zipOut.write(b);
-			      zipOut.flush();
-			}
-
-			sortie.writeBytes("</sessions>"+'\n');
-			b = bout.toByteArray();
-			 zipOut.write(b);
-			 zipOut.flush();
-		      zipOut.close();
-		      long fin = System.currentTimeMillis();
-		      System.out.println("Time total:"+(fin-deb));*/
-		}
-		catch (Exception e2)
-		{				
+		} catch (Exception e2) {
 			logger.error(e2.getMessage());
-			try
-			{
-				Messenger.sendMessage("sqlInfo", "ERROR : "+e2.getMessage());
+			try {
+				Messenger.sendMessage(ApplicationConstants.SQL_INFO, "ERROR : " + e2.getMessage());
 
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 				e.printStackTrace();
 				logger.error(e.getMessage());
 			}
 		}
-	}
-
-
-
-	//		List l = null;
-	//		SqlRowSet rs = null;
-	//		// QUERY -----------------------
-	//		try {
-	//			t.setFetchSize(Integer.MIN_VALUE);
-	//			 long debut = System.currentTimeMillis();
-	//			 // ----------------------------------
-	//			 //rs = t.queryForRowSet(request);
-	//			 /*
-	//			 int nbRow = 0;
-	//			 
-	//			 while (rs.next()){
-	//				 rs.
-	//				 
-	//				 nbRow++;
-	//				 if (nbRow==100){
-	//					 //TO DISC
-	//				 }
-	//			 }
-	//			 */
-	//			 
-	//
-	//			 l = (List) t.queryForList(request);	 
-	//
-	//			 // ------------------------------------
-	//			
-	//	 		long fin = System.currentTimeMillis();
-	//			System.out.println("Load: "+(fin-debut));
-	//			try {
-	//				Messenger.sendMessage("sqlInfo", "Operation successful");
-	//			} catch (Exception e1) {
-	//				e1.printStackTrace();
-	//				logger.error(e1.getMessage());
-	//			}
-	//		} catch (Exception e) {
-	//			try {
-	//				Messenger.sendMessage("sqlInfo", "ERROR : "
-	//								+ e.getMessage());
-	//			} catch (Exception e1) {
-	//				e1.printStackTrace();
-	//				logger.error(e1.getMessage());
-	//			}
-	//		}
-	//		// -------------------------
-
-	//				
-	//				try {
-	//					Messenger.sendMessage("sqlResult", path.getAbsolutePath());
-	//				} catch (Exception e1) {
-	//					e1.printStackTrace();
-	//					logger.error(e1.getMessage());
-	//				}
-	//				
-	////		      FileOutputStream fout = new FileOutputStream("DATA.dat");
-	////		      byte[] b = bout.toByteArray();
-	////		      fout.write(b);
-	////		      ObjectOutputStream oos = new ObjectOutputStream(fout);
-	////		      oos.writeObject(l.toArray());
-	////		      oos.close();
-	//		      
-	//		      /*
-	//		      ZipOutputStream zos = new ZipOutputStream(bout);
-	//		      zos.setLevel(9);
-	//		      zos.setMethod(ZipOutputStream.DEFLATED);
-	//		      
-	//		      ZipEntry ze = new ZipEntry();
-	//		      byte[] b = bout.toByteArray();
-	//		      ze.setSize(b.length);
-	//		      zos.putNextEntry(ze);
-	//		      zos.write(b);
-	//		      zos.closeEntry();
-	//		      zos.flush();
-	//		      zos.close();
-	//		      */
-	//		      }
-	//		   catch (Exception e) { e.printStackTrace(); }
-	///*		if (l != null) {
-	//			long debut = System.currentTimeMillis();
-	//			System.out.println(debut);
-	//			try {
-	//					Messenger.sendMessage("sqlResult", l);
-	//					Thread.sleep(100);
-	//				} catch (Exception e) {
-	//					e.printStackTrace();
-	//					logger.error(e.getMessage());
-	//				}
-	//				long fin = System.currentTimeMillis();
-	//				System.out.println(fin);
-	//				System.out.println("temps: "+(fin-debut));
-	//		}*/
-	//		// -------------------------
-	//	}
-	////	public Page getCompanies(final int pageNo, final int pageSize) throws SQLException {
-	////        PaginationHelper ph = new PaginationHelper();
-	////        return ph.fetchPage(
-	////                t,
-	////                request,
-	////                request,
-	////                null,
-	////                pageNo,
-	////                pageSize,
-	////                new RowMapper() {
-	////                    public Object mapRow(ResultSet rs, int i) throws SQLException {
-	////                        return new Object 
-	////                    }
-	////                }
-	////        );
-	////
-
-
-
-	private void dataToFile(Object line){
-		// SEND LIST ---------------
-		try {
-			long debut = System.currentTimeMillis();
-			System.out.println(debut);
-
-
-			long fin = System.currentTimeMillis();
-			try{
-				Messenger.sendMessage("load", "OK'");
-			}catch(Exception e){
-				e.printStackTrace();
-			}
-			System.out.println("Compression: "+(fin-debut));
-		}
-		catch (Exception e) { e.printStackTrace(); }
 	}
 
 }

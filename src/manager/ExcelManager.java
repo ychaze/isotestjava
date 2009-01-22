@@ -66,7 +66,6 @@ public class ExcelManager {
 			}
 			
 			//Print for test
-			//System.out.println(s.getRow(0).length);
 			boolean isSended = true;
 			for (int i = 1 ; i <= s.getRows() ; i++)
 		    {
@@ -119,15 +118,6 @@ public class ExcelManager {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-	}
-	
-	private void affiche(String[][] data){
-		System.out.println("Données: "+data.toString());
-		for (int i = 0 ; i < data.length ; i++){
-			for (int j = 0 ; j < data[i].length; j++){
-				System.out.println("line:"+i + " Col:"+j+" val:"+data[i][j]);
-			}
 		}
 	}
 }
