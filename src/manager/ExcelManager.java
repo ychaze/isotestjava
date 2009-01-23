@@ -8,13 +8,16 @@ import jxl.read.biff.BiffException;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import util.ApplicationConstants;
 import util.Messenger;
 
 public class ExcelManager {
 
 	private final static int STREAM_INTERVAL = 10;
-
+	private final Log logger = LogFactory.getLog(ExcelManager.class);
 	public void getNbSheets(String path){
 		Workbook wb;
 		try {
@@ -25,11 +28,11 @@ public class ExcelManager {
 			}
 			Messenger.sendMessage(ApplicationConstants.NAME_SHEETS_EXCEL,names);
 		} catch (BiffException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 	}
 	/**
@@ -39,6 +42,11 @@ public class ExcelManager {
 	public void process(String info) {
 
 		try {
+			
+			//Say to flex that we begin...
+			
+			Messenger.sendMessage(ApplicationConstants.SQL_START, null);
+			
 			// Split to  [path , sheet]
 			String [] values = info.split("##");
 
@@ -90,11 +98,7 @@ public class ExcelManager {
 				if (i%STREAM_INTERVAL == 0 )
 				{
 					//affiche(data);
-					try {
-						Messenger.sendMessage(ApplicationConstants.EXCEL_RESULT, data);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+					Messenger.sendMessage(ApplicationConstants.EXCEL_RESULT, data);
 					isSended = true;
 					// New array hope for the garbage collector to collect the old object to prevent memory overflow
 					if (s.getRows() - i >= STREAM_INTERVAL)
@@ -104,23 +108,18 @@ public class ExcelManager {
 				}
 			}
 			if(!isSended){
-				try {
-					Messenger.sendMessage(ApplicationConstants.EXCEL_RESULT, data);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				Messenger.sendMessage(ApplicationConstants.EXCEL_RESULT, data);
 			}
 			// SAY TO FLEX THAT IT HAS THE COMPLETE LIST OF DATA
-			try {
-				Messenger.sendMessage(ApplicationConstants.EXCEL_STOP, null);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			Messenger.sendMessage(ApplicationConstants.EXCEL_STOP, null);
 		}
 		catch (BiffException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
+		}
+		catch (Exception e){
+			logger.error(e.getMessage());
 		}
 	}
 }
